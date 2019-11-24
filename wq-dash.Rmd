@@ -264,7 +264,7 @@ attmap <- reactive({
     ) %>% 
     left_join(locs, by = 'epchc_station') %>% 
     st_as_sf(coords = c('Longitude', 'Latitude'), crs = prj)
-
+browser()
   # values to feed to legend  
   yesval <- toplo %>% filter(trgtmet == 'yes') %>% pull(val)
   noval <- toplo %>% filter(trgtmet == 'no') %>% pull(val)
@@ -283,7 +283,7 @@ attmap <- reactive({
       fillColor = ~cols,
       weight = 1,
       fillOpacity = 1,
-      label = ~paste0('Station ', epchc_station, ' (target met: ', trgtmet, ', value ', round(val, 2), ')')
+      label = ~paste0('Station ', epchc_station, ' (target met: ', trgtmet, ', value ', round(val, 2), ', target ', target, ')')
     ) %>% 
     addLegend("bottomright", pal = palyes, title = "Target met", labels = thrsel, opacity = 1, values = yesval) %>% 
     addLegend("bottomright", pal = palno, title = "Target not met", labels = thrsel, opacity = 1, values = noval)
