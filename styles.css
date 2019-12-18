@@ -1,0 +1,25 @@
+/* top navbar styles */
+.navbar {
+  background-color:#427355;
+    border-color:black;
+}
+
+.navbar-nav li a:hover, .navbar-nav > .active > a {
+  color: #fff !important;
+  background-color:#5c4a42!important;
+  background-image: none !important;
+}
+
+/* shiny slider stuff */
+.irs-bar {
+  background: #427355
+}
+.irs-bar {
+  border-top: 1px #427355
+}
+.irs-bar-edge {
+  background: #427355
+}
+.irs-bar-edge {
+  border: 1px #427355
+}

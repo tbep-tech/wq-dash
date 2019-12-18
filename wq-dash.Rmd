@@ -3,6 +3,7 @@ title: "Water Quality Dashboard"
 output: 
   flexdashboard::flex_dashboard
 runtime: shiny
+css: styles.css
 ---
 
 ```{r setup, include=F}
