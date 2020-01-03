@@ -321,7 +321,7 @@ attmat <- reactive({
 Sidebar {.sidebar data-width=400}
 ===========================================================
 
-#### Chlorophyll threshold
+#### Chlorophyll target
 
 <br>
 ```{r}
@@ -407,7 +407,7 @@ Target attainments
 Column {data-width=250}
 -----------------------------------------------------------------------
 
-### Attainment matrix
+### ATTAINMENT MATRIX
 
 ```{r}
 output$attmat <- renderPlot({attmat()})
@@ -417,7 +417,7 @@ plotOutput('attmat')
 Column {data-width=500}
 -----------------------------------------------------------------------
 
-### Site attainment by year
+### SITE ATTAINMENT BY YEAR
 
 ```{r ecphc_validate}
 output$attmap <- renderLeaflet({attmap()})

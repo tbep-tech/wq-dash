@@ -1,3 +1,15 @@
+@import url("//fonts.googleapis.com/css?family=Lobster|Cabin:400,700");
+@import url("//fonts.googleapis.com/css?family=Istok+Web&display=swap");
+
+/* text */
+
+.chart-title {
+  font-family: 'Istok Web';
+  font-style: italic;
+  font-size: 24px;
+  color: #958984;
+}
+
 /* top navbar styles */
 .navbar {
   background-color:#427355;
@@ -22,4 +34,12 @@
 }
 .irs-bar-edge {
   border: 1px #427355
+}
+.irs-single {
+  background: #00806E;
+}
+
+/* sidebar */
+.section.sidebar {
+  background-color: #95898430; /* gray with alpha */
 }
