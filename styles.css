@@ -42,6 +42,7 @@ h5 {
 .navbar-brand { /* dashboard title */
   font-family: 'Roboto Condensed';
   font-weight: bold;
+  color: #FF0000;
 }
 
 .navbar-nav li a:hover, .navbar-nav > .active > a {
@@ -82,6 +83,7 @@ h5 {
 
 
 /* shiny slider stuff */
+
 .irs-bar {
   background: #00806E
 }
@@ -98,3 +100,8 @@ h5 {
   background: #00806E;
 }
 
+/* tabset top border */
+
+.nav-tabs-custom > .nav-tabs > li.active {
+  border-top-color: #00806E;
+}
