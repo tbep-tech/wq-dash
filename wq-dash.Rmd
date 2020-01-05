@@ -2,7 +2,7 @@
 title: "WATER QUALITY DASHBOARD"
 output: 
   flexdashboard::flex_dashboard:
-     logo: www/tarponlogo3.png
+     logo: www/tarponlogo.png
 runtime: shiny
 css: styles.css
 ---
