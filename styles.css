@@ -1,19 +1,47 @@
 @import url("//fonts.googleapis.com/css?family=Lobster|Cabin:400,700");
-@import url("//fonts.googleapis.com/css?family=Istok+Web&display=swap");
 
-/* text */
+/* Frutiger Light approximate */
+@import url("//fonts.googleapis.com/css?family=Hind&display=swap"); 
 
-.chart-title {
-  font-family: 'Istok Web';
-  font-style: italic;
-  font-size: 24px;
+/* DIN condensed approximate */
+@import url("//fonts.googleapis.com/css?family=Roboto+Condensed&display=swap");
+
+/* header styles */
+
+h1 {
+  font-family: 'Hind';
   color: #958984;
+}
+h2 {
+  font-family: 'Hind';
+  color: #958984;
+}
+h3 {
+  font-family: 'Hind';
+  color: #958984;
+}
+h4 {
+  font-family: 'Hind';
+  color: #958984;
+  font-style: italic;
+}
+h5 {
+  font-family: 'Hind';
+  color: #958984;
+  font-style: italic;
 }
 
 /* top navbar styles */
+
 .navbar {
-  background-color:#427355;
-    border-color:black;
+  background-color:#00806E;
+  border-color: black;
+  font-family: 'Hind'; /* main tab fonts */
+}
+
+.navbar-brand { /* dashboard title */
+  font-family: 'Roboto Condensed';
+  font-weight: bold;
 }
 
 .navbar-nav li a:hover, .navbar-nav > .active > a {
@@ -22,24 +50,51 @@
   background-image: none !important;
 }
 
+/* sidebar */
+
+.sidebar {
+  font-family: 'Hind';
+  color: #958984;
+}
+
+.section.sidebar {
+  background-color: #95898430; /* gray with alpha */
+}
+
+/* sub sections */
+
+.level3 {
+  font-family: 'Hind';
+  color: #958984;
+}
+
+.chart-title {
+  font-family: 'Hind';
+  font-style: italic;
+  color: #958984;
+}
+
+.nav-tabs {
+  font-family: 'Hind';
+  font-style: italic;
+  color: #958984;
+}
+
+
 /* shiny slider stuff */
 .irs-bar {
-  background: #427355
+  background: #00806E
 }
 .irs-bar {
-  border-top: 1px #427355
+  border-top: 1px #00806E
 }
 .irs-bar-edge {
-  background: #427355
+  background: #00806E
 }
 .irs-bar-edge {
-  border: 1px #427355
+  border: 1px #00806E
 }
 .irs-single {
   background: #00806E;
 }
 
-/* sidebar */
-.section.sidebar {
-  background-color: #95898430; /* gray with alpha */
-}

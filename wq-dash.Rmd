@@ -1,7 +1,8 @@
 ---
-title: "Water Quality Dashboard"
+title: "WATER QUALITY DASHBOARD"
 output: 
-  flexdashboard::flex_dashboard
+  flexdashboard::flex_dashboard:
+     logo: www/tarponlogo3.png
 runtime: shiny
 css: styles.css
 ---
@@ -45,7 +46,6 @@ locs <- epcdata %>%
   select(epchc_station, Longitude, Latitude) %>% 
   unique
 ```
-
 
 ```{r reactives}
 
@@ -321,7 +321,7 @@ attmat <- reactive({
 Sidebar {.sidebar data-width=400}
 ===========================================================
 
-#### Chlorophyll target
+##### CHLOROPHYLL TARGET
 
 <br>
 ```{r}
@@ -343,7 +343,7 @@ column(12,
        ))
 ```
 
-#### Light attenuation target
+##### LIGHT ATTENUATION TARGET
 
 <br>
 ```{r}
@@ -367,41 +367,41 @@ column(12,
 actionButton("reset_input", "Reset inputs")
 ```
 
-Annual means time series plots
+ANNUAL MEANS TIME SERIES PLOTS
 ===========================================================
 
 Column {.tabset .tabset-fade data-width=650}
 -----------------------------------------------------------------------
 
-### Old Tampa Bay
+### OLD TAMPA BAY
 
 ```{r plot_otb, fig.height = 8, fig.width = 10}
 output$thrplototb <- renderPlot({thrplototb()})
 plotOutput('thrplototb')
 ```
 
-### Hillsborough Bay
+### HILLSBOROUGH BAY 
 
 ```{r plot_hb, fig.height = 8, fig.width = 10}
 output$thrplothb <- renderPlot({thrplothb()})
 plotOutput('thrplothb')
 ```
 
-### Middle Tampa Bay
+### MIDDLE TAMPA BAY
 
 ```{r plot_mtb, fig.height = 8, fig.width = 10}
 output$thrplotmtb <- renderPlot({thrplotmtb()})
 plotOutput('thrplotmtb')
 ```
 
-### Lower Tampa Bay
+### LOWER TAMPA BAY
 
 ```{r plot_ltb, fig.height = 8, fig.width = 10}
 output$thrplotltb <- renderPlot({thrplotltb()})
 plotOutput('thrplotltb')
 ```
 
-Target attainments
+TARGET ATTAINMENTS
 ===========================================================
 
 Column {data-width=250}
