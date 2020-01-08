@@ -6,6 +6,9 @@
 /* DIN condensed approximate */
 @import url("//fonts.googleapis.com/css?family=Roboto+Condensed&display=swap");
 
+/* Fira Mono */
+@import url("//fonts.googleapis.com/css?family=Karla:400,700|Fira+Mono&display=fallback");
+
 /* header styles */
 
 h1 {
@@ -104,4 +107,23 @@ h5 {
 
 .nav-tabs-custom > .nav-tabs > li.active {
   border-top-color: #00806E;
+}
+
+/* bar chart formatting for reactable */
+.bar-cell {
+  display: flex;
+  align-items: center;
+}
+.number {
+  font-family: "Fira Mono", Consolas, Monaco, monospace;
+  font-size: 13.5px;
+  white-space: pre;
+}
+.bar-chart {
+  flex-grow: 1;
+  margin-left: 6px;
+  height: 14px;
+}
+.bar {
+  height: 100%;
 }

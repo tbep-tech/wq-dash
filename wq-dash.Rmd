@@ -16,7 +16,6 @@ library(here)
 library(mapview)
 library(leaflet)
 library(tbeptools)
-# devtools::load_all(here())
 library(tidyverse)
 library(patchwork)
 library(shiny)
@@ -24,6 +23,10 @@ library(sf)
 library(scales)
 library(shinyjs)
 library(RColorBrewer)
+
+# style file
+styles <- readLines('https://raw.githubusercontent.com/tbep-tech/css-styling/master/styles.css')
+writeLines(styles, 'styles.css')
 
 prj <- '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
 
