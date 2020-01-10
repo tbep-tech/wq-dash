@@ -1,35 +1,40 @@
 @import url("//fonts.googleapis.com/css?family=Lobster|Cabin:400,700");
 
 /* Frutiger Light approximate */
-@import url("//fonts.googleapis.com/css?family=Hind&display=swap"); 
+@import url("//fonts.googleapis.com/css?family=Lato&display=swap"); 
 
 /* DIN condensed approximate */
 @import url("//fonts.googleapis.com/css?family=Roboto+Condensed&display=swap");
 
-/* Fira Mono */
+/* Fira Mono, for centering bar plots in reactable */
 @import url("//fonts.googleapis.com/css?family=Karla:400,700|Fira+Mono&display=fallback");
 
 /* header styles */
 
 h1 {
-  font-family: 'Hind';
+  font-family: 'Lato';
+  font-weight: 300;
   color: #958984;
 }
 h2 {
-  font-family: 'Hind';
+  font-family: 'Lato';
+  font-weight: 300;
   color: #958984;
 }
 h3 {
-  font-family: 'Hind';
+  font-family: 'Lato';
+  font-weight: 300;
   color: #958984;
 }
 h4 {
-  font-family: 'Hind';
+  font-family: 'Lato';
+  font-weight: 300;
   color: #958984;
   font-style: italic;
 }
 h5 {
-  font-family: 'Hind';
+  font-family: 'Lato';
+  font-weight: 300;
   color: #958984;
   font-style: italic;
 }
@@ -39,7 +44,8 @@ h5 {
 .navbar {
   background-color:#00806E;
   border-color: black;
-  font-family: 'Hind'; /* main tab fonts */
+  font-family: 'Lato'; /* main tab fonts */
+  font-weight: 300;
 }
 
 .navbar-brand { /* dashboard title */
@@ -57,7 +63,8 @@ h5 {
 /* sidebar */
 
 .sidebar {
-  font-family: 'Hind';
+  font-family: 'Lato';
+  font-weight: 300;
   color: #958984;
 }
 
@@ -68,18 +75,21 @@ h5 {
 /* sub sections */
 
 .level3 {
-  font-family: 'Hind';
+  font-family: 'Lato';
+  font-weight: 300;
   color: #958984;
 }
 
 .chart-title {
-  font-family: 'Hind';
+  font-family: 'Lato';
+  font-weight: 300;
   font-style: italic;
   color: #958984;
 }
 
 .nav-tabs {
-  font-family: 'Hind';
+  font-family: 'Lato';
+  font-weight: 300;
   font-style: italic;
   color: #958984;
 }
