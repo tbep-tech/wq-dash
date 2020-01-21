@@ -35,12 +35,9 @@ if(Sys.info()[1] == 'Windows')
 
 prj <- '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
 
-# # local file path
-# xlsx <- here('data-raw', '2018_Results_Updated.xls')
-# 
-# # import data
-# epcdata <- read_importwq(xlsx, download_latest_epchc = F)
 load(here::here('data', 'epcdata.RData'))
+
+maxyr <- 2019
 
 # minor theme tweaks
 pthm <- theme(
@@ -49,7 +46,6 @@ pthm <- theme(
     axis.title.y = element_text(size = 12),
     text = element_text('Lato Light')
     ) 
-
 
 # locations
 locs <- epcdata %>% 
@@ -128,10 +124,10 @@ thrplototb <- reactive({
   
   req(trginps)
     
-  p1 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "chla", trgs = trginps) + 
+  p1 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "chla", trgs = trginps, yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "la", trgs = trginps) + 
+  p2 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "la", trgs = trginps, yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) + 
     pthm
   
@@ -147,10 +143,10 @@ thrplothb <- reactive({
   
   req(trginps)
     
-  p1 <- show_thrplot(epcdata, bay_segment = "HB", thr = "chla", trgs = trginps) + 
+  p1 <- show_thrplot(epcdata, bay_segment = "HB", thr = "chla", trgs = trginps, yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "HB", thr = "la", trgs = trginps) + 
+  p2 <- show_thrplot(epcdata, bay_segment = "HB", thr = "la", trgs = trginps, yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
   
@@ -166,10 +162,10 @@ thrplotmtb <- reactive({
   
   req(trginps)
   
-  p1 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "chla", trgs = trginps) + 
+  p1 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "chla", trgs = trginps, yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "la", trgs = trginps) + 
+  p2 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "la", trgs = trginps, yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
   
@@ -185,10 +181,10 @@ thrplotltb <- reactive({
   
   req(trginps)
   
-  p1 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "chla", trgs = trginps) + 
+  p1 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "chla", trgs = trginps, yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "la", trgs = trginps) + 
+  p2 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "la", trgs = trginps, yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
   
@@ -318,7 +314,7 @@ attmat <- reactive({
 
   req(trginps)
   
-  out <- show_matrix(epcdata, trgs = trginps) + 
+  out <- show_matrix(epcdata, trgs = trginps, yrrng = c(1975, maxyr)) + 
     theme(
       axis.text = element_text(size = 12), 
       text = element_text(family = 'Lato Light')
@@ -434,7 +430,7 @@ Column {data-width=500}
 output$attmap <- renderLeaflet({attmap()})
 fillCol(flex = c(NA, 1),
   inputPanel(
-    selectInput('yrsel', 'Select year:', choices = seq(1975, 2018), selected = 2018),
+    selectInput('yrsel', 'Select year:', choices = seq(1975, maxyr), selected = maxyr),
     selectInput('thrsel', 'Select indicator:', choices = list('Chlorophyll-a (ug/l)' = 'chla', 'Light attenuation (m-1)' = 'la'))
     ),
   leafletOutput('attmap')
