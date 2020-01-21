@@ -21,7 +21,6 @@ library(patchwork)
 library(shiny)
 library(sf)
 library(scales)
-library(shinyjs)
 library(RColorBrewer)
 library(extrafont)
 
@@ -54,80 +53,15 @@ locs <- epcdata %>%
 ```
 
 ```{r reactives}
-
-useShinyjs(rmd = TRUE)
-observeEvent(input$reset_input, {
-      reset("otbchltrg")
-      reset("hbchltrg")
-      reset("mtbchltrg")
-      reset("ltbchltrg")
-      reset("otblatrg")
-      reset("hblatrg")
-      reset("mtblatrg")
-      reset("ltblatrg")
-    })
-
-# format target inputs
-trginps <- reactive({
-
-  # inputs
-  trginps <- tibble(
-      otbchltrg = input$otbchltrg,
-      hbchltrg = input$hbchltrg, 
-      mtbchltrg = input$mtbchltrg, 
-      ltbchltrg = input$ltbchltrg,
-      otblatrg = input$otblatrg,
-      hblatrg = input$hblatrg,
-      mtblatrg = input$mtblatrg,
-      ltblatrg = input$ltblatrg
-    ) %>% 
-    gather('var', 'val') %>% 
-    mutate(
-      bay_segment = gsub('chltrg$|latrg$', '', var),
-      bay_segment = toupper(bay_segment), 
-      var = gsub('^.*(chltrg$|latrg$)', '\\1', var), 
-      var = gsub('trg$', '_target', var), 
-      var = gsub('^chl', 'chla', var)
-    ) %>% 
-    spread(var, val)
-  
-  # se diff for targets
-  trgs <- targets %>% 
-    mutate(
-      lase1 = la_smallex - la_target, 
-      chlase1 = chla_smallex - chla_target, 
-      lase2 = la_thresh - la_smallex,
-      chlase2 = chla_thresh - chla_smallex
-    ) %>% 
-    select(bay_segment, name, lase1, chlase1, lase2, chlase2)
-  
-  # combine with se, estimate new thresholds
-  out <- trginps %>% 
-    left_join(trgs, by = 'bay_segment') %>% 
-    mutate(
-      chla_smallex = chla_target + chlase1, 
-      chla_thresh = chla_smallex + chlase2,
-      la_smallex = la_target + lase1, 
-      la_thresh = la_smallex + lase2
-    ) %>% 
-    select(bay_segment, name, chla_target, chla_smallex, chla_thresh, la_target, la_smallex, la_thresh)
-  
-  return(out)
-  
-})
-
 # OTB threshold plot
 thrplototb <- reactive({
   
   # inputs
-  trginps <- trginps()
-  
-  req(trginps)
-    
-  p1 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "chla", trgs = trginps, yrrng = c(1975, maxyr)) + 
+
+  p1 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "chla", yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "la", trgs = trginps, yrrng = c(1975, maxyr)) + 
+  p2 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "la", yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) + 
     pthm
   
@@ -139,14 +73,11 @@ thrplototb <- reactive({
 thrplothb <- reactive({
   
   # inputs
-  trginps <- trginps()
-  
-  req(trginps)
     
-  p1 <- show_thrplot(epcdata, bay_segment = "HB", thr = "chla", trgs = trginps, yrrng = c(1975, maxyr)) + 
+  p1 <- show_thrplot(epcdata, bay_segment = "HB", thr = "chla", yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "HB", thr = "la", trgs = trginps, yrrng = c(1975, maxyr)) + 
+  p2 <- show_thrplot(epcdata, bay_segment = "HB", thr = "la", yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
   
@@ -158,14 +89,11 @@ thrplothb <- reactive({
 thrplotmtb <- reactive({
   
   # inputs
-  trginps <- trginps()
-  
-  req(trginps)
-  
-  p1 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "chla", trgs = trginps, yrrng = c(1975, maxyr)) + 
+
+  p1 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "chla", yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "la", trgs = trginps, yrrng = c(1975, maxyr)) + 
+  p2 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "la", yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
   
@@ -177,14 +105,11 @@ thrplotmtb <- reactive({
 thrplotltb <- reactive({
   
   # inputs
-  trginps <- trginps()
   
-  req(trginps)
-  
-  p1 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "chla", trgs = trginps, yrrng = c(1975, maxyr)) + 
+  p1 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "chla", yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "la", trgs = trginps, yrrng = c(1975, maxyr)) + 
+  p2 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "la", yrrng = c(1975, maxyr)) + 
     ggtitle(NULL) +
     pthm
   
@@ -196,16 +121,13 @@ thrplotltb <- reactive({
 mapdat <- reactive({
   
   # inputs
-  trginps <- trginps()
   yrsel <- input$yrsel
   thrsel <- input$thrsel
-  
-  req(trginps)
   
   # data to map
   toplo <- epcdata %>% 
     anlz_avedatsite %>% 
-    anlz_attainsite(thr = thrsel, trg = trginps)
+    anlz_attainsite(thr = thrsel)
 
   return(toplo)
   
@@ -301,8 +223,6 @@ attmap <- reactive({
     ) %>% 
     addLegend("bottomright", pal = palyes, title = "Target met", labels = thrsel, opacity = 1, values = yesval) %>% 
     addLegend("bottomright", pal = palno, title = "Target not met", labels = thrsel, opacity = 1, values = noval)
-
-
   
 })
 
@@ -310,11 +230,8 @@ attmap <- reactive({
 attmat <- reactive({
   
   # input
-  trginps <- trginps()
-
-  req(trginps)
   
-  out <- show_matrix(epcdata, trgs = trginps, yrrng = c(1975, maxyr)) + 
+  out <- show_matrix(epcdata, yrrng = c(1975, maxyr), family = 'Lato Light') + 
     theme(
       axis.text = element_text(size = 12), 
       text = element_text(family = 'Lato Light')
@@ -327,52 +244,6 @@ attmat <- reactive({
 
 Sidebar {.sidebar data-width=400}
 ===========================================================
-
-##### CHLOROPHYLL TARGET
-
-<br>
-```{r}
-column(12, 
-       column(2, 'OTB'), 
-       column(10, sliderInput('otbchltrg', NULL, min = 0, max = 20, value = 8.5, step = 0.1, round = F)
-       ))
-column(12, 
-       column(2, 'HB'), 
-       column(10, sliderInput('hbchltrg', NULL, min = 0, max = 20, value = 13.2, step = 0.1, round = F)
-       ))
-column(12, 
-       column(2, 'MTB'),
-       column(10, sliderInput('mtbchltrg', NULL, min = 0, max = 20, value = 7.4, step = 0.1, round = F)
-       ))
-column(12, 
-       column(2, 'LTB'),
-       column(10, sliderInput('ltbchltrg', NULL, min = 0, max = 20, value = 4.6, step = 0.1, round = F)
-       ))
-```
-
-##### LIGHT ATTENUATION TARGET
-
-<br>
-```{r}
-column(12, 
-       column(2, 'OTB'), 
-       column(10, sliderInput('otblatrg', NULL, min = 0, max = 3, value = 0.83, step = 0.01, round = F)
-       ))
-column(12, 
-       column(2, 'HB'), 
-       column(10, sliderInput('hblatrg', NULL, min = 0, max = 3, value = 1.58, step = 0.01, round = F)
-       ))
-column(12, 
-       column(2, 'MTB'),
-       column(10, sliderInput('mtblatrg', NULL, min = 0, max = 3, value = 0.83, step = 0.01, round = F)
-       ))
-column(12, 
-       column(2, 'LTB'),
-       column(10, sliderInput('ltblatrg', NULL, min = 0, max = 3, value = 0.63, step = 0.01, round = F)
-       ))
-
-actionButton("reset_input", "Reset inputs")
-```
 
 ANNUAL MEANS TIME SERIES PLOTS
 ===========================================================
