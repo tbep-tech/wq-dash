@@ -10,10 +10,6 @@ css: styles.css
 ```{r setup, include=F}
 knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
-# test
-
-# test 2
-
 # libraries
 library(flexdashboard)
 library(here)
@@ -28,6 +24,8 @@ library(scales)
 library(RColorBrewer)
 library(extrafont)
 
+source(here::here('R', 'funcs.R'))
+
 loadfonts(device = 'pdf', quiet = T)
 if(Sys.info()[1] == 'Windows')
   loadfonts(device = 'win', quiet = T)
@@ -41,13 +39,14 @@ prj <- '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
 load(here::here('data', 'epcdata.RData'))
 
 maxyr <- 2019
+fml <- "Lato Light"
 
 # minor theme tweaks
 pthm <- theme(
     axis.text.x = element_text(size = 11, angle = 45, hjust = 1),
     legend.text = element_text(size = 12), 
     axis.title.y = element_text(size = 12),
-    text = element_text('Lato Light')
+    text = element_text(fml)
     ) 
 
 # locations
@@ -62,10 +61,10 @@ thrplototb <- reactive({
   
   # inputs
 
-  p1 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "chla", yrrng = c(1975, maxyr)) + 
+  p1 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "chla", yrrng = c(1975, maxyr), family = fml) + 
     ggtitle(NULL) +
     pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "la", yrrng = c(1975, maxyr)) + 
+  p2 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "la", yrrng = c(1975, maxyr), family = fml) + 
     ggtitle(NULL) + 
     pthm
   
@@ -78,10 +77,10 @@ thrplothb <- reactive({
   
   # inputs
     
-  p1 <- show_thrplot(epcdata, bay_segment = "HB", thr = "chla", yrrng = c(1975, maxyr)) + 
+  p1 <- show_thrplot(epcdata, bay_segment = "HB", thr = "chla", yrrng = c(1975, maxyr), family = fml) + 
     ggtitle(NULL) +
     pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "HB", thr = "la", yrrng = c(1975, maxyr)) + 
+  p2 <- show_thrplot(epcdata, bay_segment = "HB", thr = "la", yrrng = c(1975, maxyr), family = fml) + 
     ggtitle(NULL) +
     pthm
   
@@ -94,10 +93,10 @@ thrplotmtb <- reactive({
   
   # inputs
 
-  p1 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "chla", yrrng = c(1975, maxyr)) + 
+  p1 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "chla", yrrng = c(1975, maxyr), family = fml) + 
     ggtitle(NULL) +
     pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "la", yrrng = c(1975, maxyr)) + 
+  p2 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "la", yrrng = c(1975, maxyr), family = fml) + 
     ggtitle(NULL) +
     pthm
   
@@ -110,10 +109,10 @@ thrplotltb <- reactive({
   
   # inputs
   
-  p1 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "chla", yrrng = c(1975, maxyr)) + 
+  p1 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "chla", yrrng = c(1975, maxyr), family = fml) + 
     ggtitle(NULL) +
     pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "la", yrrng = c(1975, maxyr)) + 
+  p2 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "la", yrrng = c(1975, maxyr), family = fml) + 
     ggtitle(NULL) +
     pthm
   
@@ -235,10 +234,10 @@ attmat <- reactive({
   
   # input
   
-  out <- show_matrix(epcdata, yrrng = c(1975, maxyr), family = 'Lato Light') + 
+  out <- show_matrix(epcdata, yrrng = c(1975, maxyr), family = fml) + 
     theme(
       axis.text = element_text(size = 12), 
-      text = element_text(family = 'Lato Light')
+      text = element_text(family = fml)
     ) 
   
   return(out)
@@ -255,29 +254,29 @@ Column {.tabset .tabset-fade data-width=650}
 ### OLD TAMPA BAY
 
 ```{r plot_otb, fig.height = 8, fig.width = 10}
-output$thrplototb <- renderPlot({thrplototb()})
-plotOutput('thrplototb')
+output$thrplototb <- renderImage(img_fun(thrplototb(), session, 'thrplototb'), deleteFile = T)
+imageOutput('thrplototb')
 ```
 
 ### HILLSBOROUGH BAY 
 
 ```{r plot_hb, fig.height = 8, fig.width = 10}
-output$thrplothb <- renderPlot({thrplothb()})
-plotOutput('thrplothb')
+output$thrplothb <- renderImage(img_fun(thrplothb(), session, 'thrplothb'), deleteFile = T)
+imageOutput('thrplothb')
 ```
 
 ### MIDDLE TAMPA BAY
 
 ```{r plot_mtb, fig.height = 8, fig.width = 10}
-output$thrplotmtb <- renderPlot({thrplotmtb()})
-plotOutput('thrplotmtb')
+output$thrplotmtb <- renderImage(img_fun(thrplotmtb(), session, 'thrplotmtb'), deleteFile = T)
+imageOutput('thrplotmtb')
 ```
 
 ### LOWER TAMPA BAY
 
 ```{r plot_ltb, fig.height = 8, fig.width = 10}
-output$thrplotltb <- renderPlot({thrplotltb()})
-plotOutput('thrplotltb')
+output$thrplotltb <- renderImage(img_fun(thrplotltb(), session, 'thrplotltb'), deleteFile = T)
+imageOutput('thrplotltb')
 ```
 
 TARGET ATTAINMENTS
@@ -289,30 +288,7 @@ Column {data-width=250}
 ### ATTAINMENT MATRIX
 
 ```{r}
-output$attmat <- renderImage({
-  
-  width  <- session$clientData$output_attmat_width
-  height <- session$clientData$output_attmat_height
-
-  # For high-res displays, this will be greater than 1
-  pixelratio <- session$clientData$pixelratio
-
-  # A temp file to save the output.
-  outfile <- tempfile(fileext='.png')
-  
-  png(outfile, width=width*pixelratio, height=height*pixelratio,
-        res=72*pixelratio)
-  print(attmat())
-  dev.off()
-  
-  # Return a list containing the filename
-  list(src = outfile,
-       width = width,
-       height = height,
-       alt = "This is alternate text")
-  
-  }, deleteFile = T)
-
+output$attmat <- renderImage(img_fun(attmat(), session, 'attmat'), deleteFile = T)
 imageOutput('attmat')
 ```
 
