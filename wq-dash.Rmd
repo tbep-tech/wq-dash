@@ -302,7 +302,7 @@ output$attmap <- renderLeaflet({attmap()})
 fillCol(flex = c(NA, 1),
   inputPanel(
     selectInput('yrsel', 'Select year:', choices = seq(1975, maxyr), selected = maxyr),
-    selectInput('thrsel', 'Select indicator:', choices = list('Chlorophyll-a (ug/l)' = 'chla', 'Light attenuation (m-1)' = 'la'))
+    selectInput('thrsel', 'Select indicator:', choices = list('Chlorophyll-a (ug /l)' = 'chla', 'Light attenuation (m-1)' = 'la'))
     ),
   leafletOutput('attmap')
 )
