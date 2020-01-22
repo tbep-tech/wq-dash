@@ -290,7 +290,7 @@ Column {data-width=250}
 
 ```{r}
 output$attmat <- renderPlot({attmat()})
-plotOutput('attmat')
+imageOutput('attmat')
 ```
 
 Column {data-width=500}
