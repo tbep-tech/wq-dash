@@ -254,6 +254,8 @@ Column {.tabset .tabset-fade data-width=650}
 
 ### OLD TAMPA BAY
 
+here's some text 
+
 ```{r plot_otb, fig.height = 8, fig.width = 10}
 output$thrplototb <- renderPlot({thrplototb()})
 plotOutput('thrplototb')
