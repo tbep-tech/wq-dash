@@ -289,7 +289,30 @@ Column {data-width=250}
 ### ATTAINMENT MATRIX
 
 ```{r}
-output$attmat <- renderPlot({attmat()})
+output$attmat <- renderImage({
+  
+  width  <- session$clientData$output_attmat_width
+  height <- session$clientData$output_attmat_height
+
+  # For high-res displays, this will be greater than 1
+  pixelratio <- session$clientData$pixelratio
+
+  # A temp file to save the output.
+  outfile <- tempfile(fileext='.png')
+  
+  png(outfile, width=width*pixelratio, height=height*pixelratio,
+        res=72*pixelratio)
+  print(attmat())
+  dev.off()
+  
+  # Return a list containing the filename
+  list(src = outfile,
+       width = width,
+       height = height,
+       alt = "This is alternate text")
+  
+  }, deleteFile = T)
+
 imageOutput('attmat')
 ```
 
