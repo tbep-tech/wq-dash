@@ -243,6 +243,36 @@ attmat <- reactive({
   return(out)
   
 })
+
+# chl matrix
+chlmat <- reactive({
+  
+  # input
+  
+  out <- show_wqmatrix(epcdata, param = 'chla', yrrng = c(1975, maxyr), family = fml) + 
+    theme(
+      axis.text = element_text(size = 12), 
+      text = element_text(family = fml)
+    ) 
+  
+  return(out)
+  
+})
+
+# la matrix
+lamat <- reactive({
+  
+  # input
+  
+  out <- show_wqmatrix(epcdata, param = 'la', yrrng = c(1975, maxyr), family = fml) + 
+    theme(
+      axis.text = element_text(size = 12), 
+      text = element_text(family = fml)
+    ) 
+  
+  return(out)
+  
+})
 ```
 
 ANNUAL MEANS TIME SERIES PLOTS
@@ -282,7 +312,7 @@ imageOutput('thrplotltb')
 TARGET ATTAINMENTS
 ===========================================================
 
-Column {data-width=250}
+Column {.tabset .tabset-fade data-width=250}
 -----------------------------------------------------------------------
 
 ### ATTAINMENT MATRIX
@@ -290,6 +320,20 @@ Column {data-width=250}
 ```{r}
 output$attmat <- renderImage(img_fun(attmat(), session, 'attmat'), deleteFile = T)
 imageOutput('attmat')
+```
+
+### CHLOROPHYLL MATRIX
+
+```{r}
+output$chlmat <- renderImage(img_fun(chlmat(), session, 'chlmat'), deleteFile = T)
+imageOutput('chlmat')
+```
+
+### LIGHT ATTENUATION MATRIX
+
+```{r}
+output$lamat <- renderImage(img_fun(lamat(), session, 'lamat'), deleteFile = T)
+imageOutput('lamat')
 ```
 
 Column {data-width=500}
