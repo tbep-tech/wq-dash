@@ -287,7 +287,7 @@ Column {data-width=650}
 
 Light availability to seagrass is the guiding paradigm for TBEP’s Nitrogen Management Strategy. Because excessive nitrogen loads to the bay generally lead to increased algae blooms (higher chlorophyll-a levels) and reduce light penetration to seagrass, an evaluation method was developed to assess whether load reduction strategies are achieving desired water quality results (i.e. reduced chlorophyll-a concentrations and increased water clarity).
 
-```{r out.width='50%', fig.align='center', fig.cap='The guiding paradigm for seagrass restoration through nitrogen management.'}
+```{r out.width='30%', fig.align='center', fig.cap='The guiding paradigm for seagrass restoration through nitrogen management.'}
 knitr::include_graphics('www/nitro.PNG')
 ```
 
@@ -303,14 +303,14 @@ Year to year algae abundance (measured as chlorophyll-a concentrations) and visi
 
 The management category or action is based on the combination of outcomes for chlorophyll and light attenuation.  For each year, major bay segments are assigned to outcome categories based on both the exceedance of the annual estimate above a threshold or target and duration of the exceedance for the years prior.  Exceedances are defined as either small or large based on the magnitude and short or long based on the duration within the previous four years.  The combination of these exceedance categories creates an outcome integer that each bay segment is assigned for both chlorophyll and light attenutation. 
 
-```{r, echo = F, fig.align='center', fig.cap = 'Outcomes for annual estimates of water quality are assigned an integer value from zero to three depending on both magnitude and duration of the exceedence.', out.width = '50%'}
-knitr::include_graphics('www/outints.PNG')
+```{r out.width='30%', fig.align='center', fig.cap='Outcomes for annual estimates of water quality are assigned an integer value from zero to three depending on both magnitude and duration of the exceedence.'}
+knitr::include_graphics('www/outints.png')
 ```
 
 The chlorophyll and light attenuation outcome integers are then combined to create the management category for each bay segment.
 
-```{r, echo = F, fig.align='center', fig.cap = 'Management action categories assigned to each bay segment and year based on chlorophyll and light attenuation outcomes.', out.width = '50%'}
-knitr::include_graphics('www/matrixcats.PNG')
+```{r out.width='30%', fig.align='center', fig.cap='Management action categories assigned to each bay segment and year based on chlorophyll and light attenuation outcomes.'}
+knitr::include_graphics('www/matrixcats.png')
 ```
 
 #### Using the dashboard
