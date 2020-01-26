@@ -16,6 +16,7 @@ library(here)
 library(mapview)
 library(leaflet)
 library(tbeptools)
+# devtools::load_all('../tbeptools')
 library(tidyverse)
 library(patchwork)
 library(shiny)
@@ -23,6 +24,7 @@ library(sf)
 library(scales)
 library(RColorBrewer)
 library(extrafont)
+library(plotly)
 
 source(here::here('R', 'funcs.R'))
 
@@ -53,6 +55,16 @@ pthm <- theme(
 locs <- epcdata %>% 
   select(epchc_station, Longitude, Latitude) %>% 
   unique
+
+# plotly secondary axix
+ax <- list(
+  tickfont = list(size=14),
+  overlaying = "x",
+  nticks = 4,
+  side = "top"
+)
+seg <- c('OTB', 'HB', 'MTB', 'LTB') 
+nms <- factor(seg, levels = seg)
 ```
 
 ```{r reactives}
@@ -234,12 +246,18 @@ attmat <- reactive({
   
   # input
   
-  out <- show_matrix(epcdata, yrrng = c(1975, maxyr), family = fml) + 
+  plo <- show_matrix(epcdata, yrrng = c(1975, maxyr), family = fml, txtsz = NULL) + 
     theme(
-      axis.text = element_text(size = 12), 
-      text = element_text(family = fml)
-    ) 
-  
+      axis.text = element_text(size = 12),
+      text = element_text(family = fml),
+      axis.text.x = element_blank(), 
+      axis.ticks.x = element_blank()
+    )
+
+  out <- ggplotly(plo, tooltip = 'Action') %>%
+    add_bars(x = ~nms,y = ~c(1, 1, 1, 1), xaxis = "x2", inherit = F) %>%
+    layout(xaxis2 = ax)
+
   return(out)
   
 })
@@ -249,11 +267,17 @@ chlmat <- reactive({
   
   # input
   
-  out <- show_wqmatrix(epcdata, param = 'chla', yrrng = c(1975, maxyr), family = fml) + 
+  plo <- show_wqmatrix(epcdata, param = 'chla', yrrng = c(1975, maxyr), family = fml, txtsz = NULL) + 
     theme(
       axis.text = element_text(size = 12), 
-      text = element_text(family = fml)
+      text = element_text(family = fml),
+      axis.text.x = element_blank(), 
+      axis.ticks.x = element_blank()
     ) 
+  
+  out <- ggplotly(plo, tooltip = 'Result') %>%
+    add_bars(x = ~nms,y = ~c(1, 1, 1, 1), xaxis = "x2", inherit = F) %>%
+    layout(xaxis2 = ax)
   
   return(out)
   
@@ -264,11 +288,17 @@ lamat <- reactive({
   
   # input
   
-  out <- show_wqmatrix(epcdata, param = 'la', yrrng = c(1975, maxyr), family = fml) + 
+  plo <- show_wqmatrix(epcdata, param = 'la', yrrng = c(1975, maxyr), family = fml, txtsz = NULL) + 
     theme(
       axis.text = element_text(size = 12), 
-      text = element_text(family = fml)
+      text = element_text(family = fml),
+      axis.text.x = element_blank(), 
+      axis.ticks.x = element_blank()
     ) 
+  
+  out <- ggplotly(plo, tooltip = 'Result') %>%
+    add_bars(x = ~nms,y = ~c(1, 1, 1, 1), xaxis = "x2", inherit = F) %>%
+    layout(xaxis2 = ax)
   
   return(out)
   
@@ -364,22 +394,22 @@ Column {.tabset .tabset-fade data-width=250}
 ### ATTAINMENT MATRIX
 
 ```{r}
-output$attmat <- renderImage(img_fun(attmat(), session, 'attmat'), deleteFile = T)
-imageOutput('attmat')
+output$attmat <- renderPlotly(attmat())
+plotlyOutput('attmat')
 ```
 
 ### CHLOROPHYLL MATRIX
 
 ```{r}
-output$chlmat <- renderImage(img_fun(chlmat(), session, 'chlmat'), deleteFile = T)
-imageOutput('chlmat')
+output$chlmat <- renderPlotly(chlmat())
+plotlyOutput('chlmat')
 ```
 
 ### LIGHT ATTENUATION MATRIX
 
 ```{r}
-output$lamat <- renderImage(img_fun(lamat(), session, 'lamat'), deleteFile = T)
-imageOutput('lamat')
+output$lamat <- renderPlotly(lamat())
+plotlyOutput('lamat')
 ```
 
 Column {data-width=500}
