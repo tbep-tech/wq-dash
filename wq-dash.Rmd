@@ -275,6 +275,52 @@ lamat <- reactive({
 })
 ```
 
+OVERVIEW
+===========================================================
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### WELCOME TO THE TAMPA BAY WATER QUALITY REPORT CARD!
+
+#### Background
+
+Light availability to seagrass is the guiding paradigm for TBEP’s Nitrogen Management Strategy. Because excessive nitrogen loads to the bay generally lead to increased algae blooms (higher chlorophyll-a levels) and reduce light penetration to seagrass, an evaluation method was developed to assess whether load reduction strategies are achieving desired water quality results (i.e. reduced chlorophyll-a concentrations and increased water clarity).
+
+```{r out.width='50%', fig.align='center', fig.cap='The guiding paradigm for seagrass restoration through nitrogen management.'}
+knitr::include_graphics('www/nitro.PNG')
+```
+
+#### Decision support approach
+
+Year to year algae abundance (measured as chlorophyll-a concentrations) and visible light penetration through the water column (secchi disk depth visibility) have been identified as critical water quality indicators in Tampa Bay. Tracking the attainment of bay segment specific targets for these indicators provides the framework for developing and initiating bay management actions. TBEP management actions adopted in response to the annually-assessed decision support results are shown below.
+
+<span style="color:#33FF3B; text-shadow: 0 0 3px #333;">__Stay the Course__</span>: Continue planned projects. Report data via annual progress reports and Baywide Environmental Monitoring Report. 
+
+<span style="color:#F9FF33; text-shadow: 0 0 3px #333;">__Caution__</span>: Review monitoring data and nitrogen loading estimates. Begin/continue TAC and Management Board development of specific management recommendations.
+
+<span style="color:#FF3333; text-shadow: 0 0 3px #333;">__On Alert__</span>: Finalize development and implement appropriate management actions to get back on track.
+
+The management category or action is based on the combination of outcomes for chlorophyll and light attenuation.  For each year, major bay segments are assigned to outcome categories based on both the exceedance of the annual estimate above a threshold or target and duration of the exceedance for the years prior.  Exceedances are defined as either small or large based on the magnitude and short or long based on the duration within the previous four years.  The combination of these exceedance categories creates an outcome integer that each bay segment is assigned for both chlorophyll and light attenutation. 
+
+```{r, echo = F, fig.align='center', fig.cap = 'Outcomes for annual estimates of water quality are assigned an integer value from zero to three depending on both magnitude and duration of the exceedence.', out.width = '50%'}
+knitr::include_graphics('www/outints.PNG')
+```
+
+The chlorophyll and light attenuation outcome integers are then combined to create the management category for each bay segment.
+
+```{r, echo = F, fig.align='center', fig.cap = 'Management action categories assigned to each bay segment and year based on chlorophyll and light attenuation outcomes.', out.width = '50%'}
+knitr::include_graphics('www/matrixcats.PNG')
+```
+
+#### Using the dashboard
+
+The different tabs on the dashboard can be used to view the long-term trends in water quality for each bay segment and individual monitoring stations.  The "ANNUAL MEANS TIME SERIES PLOTS" tab show time series of chlorophyll and light attenuation averages for each bay segment.  Blue lines on each plot show management targets or thresholds that define exceedance categories used to create the management action categories.  The "TARGET ATTAINMENT" tab shows the overall report card for the bay as management action categories described above.  Separate matrices for chlrophyll and light attenuation exceedances for major bay segments are also shown.  An interactive map is provided that shows attainment outcomes by year for individual stations in the bay.  Note that the map shows site-specific attainments for bay segment targets as a reference only. 
+
+#### Site information
+
+Questions and comments about the dashboard can be directed to [Marcus Beck](mailto:mbeck@tbep.org). The page source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).
+
 ANNUAL MEANS TIME SERIES PLOTS
 ===========================================================
 
