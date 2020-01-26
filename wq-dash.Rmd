@@ -48,7 +48,8 @@ pthm <- theme(
     axis.text.x = element_text(size = 11, angle = 45, hjust = 1),
     legend.text = element_text(size = 12), 
     axis.title.y = element_text(size = 12),
-    text = element_text(fml)
+    text = element_text(fml), 
+    legend.position = 'top'
     ) 
 
 # locations
@@ -73,14 +74,9 @@ thrplototb <- reactive({
   
   # inputs
 
-  p1 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "chla", yrrng = c(1975, maxyr), family = fml) + 
-    ggtitle(NULL) +
-    pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "OTB", thr = "la", yrrng = c(1975, maxyr), family = fml) + 
-    ggtitle(NULL) + 
-    pthm
-  
-  p1 + p2 + plot_layout(ncol = 1)
+  out <- thrplotly(epcdata, 'OTB', maxyr, fml, pthm)
+
+  return(out)
   
 })
 
@@ -88,15 +84,10 @@ thrplototb <- reactive({
 thrplothb <- reactive({
   
   # inputs
-    
-  p1 <- show_thrplot(epcdata, bay_segment = "HB", thr = "chla", yrrng = c(1975, maxyr), family = fml) + 
-    ggtitle(NULL) +
-    pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "HB", thr = "la", yrrng = c(1975, maxyr), family = fml) + 
-    ggtitle(NULL) +
-    pthm
-  
-  p1 + p2 + plot_layout(ncol = 1)
+
+  out <- thrplotly(epcdata, 'HB', maxyr, fml, pthm)
+
+  return(out)
   
 })
 
@@ -105,14 +96,9 @@ thrplotmtb <- reactive({
   
   # inputs
 
-  p1 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "chla", yrrng = c(1975, maxyr), family = fml) + 
-    ggtitle(NULL) +
-    pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "MTB", thr = "la", yrrng = c(1975, maxyr), family = fml) + 
-    ggtitle(NULL) +
-    pthm
-  
-  p1 + p2 + plot_layout(ncol = 1)
+  out <- thrplotly(epcdata, 'MTB', maxyr, fml, pthm)
+
+  return(out)
   
 })
 
@@ -121,14 +107,9 @@ thrplotltb <- reactive({
   
   # inputs
   
-  p1 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "chla", yrrng = c(1975, maxyr), family = fml) + 
-    ggtitle(NULL) +
-    pthm
-  p2 <- show_thrplot(epcdata, bay_segment = "LTB", thr = "la", yrrng = c(1975, maxyr), family = fml) + 
-    ggtitle(NULL) +
-    pthm
-  
-  p1 + p2 + plot_layout(ncol = 1)
+  out <- thrplotly(epcdata, 'LTB', maxyr, fml, pthm)
+
+  return(out)
   
 })
 
@@ -360,29 +341,29 @@ Column {.tabset .tabset-fade data-width=650}
 ### OLD TAMPA BAY
 
 ```{r plot_otb, fig.height = 8, fig.width = 10}
-output$thrplototb <- renderImage(img_fun(thrplototb(), session, 'thrplototb'), deleteFile = T)
-imageOutput('thrplototb')
+output$thrplototb <- renderPlotly(thrplototb())
+plotlyOutput('thrplototb')
 ```
 
 ### HILLSBOROUGH BAY 
 
 ```{r plot_hb, fig.height = 8, fig.width = 10}
-output$thrplothb <- renderImage(img_fun(thrplothb(), session, 'thrplothb'), deleteFile = T)
-imageOutput('thrplothb')
+output$thrplothb <- renderPlotly(thrplothb())
+plotlyOutput('thrplothb')
 ```
 
 ### MIDDLE TAMPA BAY
 
 ```{r plot_mtb, fig.height = 8, fig.width = 10}
-output$thrplotmtb <- renderImage(img_fun(thrplotmtb(), session, 'thrplotmtb'), deleteFile = T)
-imageOutput('thrplotmtb')
+output$thrplotmtb <- renderPlotly(thrplotmtb())
+plotlyOutput('thrplotmtb')
 ```
 
 ### LOWER TAMPA BAY
 
 ```{r plot_ltb, fig.height = 8, fig.width = 10}
-output$thrplotltb <- renderImage(img_fun(thrplotltb(), session, 'thrplotltb'), deleteFile = T)
-imageOutput('thrplotltb')
+output$thrplotltb <- renderPlotly(thrplotltb())
+plotlyOutput('thrplotltb')
 ```
 
 TARGET ATTAINMENTS
