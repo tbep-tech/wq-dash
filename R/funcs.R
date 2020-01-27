@@ -61,3 +61,18 @@ thrplotly <- function(epcdata, bay_segment, maxyr, family, themein){
   return(out)
   
 }
+
+# plotly function for boxplots
+boxplotly <- function(epcdata, bay_segment, maxyr, family, themein){
+  
+  p1 <- show_boxplot(epcdata, bay_segment = bay_segment, yrrng = c(1975, maxyr - 1), yrsel = maxyr, family = family, labelexp = F, txtlab = F) + 
+    ggtitle(NULL) +
+    themein
+
+  out <- ggplotly(p1)
+  for(i in 1:length(out$x$data))
+    out$x$data[[i]]$name <- gsub('^\\((.*),.*,.*$', '\\1', out$x$data[[i]]$name)
+
+  return(out)
+  
+}

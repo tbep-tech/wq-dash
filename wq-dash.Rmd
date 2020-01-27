@@ -113,6 +113,50 @@ thrplotltb <- reactive({
   
 })
 
+# OTB boxplot
+boxplototb <- reactive({
+  
+  # inputs
+
+  out <- boxplotly(epcdata, 'OTB', maxyr, fml, pthm)
+
+  return(out)
+  
+})
+
+# HB boxplot
+boxplothb <- reactive({
+  
+  # inputs
+
+  out <- boxplotly(epcdata, 'HB', maxyr, fml, pthm)
+
+  return(out)
+  
+})
+
+# MTB boxplot
+boxplotmtb <- reactive({
+  
+  # inputs
+
+  out <- boxplotly(epcdata, 'MTB', maxyr, fml, pthm)
+
+  return(out)
+  
+})
+
+# LTB boxplot
+boxplotltb <- reactive({
+  
+  # inputs
+
+  out <- boxplotly(epcdata, 'LTB', maxyr, fml, pthm)
+
+  return(out)
+  
+})
+
 # data to map based on yrsel, thrsel
 mapdat <- reactive({
   
@@ -332,7 +376,7 @@ The different tabs on the dashboard can be used to view the long-term trends in 
 
 Questions and comments about the dashboard can be directed to [Marcus Beck](mailto:mbeck@tbep.org). The page source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).
 
-ANNUAL MEANS TIME SERIES PLOTS
+SEGMENT TIME SERIES PLOTS
 ===========================================================
 
 Column {.tabset .tabset-fade data-width=650}
@@ -364,6 +408,40 @@ plotlyOutput('thrplotmtb')
 ```{r plot_ltb, fig.height = 8, fig.width = 10}
 output$thrplotltb <- renderPlotly(thrplotltb())
 plotlyOutput('thrplotltb')
+```
+
+SEGMENT SEASONAL BOXPLOTS
+===========================================================
+
+Column {.tabset .tabset-fade data-width=650}
+-----------------------------------------------------------------------
+
+### OLD TAMPA BAY
+
+```{r boxplot_otb, fig.height = 8, fig.width = 10}
+output$boxplototb <- renderPlotly(boxplototb())
+plotlyOutput('boxplototb')
+```
+
+### HILLSBOROUGH BAY
+
+```{r boxplot_hb, fig.height = 8, fig.width = 10}
+output$boxplothb <- renderPlotly(boxplothb())
+plotlyOutput('boxplothb')
+```
+
+### MIDDLE TAMPA BAY
+
+```{r boxplot_mtb, fig.height = 8, fig.width = 10}
+output$boxplotmtb <- renderPlotly(boxplotmtb())
+plotlyOutput('boxplotmtb')
+```
+
+### LOWER TAMPA BAY
+
+```{r boxplot_ltb, fig.height = 8, fig.width = 10}
+output$boxplotltb <- renderPlotly(boxplotltb())
+plotlyOutput('boxplotltb')
 ```
 
 TARGET ATTAINMENTS
