@@ -171,7 +171,7 @@ mapdat <- reactive({
 
   return(toplo)
   
-  
+
 })
 
 # color palette for target met
@@ -327,6 +327,90 @@ lamat <- reactive({
   
   return(out)
   
+})
+```
+
+```{r map}
+# site selection map
+output$map <- renderLeaflet({
+  
+  # filter by year to map
+  toplo <- locs %>% 
+    st_as_sf(coords = c('Longitude', 'Latitude'), crs = prj)
+  
+  # map with custom legends
+  mapview(toplo, fill = F, homebutton = F, popup = NULL, legend = F) %>% 
+    .@map %>% 
+    clearMarkers() %>% 
+    leafem::removeMouseCoordinates() %>%
+    addCircleMarkers(
+      data = toplo, 
+      layerId = ~epchc_station,
+      stroke = TRUE,
+      color = '#00806E',
+      fill = TRUE,
+      weight = 1,
+      fillOpacity = 1
+    ) %>% 
+    addStaticLabels(
+      data = toplo,
+      label = toplo$epchc_station,
+      textOnly = T,
+      noHide = TRUE
+      )
+
+})
+
+# leaflet proxy for marker select
+map <- leafletProxy('map')
+
+# binding for marker select and year
+makeReactiveBinding('selsit')
+
+# the selection
+observeEvent(input$map_marker_click, {
+  selsit <<- input$map_marker_click$id
+})
+
+observeEvent(input$map_marker_click, {
+  
+  # station locations
+  toplo <- locs %>% 
+    st_as_sf(coords = c('Longitude', 'Latitude'), crs = prj)
+
+  # filter the pour points by selection
+  selsitplo <- toplo %>% 
+    filter(epchc_station %in% selsit)
+
+  # clear markers on input select, add all points and selected point
+  map <- map %>% 
+    clearMarkers() %>% 
+    leafem::removeMouseCoordinates() %>%
+    addCircleMarkers(
+      data = selsitplo, 
+      layerId = ~epchc_station,
+      stroke = TRUE,
+      color = 'black',
+      fill = TRUE,
+      weight = 7,
+      fillOpacity = 1
+    ) %>% 
+    addCircleMarkers(
+      data = toplo, 
+      layerId = ~epchc_station,
+      stroke = TRUE,
+      color = '#00806E',
+      fill = TRUE,
+      weight = 1,
+      fillOpacity = 1
+    ) %>% 
+    addStaticLabels(
+      data = toplo,
+      label = toplo$epchc_station,
+      textOnly = T,
+      noHide = TRUE
+    )
+
 })
 ```
 
@@ -486,3 +570,24 @@ fillCol(flex = c(NA, 1),
   leafletOutput('attmap')
 )
 ```
+
+
+SITE TIME SERIES
+===========================================================
+
+Column {.tabset .tabset-fade data-width=250}
+-----------------------------------------------------------------------
+
+### SELECT A SITE
+
+```{r mapout}
+leafletOutput('map')
+```
+
+Column {.tabset .tabset-fade data-width=500}
+-----------------------------------------------------------------------
+
+### PLOT
+
+Congrats, you selected station `r renderText(selsit)`.  You are radical. 
+
