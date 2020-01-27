@@ -460,7 +460,7 @@ The different tabs on the dashboard can be used to view the long-term trends in 
 
 Questions and comments about the dashboard can be directed to [Marcus Beck](mailto:mbeck@tbep.org). The page source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).
 
-SEGMENT TIME SERIES PLOTS
+SEGMENT TIME SERIES
 ===========================================================
 
 Column {.tabset .tabset-fade data-width=650}
