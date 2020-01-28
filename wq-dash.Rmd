@@ -261,7 +261,7 @@ attmap <- reactive({
       fillColor = ~cols,
       weight = 1,
       fillOpacity = 1,
-      radius=~rescale(val, from = scls, to = c(4, 15)),
+      radius=~rescale(val, from = scls, to = c(5, 20)),
       label = ~paste0('Station ', epchc_station, ' (target met: ', trgtmet, ', value ', round(val, 2), ', target ', target, ')')
     ) %>% 
     addLegend("bottomright", pal = palyes, title = "Target met", labels = thrsel, opacity = 1, values = yesval) %>% 
@@ -633,7 +633,7 @@ fillCol(flex = c(NA, 1),
 SITE TIME SERIES
 ===========================================================
 
-Column {.tabset .tabset-fade data-width=250}
+Column {data-width=250}
 -----------------------------------------------------------------------
 
 ### SELECT A SITE
@@ -642,7 +642,7 @@ Column {.tabset .tabset-fade data-width=250}
 leafletOutput('map')
 ```
 
-Column {.tabset .tabset-fade data-width=500}
+Column {data-width=500}
 -----------------------------------------------------------------------
 
 ### PLOT
