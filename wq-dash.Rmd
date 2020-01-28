@@ -386,7 +386,7 @@ selplo <- reactive({
     pthm
 
   # algae plot
-  p3 <- ggplot(algplo, aes(x = yrqrt, y = count, fill = name)) + 
+  p3 <- ggplot(algplo, aes(x = yrqrt, y = count, fill = name, group = yrqrt)) + 
     geom_bar(stat = 'identity', position = position_stack()) + 
     labs(
       x = NULL, 
@@ -405,6 +405,7 @@ selplo <- reactive({
   out <- subplot(p3, p1, p2, nrows = 3, shareX = T, titleY = T, which_layout = 1) %>% 
     rangeslider() %>%
     layout(
+      title = paste('Station', selsit),
       xaxis = list(
         domain = c(0.02, 1),
         rangeselector = list(
@@ -580,7 +581,37 @@ The different tabs on the dashboard can be used to view the long-term trends in 
 
 Questions and comments about the dashboard can be directed to [Marcus Beck](mailto:mbeck@tbep.org). The page source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).
 
-SEGMENT TIME SERIES
+TARGET ATTAINMENTS
+===========================================================
+
+Column {.tabset .tabset-fade data-width=250}
+-----------------------------------------------------------------------
+
+### ATTAINMENT MATRIX
+
+```{r}
+output$attmat <- renderPlotly(attmat())
+plotlyOutput('attmat')
+```
+
+### CHLOROPHYLL MATRIX
+
+```{r}
+output$chlmat <- renderPlotly(chlmat())
+plotlyOutput('chlmat')
+```
+
+### LIGHT ATTENUATION MATRIX
+
+```{r}
+output$lamat <- renderPlotly(lamat())
+plotlyOutput('lamat')
+```
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+SEGMENT ANNUAL TRENDS
 ===========================================================
 
 Column {.tabset .tabset-fade data-width=650}
@@ -614,7 +645,7 @@ output$thrplotltb <- renderPlotly(thrplotltb())
 plotlyOutput('thrplotltb')
 ```
 
-SEGMENT SEASONAL BOXPLOTS
+SEGMENT SEASONAL TRENDS
 ===========================================================
 
 Column {.tabset .tabset-fade data-width=650}
@@ -648,36 +679,6 @@ output$boxplotltb <- renderPlotly(boxplotltb())
 plotlyOutput('boxplotltb')
 ```
 
-TARGET ATTAINMENTS
-===========================================================
-
-Column {.tabset .tabset-fade data-width=250}
------------------------------------------------------------------------
-
-### ATTAINMENT MATRIX
-
-```{r}
-output$attmat <- renderPlotly(attmat())
-plotlyOutput('attmat')
-```
-
-### CHLOROPHYLL MATRIX
-
-```{r}
-output$chlmat <- renderPlotly(chlmat())
-plotlyOutput('chlmat')
-```
-
-### LIGHT ATTENUATION MATRIX
-
-```{r}
-output$lamat <- renderPlotly(lamat())
-plotlyOutput('lamat')
-```
-
-Column {data-width=500}
------------------------------------------------------------------------
-
 ### SITE ATTAINMENT BY YEAR
 
 ```{r ecphc_validate}
@@ -691,8 +692,7 @@ fillCol(flex = c(NA, 1),
 )
 ```
 
-
-SITE TIME SERIES
+SITE TRENDS
 ===========================================================
 
 Column {data-width=250}
