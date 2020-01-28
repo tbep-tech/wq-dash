@@ -611,6 +611,19 @@ plotlyOutput('lamat')
 Column {data-width=500}
 -----------------------------------------------------------------------
 
+### SITE ATTAINMENT BY YEAR
+
+```{r ecphc_validate}
+output$attmap <- renderLeaflet({attmap()})
+fillCol(flex = c(NA, 1),
+  inputPanel(
+    selectInput('yrsel', 'Select year:', choices = seq(1975, maxyr), selected = maxyr),
+    selectInput('thrsel', 'Select indicator:', choices = list('Chlorophyll-a (ug /l)' = 'chla', 'Light attenuation (m-1)' = 'la'))
+    ),
+  leafletOutput('attmap')
+)
+```
+
 SEGMENT ANNUAL TRENDS
 ===========================================================
 
@@ -677,19 +690,6 @@ plotlyOutput('boxplotmtb')
 ```{r boxplot_ltb, fig.height = 8, fig.width = 10}
 output$boxplotltb <- renderPlotly(boxplotltb())
 plotlyOutput('boxplotltb')
-```
-
-### SITE ATTAINMENT BY YEAR
-
-```{r ecphc_validate}
-output$attmap <- renderLeaflet({attmap()})
-fillCol(flex = c(NA, 1),
-  inputPanel(
-    selectInput('yrsel', 'Select year:', choices = seq(1975, maxyr), selected = maxyr),
-    selectInput('thrsel', 'Select indicator:', choices = list('Chlorophyll-a (ug /l)' = 'chla', 'Light attenuation (m-1)' = 'la'))
-    ),
-  leafletOutput('attmap')
-)
 ```
 
 SITE TRENDS
