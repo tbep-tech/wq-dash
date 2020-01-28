@@ -7,6 +7,12 @@ runtime: shiny
 css: styles.css
 ---
 
+<style>
+.rangeslider-rangeplot .overplot{
+    display:none;
+}
+</style>
+
 ```{r setup, include=F}
 knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
@@ -39,6 +45,7 @@ if(Sys.info()[1] == 'Windows')
 prj <- '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
 
 load(here::here('data', 'epcdata.RData'))
+load(here::here('data', 'algdat.RData'))
 
 maxyr <- 2019
 fml <- "Lato Light"
@@ -69,6 +76,11 @@ ax <- list(
 )
 seg <- c('OTB', 'HB', 'MTB', 'LTB') 
 nms <- factor(seg, levels = seg)
+
+# algae names and colors
+algnms <- c('Bacillariophyta', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
+cols <- pal_alg(algnms)
+names(cols) <- algnms
 ```
 
 ```{r reactives}
@@ -338,14 +350,23 @@ selplo <- reactive({
   validate(
     need(!is.null(selsit), "Select station on map")
   )
-  # req(selsit)
   
+  # data to plot
   toplo <- epcdata %>% 
     filter(epchc_station %in% selsit) %>% 
     filter(yr >= 1975) %>% 
-    select(SampleTime, sd_m, chla) 
+    select(Date = SampleTime, sd_m, chla) %>% 
+    mutate(Date = as.Date(Date))
   
-  p1 <- ggplot(toplo, aes(x = SampleTime, y = chla)) + 
+  algplo <- algdat %>% 
+    filter(epchc_station %in% selsit) %>% 
+    group_by(yrqrt, name) %>%
+    summarise(count = sum(count, na.rm = T)) %>% 
+    ungroup %>% 
+    mutate(name = factor(name, levels = algnms))
+  
+  # chl plot
+  p1 <- ggplot(toplo, aes(x = Date, y = chla)) + 
     geom_line(colour = "#427355") + 
     # scale_y_log10() + 
     labs(
@@ -354,7 +375,8 @@ selplo <- reactive({
       ) +
     pthm
   
-  p2 <- ggplot(toplo, aes(x = SampleTime, y = sd_m)) + 
+  # secchi plot
+  p2 <- ggplot(toplo, aes(x = Date, y = sd_m)) + 
     geom_line(colour = "#0047FE") + 
     labs(
       y = 'Secchi depth (m)', 
@@ -362,16 +384,56 @@ selplo <- reactive({
       title = paste0('Station ', selsit)
       ) + 
     pthm
+
+  # algae plot
+  p3 <- ggplot(algplo, aes(x = yrqrt, y = count, fill = name)) + 
+    geom_bar(stat = 'identity', position = position_stack()) + 
+    labs(
+      x = NULL, 
+      y = 'Count (0.1mL-1)'
+    ) +
+    pthm + 
+    theme(legend.title = element_blank()) + 
+    scale_fill_discrete(drop = F) +
+    scale_fill_manual(values = cols)
+  
   
   p1 <- ggplotly(p1, dynamicTicks = T)
   p2 <- ggplotly(p2, dynamicTicks = T)
-  
-  out <- subplot(p1, p2, nrows = 2, shareX = T, titleY = T) %>% 
+  p3 <- ggplotly(p3, dynamicTicks = T)
+
+  out <- subplot(p3, p1, p2, nrows = 3, shareX = T, titleY = T, which_layout = 1) %>% 
     rangeslider() %>%
     layout(
-      # hovermode = "x", 
-      xaxis = list(domain = c(0.02,1))
+      xaxis = list(
+        domain = c(0.02, 1),
+        rangeselector = list(
+          buttons = list(
+            list(step = "all"),
+            list(
+              count = 20,
+              label = "20 yr",
+              step = "year",
+              stepmode = "backward"),
+            list(
+              count = 10,
+              label = "10 yr",
+              step = "year",
+              stepmode = "backward"),
+            list(
+              count = 5,
+              label = "5 yr",
+              step = "year",
+              stepmode = "backward"),
+            list(
+              count = 1,
+              label = "1 yr",
+              step = "year",
+              stepmode = "backward")
+          )
+        )
       )
+    )
   
   return(out)
   
