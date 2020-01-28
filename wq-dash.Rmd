@@ -49,7 +49,10 @@ pthm <- theme(
     legend.text = element_text(size = 12), 
     axis.title.y = element_text(size = 12),
     text = element_text(fml), 
-    legend.position = 'top'
+    legend.position = 'top',
+    # panel.grid.minor=element_blank(),
+    # panel.grid.major=element_blank(),
+    panel.background = element_rect(fill = '#ECECEC')
     ) 
 
 # locations
@@ -328,6 +331,51 @@ lamat <- reactive({
   return(out)
   
 })
+
+# selectd site plots
+selplo <- reactive({
+  
+  validate(
+    need(!is.null(selsit), "Select station on map")
+  )
+  # req(selsit)
+  
+  toplo <- epcdata %>% 
+    filter(epchc_station %in% selsit) %>% 
+    filter(yr >= 1975) %>% 
+    select(SampleTime, sd_m, chla) 
+  
+  p1 <- ggplot(toplo, aes(x = SampleTime, y = chla)) + 
+    geom_line(colour = "#427355") + 
+    # scale_y_log10() + 
+    labs(
+      y = 'Chlorophyll-a (ug/L)', 
+      x = NULL
+      ) +
+    pthm
+  
+  p2 <- ggplot(toplo, aes(x = SampleTime, y = sd_m)) + 
+    geom_line(colour = "#0047FE") + 
+    labs(
+      y = 'Secchi depth (m)', 
+      x = NULL, 
+      title = paste0('Station ', selsit)
+      ) + 
+    pthm
+  
+  p1 <- ggplotly(p1, dynamicTicks = T)
+  p2 <- ggplotly(p2, dynamicTicks = T)
+  
+  out <- subplot(p1, p2, nrows = 2, shareX = T, titleY = T) %>% 
+    rangeslider() %>%
+    layout(
+      # hovermode = "x", 
+      xaxis = list(domain = c(0.02,1))
+      )
+  
+  return(out)
+  
+})
 ```
 
 ```{r map}
@@ -397,7 +445,7 @@ observeEvent(input$map_marker_click, {
       stroke = F,
       color = '#5C4A42',
       fill = T,
-      radius = 15,
+      radius = 20,
       fillOpacity = 0.9
     ) %>%
     addCircleMarkers(
@@ -408,7 +456,7 @@ observeEvent(input$map_marker_click, {
       color = '#00806E',
       stroke = F,
       fillOpacity = 0.9,
-      radius = 10,
+      radius = 15,
       label = ~epchc_station,
       labelOptions = labelOptions(
         textOnly = T,
@@ -599,5 +647,8 @@ Column {.tabset .tabset-fade data-width=500}
 
 ### PLOT
 
-Congrats, you selected station `r renderText(selsit)`.  You are radical. 
+```{r}
+output$selplo <- renderPlotly(selplo())
+plotlyOutput('selplo')
+```
 
