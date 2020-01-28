@@ -399,7 +399,7 @@ output$map <- renderLeaflet({
       color = '#00806E',
       stroke = F,
       fillOpacity = 0.9,
-      radius = 10,
+      radius = 15,
       label = ~epchc_station,
       labelOptions = labelOptions(
         textOnly = T,
