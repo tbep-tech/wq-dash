@@ -341,23 +341,28 @@ output$map <- renderLeaflet({
   # map with custom legends
   mapview(toplo, fill = F, homebutton = F, popup = NULL, legend = F) %>% 
     .@map %>% 
-    clearMarkers() %>% 
+    clearMarkers() %>%
     leafem::removeMouseCoordinates() %>%
     addCircleMarkers(
-      data = toplo, 
+      data = locs,
+      lng = ~Longitude, 
+      lat = ~Latitude,
       layerId = ~epchc_station,
-      stroke = TRUE,
       color = '#00806E',
-      fill = TRUE,
-      weight = 1,
-      fillOpacity = 1
-    ) %>% 
-    addStaticLabels(
-      data = toplo,
-      label = toplo$epchc_station,
-      textOnly = T,
-      noHide = TRUE
+      stroke = F,
+      fillOpacity = 0.9,
+      radius = 10,
+      label = ~epchc_station,
+      labelOptions = labelOptions(
+        textOnly = T,
+        noHide = T,
+        style = list(
+          "color" = "#FFFFFF",
+          "font-family" = fml
+          ),
+        direction = 'center'
       )
+    )
 
 })
 
@@ -387,28 +392,33 @@ observeEvent(input$map_marker_click, {
     clearMarkers() %>% 
     leafem::removeMouseCoordinates() %>%
     addCircleMarkers(
-      data = selsitplo, 
+      data = selsitplo,
       layerId = ~epchc_station,
-      stroke = TRUE,
-      color = 'black',
-      fill = TRUE,
-      weight = 7,
-      fillOpacity = 1
-    ) %>% 
+      stroke = F,
+      color = '#5C4A42',
+      fill = T,
+      radius = 15,
+      fillOpacity = 0.9
+    ) %>%
     addCircleMarkers(
-      data = toplo, 
+      data = locs,
+      lng = ~Longitude, 
+      lat = ~Latitude,
       layerId = ~epchc_station,
-      stroke = TRUE,
       color = '#00806E',
-      fill = TRUE,
-      weight = 1,
-      fillOpacity = 1
-    ) %>% 
-    addStaticLabels(
-      data = toplo,
-      label = toplo$epchc_station,
-      textOnly = T,
-      noHide = TRUE
+      stroke = F,
+      fillOpacity = 0.9,
+      radius = 10,
+      label = ~epchc_station,
+      labelOptions = labelOptions(
+        textOnly = T,
+        noHide = T,
+        style = list(
+          "color" = "#FFFFFF",
+          "font-family" = fml
+          ),
+        direction = 'center'
+      )
     )
 
 })
