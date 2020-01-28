@@ -3,6 +3,8 @@ title: "WATER QUALITY DASHBOARD"
 output: 
   flexdashboard::flex_dashboard:
      logo: www/tarponlogo.png
+     includes:
+       in_header: cssloaders_in_header.html
 runtime: shiny
 css: styles.css
 ---
@@ -31,6 +33,7 @@ library(scales)
 library(RColorBrewer)
 library(extrafont)
 library(plotly)
+library(shinycssloaders)
 
 source(here::here('R', 'funcs.R'))
 
