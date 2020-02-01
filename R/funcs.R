@@ -77,13 +77,17 @@ boxplotly <- function(epcdata, bay_segment, maxyr, family, themein){
   p2 <- show_boxplot(epcdata, param = 'la', bay_segment = bay_segment, yrrng = c(1975, maxyr - 1), yrsel = maxyr, family = family, labelexp = F, txtlab = F) + 
     ggtitle(NULL) +
     themein
-  
-  p1 <- ggplotly(p1)
-  for(i in 1:length(p1$x$data))
-    p1$x$data[[i]]$name <- gsub('^\\((.*),.*,.*$', '\\1', p1$x$data[[i]]$name)
 
+  p1 <- ggplotly(p1)
+  for(i in 1:length(p1$x$data)){
+    p1$x$data[[i]]$name <- gsub('^\\((.*),.*,.*$', '\\1', p1$x$data[[i]]$name)
+  }
+  p1$x$data[[1]]$marker = list(opacity = 0) # remove outlier
   p2 <- ggplotly(p2)
-  for(i in 1:length(p2$x$data)) p2$x$data[[i]]$showlegend <- FALSE
+  for(i in 1:length(p2$x$data)){
+    p2$x$data[[i]]$showlegend <- FALSE
+  }
+  p2$x$data[[1]]$marker = list(opacity = 0) # remove outliers
   
   out <- subplot(p1, p2, nrows = 2, shareX = T, titleY = TRUE)
   

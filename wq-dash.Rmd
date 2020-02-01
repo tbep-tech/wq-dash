@@ -133,13 +133,13 @@ thrplotltb <- reactive({
 
 # OTB boxplot
 boxplototb <- reactive({
-  
+
   # inputs
 
   out <- boxplotly(epcdata, 'OTB', maxyr, fml, pthm)
 
   return(out)
-  
+
 })
 
 # HB boxplot
@@ -667,7 +667,15 @@ Column {.tabset .tabset-fade data-width=650}
 ### OLD TAMPA BAY
 
 ```{r boxplot_otb, fig.height = 8, fig.width = 10}
-output$boxplototb <- renderPlotly(boxplototb())
+output$boxplototb <- renderPlotly({
+  out <- boxplototb()
+  out$x$source <- 'OTBclk'
+  out
+})
+output$clickevent <- renderPrint({
+  event_data("plotly_click", source = 'OTBclk')
+})
+inputPanel(verbatimTextOutput('clickevent'))
 plotlyOutput('boxplototb')
 ```
 
