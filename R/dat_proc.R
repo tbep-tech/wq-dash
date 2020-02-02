@@ -45,7 +45,9 @@ algdat <- algraw %>%
   summarise(count = sum(count, na.rm = T)) %>% 
   ungroup %>% 
   mutate(
-    yrqrt = floor_date(Date, unit = 'quarter')
+    yrqrt = floor_date(Date, unit = 'quarter'),
+    yr = year(Date), 
+    mo = month(Date, label = T)
   ) 
 
 save(algdat, file = here::here('data', 'algdat.RData'), compress = 'xz')

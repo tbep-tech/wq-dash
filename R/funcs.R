@@ -79,18 +79,99 @@ boxplotly <- function(epcdata, bay_segment, maxyr, family, themein){
     themein
 
   p1 <- ggplotly(p1)
-  for(i in 1:length(p1$x$data)){
+  for(i in 1:length(p1$x$data)){ # fix legend
     p1$x$data[[i]]$name <- gsub('^\\((.*),.*,.*$', '\\1', p1$x$data[[i]]$name)
   }
-  p1$x$data[[1]]$marker = list(opacity = 0) # remove outlier
+  
+  p1$x$data[[1]]$marker = list(opacity = 0) # remove outlier from plot
+  
+  # remove hoverinfo for boxplots and line
+  p1$x$data[[3]]$hoveron <- NULL
+  p1$x$data[[4]]$hoveron <- NULL
+  
   p2 <- ggplotly(p2)
-  for(i in 1:length(p2$x$data)){
+  for(i in 1:length(p2$x$data)){ # fix legend
     p2$x$data[[i]]$showlegend <- FALSE
   }
-  p2$x$data[[1]]$marker = list(opacity = 0) # remove outliers
+  
+  p2$x$data[[1]]$marker = list(opacity = 0) # remove outliers from plot
+  # p2$x$data[[1]]$hoverinfo <- NULL
+  
+  # remove hoverinfo for boxplots and line
+  p2$x$data[[3]]$hoveron <- NULL
+  p2$x$data[[4]]$hoveron <- NULL
   
   out <- subplot(p1, p2, nrows = 2, shareX = T, titleY = TRUE)
   
   return(out)
   
+}
+
+# find data from plotly boxplot event selection
+selfun <- function(selin, plodat){
+  
+  if(!selin$curveNumber %in% c(1, 2, 5, 6))
+    return(NULL)
+  
+  # get selection data
+  if(selin$curveNumber == 1) #top plot
+    txt <- plodat$x$data[[2]]
+  if(selin$curveNumber == 2) #top plot
+    txt <- plodat$x$data[[3]]
+  if(selin$curveNumber == 5) # bottom plot
+    txt <- plodat$x$data[[6]]
+  if(selin$curveNumber == 6) # bottom plot
+    txt <- plodat$x$data[[7]]
+  
+  moval <- round(selin$x, 0)
+  moval <- month(moval, label = T)
+  moval <- as.character(moval)
+  yval <- selin$y
+  tosel <- paste0('mo: ', moval, '<br />val:\\s*', trunc(yval * 1e3)/ 1e3)
+  txtsel <- txt$text[grepl(tosel, txt$text)]
+  yrval <- gsub('^mo.*yr:\\s+([0-9]+)<br.*$', '\\1',txtsel)
+  
+  # output
+  out <- c(moval = moval, yrval = yrval, yval = yval)
+  
+  return(out)
+  
+}
+
+# selected month/year algae plot
+algselplo <- function(clkrct, bay_segment, algdat, epcdata, algnms, cols){
+
+  # selected algae month/year plot
+  stas <- epcdata %>% 
+    filter(bay_segment %in% !!bay_segment) %>% 
+    pull(epchc_station) %>% 
+    unique
+  
+  toplo <- algdat %>% 
+    filter(epchc_station %in% stas) %>% 
+    filter(mo %in% clkrct[['moval']]) %>% 
+    filter(yr %in% clkrct[['yrval']]) %>% 
+    mutate(name = factor(name, levels = algnms)) %>% 
+    group_by(name) %>% 
+    summarise(count = sum(count, na.rm = T)) %>% 
+    spread(name, count, drop = F, fill = 0) %>% 
+    mutate(x = paste0(clkrct[c('moval', 'yrval')], collapse = ' '))
+  
+  p <-  plot_ly(toplo, x = ~ x, y= ~ other, type = 'bar', name = 'other', color = cols['other'], text = 'other') %>% 
+    add_trace(y = ~`Tripos hircus`, name = 'Tripos hircus', color = cols['Tripos hircus'], text = 'Tripos hircus') %>% 
+    add_trace(y = ~`Pyrodinium bahamense`, name = 'Pyrodinium bahamense', color = cols['Pyrodinium bahamense'], text = 'Pyrodinium bahamense') %>% 
+    add_trace(y = ~`Pseudo-nitzschia sp.`, name = 'Pseudo-nitzschia sp.', color = cols['Pseudo-nitzschia sp.'], text = 'Pseudo-nitzschia sp.') %>% 
+    add_trace(y = ~`Pseudo-nitzschia pungens`, name = 'Pseudo-nitzschia pungens', color = cols['Pseudo-nitzschia pungens'], text = 'Pseudo-nitzschia pungens') %>% 
+    add_trace(y = ~`Karenia brevis`, name = 'Karenia brevis', color = cols['Karenia brevis'], text = 'Karenia brevis') %>% 
+    add_trace(y = ~Cyanobacteria, name = 'Cyanobacteria', color = cols['Cyanobacteria'], text = 'Cyanobacteria') %>% 
+    add_trace(y = ~Bacillariophyta, name = 'Bacillariophyta', color = cols['Bacillariophyta'], text = 'Bacillariophyta') %>% 
+    layout(
+      yaxis = list(title = 'Count (0.1/ml)', zeroline = F, showgrid = F), #gridcolor = '#FFFFFF'),
+      xaxis = list(title = '', zeroline = F, showgrid = F),
+      barmode = 'stack'#, plot_bgcolor= '#ECECEC', 
+      # width = 300
+      )
+  
+  return(p)
+
 }

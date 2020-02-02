@@ -33,7 +33,8 @@ library(scales)
 library(RColorBrewer)
 library(extrafont)
 library(plotly)
-library(shinycssloaders)
+# library(shinycssloaders)
+library(lubridate)
 
 source(here::here('R', 'funcs.R'))
 
@@ -142,6 +143,33 @@ boxplototb <- reactive({
 
 })
 
+# OTB boxplot click
+otbclkrct <- reactive({
+  
+  selin <- event_data("plotly_click", source = 'otbclk')
+  boxplototb <- boxplototb()
+  
+  validate(
+    need(!is.null(selin), 'Click point from plot to view algae counts')
+  )
+  
+  out <- selfun(selin, boxplototb)
+  
+  return(out)
+  
+})
+
+# OTB algae selection
+otbalg <- reactive({
+  
+  otbclkrct <- otbclkrct()
+  
+  out <- algselplo(otbclkrct, bay_segment = 'OTB', algdat, epcdata, algnms, cols)
+  
+  return(out)
+  
+})
+
 # HB boxplot
 boxplothb <- reactive({
   
@@ -149,6 +177,33 @@ boxplothb <- reactive({
 
   out <- boxplotly(epcdata, 'HB', maxyr, fml, pthm)
 
+  return(out)
+  
+})
+
+# HB boxplot click
+hbclkrct <- reactive({
+  
+  selin <- event_data("plotly_click", source = 'hbclk')
+  boxplothb <- boxplothb()
+  
+  validate(
+    need(!is.null(selin), 'Click point from plot to view algae counts')
+  )
+
+  out <- selfun(selin, boxplothb)
+  
+  return(out)
+  
+})
+
+# HB algae selection
+hbalg <- reactive({
+  
+  hbclkrct <- hbclkrct()
+  
+  out <- algselplo(hbclkrct, bay_segment = 'HB', algdat, epcdata, algnms, cols)
+  
   return(out)
   
 })
@@ -164,6 +219,33 @@ boxplotmtb <- reactive({
   
 })
 
+# MTB boxplot click
+mtbclkrct <- reactive({
+  
+  selin <- event_data("plotly_click", source = 'mtbclk')
+  boxplotmtb <- boxplotmtb()
+  
+  validate(
+    need(!is.null(selin), 'Click point from plot to view algae counts')
+  )
+  
+  out <- selfun(selin, boxplotmtb)
+  
+  return(out)
+  
+})
+
+# MTB algae selection
+mtbalg <- reactive({
+  
+  mtbclkrct <- mtbclkrct()
+  
+  out <- algselplo(mtbclkrct, bay_segment = 'MTB', algdat, epcdata, algnms, cols)
+  
+  return(out)
+  
+})
+
 # LTB boxplot
 boxplotltb <- reactive({
   
@@ -171,6 +253,33 @@ boxplotltb <- reactive({
 
   out <- boxplotly(epcdata, 'LTB', maxyr, fml, pthm)
 
+  return(out)
+  
+})
+
+# LTB boxplot click
+ltbclkrct <- reactive({
+  
+  selin <- event_data("plotly_click", source = 'ltbclk')
+  boxplotltb <- boxplotltb()
+  
+  validate(
+    need(!is.null(selin), 'Click point from plot to view algae counts')
+  )
+    
+  out <- selfun(selin, boxplotltb)
+  
+  return(out)
+  
+})
+
+# LTB algae selection
+ltbalg <- reactive({
+  
+  ltbclkrct <- ltbclkrct()
+  
+  out <- algselplo(ltbclkrct, bay_segment = 'LTB', algdat, epcdata, algnms, cols)
+  
   return(out)
   
 })
@@ -669,35 +778,63 @@ Column {.tabset .tabset-fade data-width=650}
 ```{r boxplot_otb, fig.height = 8, fig.width = 10}
 output$boxplototb <- renderPlotly({
   out <- boxplototb()
-  out$x$source <- 'OTBclk'
+  out$x$source <- 'otbclk'
   out
 })
-output$clickevent <- renderPrint({
-  event_data("plotly_click", source = 'OTBclk')
-})
-inputPanel(verbatimTextOutput('clickevent'))
-plotlyOutput('boxplototb')
+output$otbalg <- renderPlotly(otbalg())
+
+fillRow(flex = c(1, 0.5),
+  plotlyOutput('boxplototb'),
+  plotlyOutput('otbalg')
+)
 ```
 
 ### HILLSBOROUGH BAY
 
 ```{r boxplot_hb, fig.height = 8, fig.width = 10}
-output$boxplothb <- renderPlotly(boxplothb())
-plotlyOutput('boxplothb')
+output$boxplothb <- renderPlotly({
+  out <- boxplothb()
+  out$x$source <- 'hbclk'
+  out
+})
+output$hbalg <- renderPlotly(hbalg())
+
+fillRow(flex = c(1, 0.5),
+  plotlyOutput('boxplothb'),
+  plotlyOutput('hbalg')
+)
 ```
 
 ### MIDDLE TAMPA BAY
 
 ```{r boxplot_mtb, fig.height = 8, fig.width = 10}
-output$boxplotmtb <- renderPlotly(boxplotmtb())
-plotlyOutput('boxplotmtb')
+output$boxplotmtb <- renderPlotly({
+  out <- boxplotmtb()
+  out$x$source <- 'mtbclk'
+  out
+})
+output$mtbalg <- renderPlotly(mtbalg())
+
+fillRow(flex = c(1, 0.5),
+  plotlyOutput('boxplotmtb'),
+  plotlyOutput('mtbalg')
+)
 ```
 
 ### LOWER TAMPA BAY
 
 ```{r boxplot_ltb, fig.height = 8, fig.width = 10}
-output$boxplotltb <- renderPlotly(boxplotltb())
-plotlyOutput('boxplotltb')
+output$boxplotltb <- renderPlotly({
+  out <- boxplotltb()
+  out$x$source <- 'ltbclk'
+  out
+})
+output$ltbalg <- renderPlotly(ltbalg())
+
+fillRow(flex = c(1, 0.5),
+  plotlyOutput('boxplotltb'),
+  plotlyOutput('ltbalg')
+)
 ```
 
 SITE TRENDS
