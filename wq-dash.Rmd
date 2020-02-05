@@ -4,9 +4,7 @@ output:
   flexdashboard::flex_dashboard:
      logo: www/tarponlogo.png
      social: menu
-     source_code: embed
-     includes:
-       in_header: cssloaders_in_header.html
+     source_code: "https://github.com/tbep-tech/wq-dash"
 runtime: shiny
 css: styles.css
 ---
