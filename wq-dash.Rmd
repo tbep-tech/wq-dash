@@ -3,6 +3,8 @@ title: "WATER QUALITY DASHBOARD"
 output: 
   flexdashboard::flex_dashboard:
      logo: www/tarponlogo.png
+     social: menu
+     source_code: embed
      includes:
        in_header: cssloaders_in_header.html
 runtime: shiny
@@ -651,17 +653,26 @@ Column {data-width=650}
 
 ### WELCOME TO THE TAMPA BAY WATER QUALITY REPORT CARD!
 
-#### Background
+#### Backround 
 
 Light availability to seagrass is the guiding paradigm for TBEP’s Nitrogen Management Strategy. Because excessive nitrogen loads to the bay generally lead to increased algae blooms (higher chlorophyll-a levels) and reduce light penetration to seagrass, an evaluation method was developed to assess whether load reduction strategies are achieving desired water quality results (i.e. reduced chlorophyll-a concentrations and increased water clarity).
 
-```{r out.width='30%', fig.align='center', fig.cap='The guiding paradigm for seagrass restoration through nitrogen management.'}
+```{r out.width='40%', fig.align='center', fig.cap='The guiding paradigm for seagrass restoration through nitrogen management.'}
 knitr::include_graphics('www/nitro.PNG')
 ```
 
+#### Using the dashboard
+
+The different tabs on the dashboard can be used to view the long-term trends in water quality for each bay segment and individual monitoring stations.  
+
+1) __ATTAINMENT MATRICES__: This tab shows the overall report card for the bay as management action categories described above.  Separate matrices for chlOrophyll and light attenuation exceedances (as a "large" magnitude) for major bay segments are also shown. An interactive map is provided that shows attainment outcomes by year for individual stations in the bay.  Note that the map shows site-specific attainments for bay segment targets as a reference only. 
+1) __SEGMENT ANNUAL TRENDS__: The tab shows time series of chlorophyll and light attenuation averages for each bay segment.  Blue lines on each plot show management targets or thresholds that define exceedance categories used to create the management action categories.  In between the chlorophyll and light attenation plots show the attainment matrix outcomes that are specific to each segment.  The top row in the matrix shows the attainment outcome for chlorophyll, the bottom row shows the attainment outcome for light attenuation, and the middle row shows the overall management attainment outcome that combines information from both the chloropyl and light attenuation outcomes.  
+1) __SEGMENT SEASONAL TRENDS__: The tab shows the seasonal distributions by bay segment for chlorophyll and light attenuation.  Each boxplot shows the monthly distribution of observations across all available years in the dataset.  The jittered points overlaid on the boxplots show the individual values for a specific year and the large red point shows the current year.  Each observation can be clicked to view the observed phytoplankton cell counts for the selected year/month combination. 
+1) __SITE TRENDS__: This tab shows the time series for chlorophyll and light attenuation at individual stations (as compared to segment averages in the other tabs).  Stations can be selected by clicking on the location in the map.  Pytoplankton cell counts can also be viewed as quarterly sums across the period of record.  
+
 #### Decision support approach
 
-Year to year algae abundance (measured as chlorophyll-a concentrations) and visible light penetration through the water column (secchi disk depth visibility) have been identified as critical water quality indicators in Tampa Bay. Tracking the attainment of bay segment specific targets for these indicators provides the framework for developing and initiating bay management actions. TBEP management actions adopted in response to the annually-assessed decision support results are shown below.
+The attainment outcomes shown in the various dashboard tabs are built on a rigorous technical foundation.  Year to year algae abundance (measured as chlorophyll-a concentrations) and visible light penetration through the water column (secchi disk depth visibility) have been identified as critical water quality indicators in Tampa Bay. Tracking the attainment of bay segment specific targets for these indicators provides the framework for developing and initiating bay management actions. TBEP management actions adopted in response to the annually-assessed decision support results are shown below.
 
 <span style="color:#33FF3B; text-shadow: 0 0 3px #333;">__Stay the Course__</span>: Continue planned projects. Report data via annual progress reports and Baywide Environmental Monitoring Report. 
 
@@ -671,7 +682,7 @@ Year to year algae abundance (measured as chlorophyll-a concentrations) and visi
 
 The management category or action is based on the combination of outcomes for chlorophyll and light attenuation.  For each year, major bay segments are assigned to outcome categories based on both the exceedance of the annual estimate above a threshold or target and duration of the exceedance for the years prior.  Exceedances are defined as either small or large based on the magnitude and short or long based on the duration within the previous four years.  The combination of these exceedance categories creates an outcome integer that each bay segment is assigned for both chlorophyll and light attenutation. 
 
-```{r out.width='30%', fig.align='center', fig.cap='Outcomes for annual estimates of water quality are assigned an integer value from zero to three depending on both magnitude and duration of the exceedence.'}
+```{r out.width='40%', fig.align='center', fig.cap='Outcomes for annual estimates of water quality are assigned an integer value from zero to three depending on both magnitude and duration of the exceedence.'}
 knitr::include_graphics('www/outints.png')
 ```
 
@@ -681,15 +692,11 @@ The chlorophyll and light attenuation outcome integers are then combined to crea
 knitr::include_graphics('www/matrixcats.png')
 ```
 
-#### Using the dashboard
-
-The different tabs on the dashboard can be used to view the long-term trends in water quality for each bay segment and individual monitoring stations.  The "ANNUAL MEANS TIME SERIES PLOTS" tab show time series of chlorophyll and light attenuation averages for each bay segment.  Blue lines on each plot show management targets or thresholds that define exceedance categories used to create the management action categories.  The "TARGET ATTAINMENT" tab shows the overall report card for the bay as management action categories described above.  Separate matrices for chlrophyll and light attenuation exceedances for major bay segments are also shown.  An interactive map is provided that shows attainment outcomes by year for individual stations in the bay.  Note that the map shows site-specific attainments for bay segment targets as a reference only. 
-
-#### Site information
+#### Website information
 
 Questions and comments about the dashboard can be directed to [Marcus Beck](mailto:mbeck@tbep.org). The page source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).
 
-TARGET ATTAINMENTS
+1 ATTAINMENT MATRICES
 ===========================================================
 
 Column {.tabset .tabset-fade data-width=250}
@@ -732,7 +739,7 @@ fillCol(flex = c(NA, 1),
 )
 ```
 
-SEGMENT ANNUAL TRENDS
+2 SEGMENT ANNUAL TRENDS
 ===========================================================
 
 Column {.tabset .tabset-fade data-width=650}
@@ -766,7 +773,7 @@ output$thrplotltb <- renderPlotly(thrplotltb())
 plotlyOutput('thrplotltb')
 ```
 
-SEGMENT SEASONAL TRENDS
+3 SEGMENT SEASONAL TRENDS
 ===========================================================
 
 Column {.tabset .tabset-fade data-width=650}
@@ -836,7 +843,7 @@ fillRow(flex = c(1, 0.5),
 )
 ```
 
-SITE TRENDS
+4 SITE TRENDS
 ===========================================================
 
 Column {data-width=250}
