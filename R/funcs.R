@@ -108,7 +108,7 @@ boxplotly <- function(epcdata, bay_segment, maxyr, family, themein){
 }
 
 # find data from plotly boxplot event selection
-selfun <- function(selin, plodat){
+selfun <- function(selin, plodat, algdat, epcdata, bay_segment){
 
   if(!selin$curveNumber %in% c(5, 6, 13, 14))
     return(NULL)
@@ -131,50 +131,33 @@ selfun <- function(selin, plodat){
   txtsel <- txt$text[grepl(tosel, txt$text)]
   yrval <- gsub('^mo.*yr:\\s+([0-9]+)<br.*$', '\\1',txtsel)
   
-  # output
-  out <- c(moval = moval, yrval = yrval, yval = yval)
+  # clicked parsed data
+  clkrct <- c(moval = moval, yrval = yrval, yval = yval)
+  
+  # selected algae month/year plot
+  stas <- epcdata %>% 
+    filter(bay_segment %in% !!bay_segment) %>% 
+    pull(epchc_station) %>% 
+    unique
+  
+  out <- algdat %>% 
+    filter(epchc_station %in% stas) %>% 
+    filter(mo %in% clkrct[['moval']]) %>%
+    filter(yr %in% clkrct[['yrval']])
   
   return(out)
   
 }
 
 # selected month/year algae plot
-algselplo <- function(clkrct, bay_segment, algdat, epcdata, algnms, cols){
+algselplo <- function(clkrct, algnms, cols){
 
-  # selected algae month/year plot
-  stas <- epcdata %>% 
-    filter(bay_segment %in% !!bay_segment) %>% 
-    pull(epchc_station) %>% 
-    unique
-  browser()
-  # toplo <- algdat %>% 
-  #   filter(epchc_station %in% stas) %>% 
-  #   filter(mo %in% clkrct[['moval']]) %>% 
-  #   filter(yr %in% clkrct[['yrval']]) %>% 
-  #   mutate(name = factor(name, levels = algnms)) %>% 
-  #   group_by(name) %>% 
-  #   summarise(count = sum(count, na.rm = T)) %>% 
-  #   spread(name, count, drop = F, fill = 0) %>% 
-  #   mutate(
-  #     x = paste0(clkrct[c('moval', 'yrval')], collapse = ' '),
-  #     width = 0.5
-  #     )
-
-  toplo <- algdat %>% 
-    filter(epchc_station %in% stas) %>% 
-    filter(mo %in% clkrct[['moval']]) %>%
-    filter(yr %in% clkrct[['yrval']])
-  
-  validate(
-    need(nrow(toplo) > 0, 'No phytoplankton data')
-  )
-  
-  toplo <- toplo %>% 
+  toplo <- clkrct %>% 
     mutate(name = factor(name, levels = rev(algnms))) %>% 
-    group_by(name) %>% 
+    unite('x', mo, yr, sep = ' ') %>% 
+    group_by(name, x) %>% 
     summarise(count = sum(count, na.rm = T)) %>% 
     mutate(
-      x = paste0(clkrct[c('moval', 'yrval')], collapse = ' '),
       width = 0.6, 
       color = factor(name, levels = rev(algnms), labels = rev(cols))
     )
@@ -190,21 +173,6 @@ algselplo <- function(clkrct, bay_segment, algdat, epcdata, algnms, cols){
       # width = 300, 
     ) %>% 
     config(displayModeBar = F)
-
-  # p <-  plot_ly(toplo, x = ~ x, y= ~ other, type = 'bar', name = 'other', color = cols['other'], text = 'other') %>% 
-  #   add_trace(y = ~`Tripos hircus`, name = 'Tripos hircus', color = cols['Tripos hircus'], text = 'Tripos hircus') %>% 
-  #   add_trace(y = ~`Pyrodinium bahamense`, name = 'Pyrodinium bahamense', color = cols['Pyrodinium bahamense'], text = 'Pyrodinium bahamense') %>% 
-  #   add_trace(y = ~`Pseudo-nitzschia sp.`, name = 'Pseudo-nitzschia sp.', color = cols['Pseudo-nitzschia sp.'], text = 'Pseudo-nitzschia sp.') %>% 
-  #   add_trace(y = ~`Pseudo-nitzschia pungens`, name = 'Pseudo-nitzschia pungens', color = cols['Pseudo-nitzschia pungens'], text = 'Pseudo-nitzschia pungens') %>% 
-  #   add_trace(y = ~`Karenia brevis`, name = 'Karenia brevis', color = cols['Karenia brevis'], text = 'Karenia brevis') %>% 
-  #   add_trace(y = ~Cyanobacteria, name = 'Cyanobacteria', color = cols['Cyanobacteria'], text = 'Cyanobacteria') %>% 
-  #   add_trace(y = ~Bacillariophyta, name = 'Bacillariophyta', color = cols['Bacillariophyta'], text = 'Bacillariophyta') %>% 
-  #   layout(
-  #     yaxis = list(title = 'Count (0.1/ml)', zeroline = F, showgrid = F), #gridcolor = '#FFFFFF'),
-  #     xaxis = list(title = '', zeroline = F, showgrid = F),
-  #     barmode = 'stack'#, plot_bgcolor= '#ECECEC', 
-  #     # width = 200
-  #     )
   
   return(p)
 

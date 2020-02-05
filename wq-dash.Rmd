@@ -152,7 +152,11 @@ otbclkrct <- reactive({
     need(!is.null(selin), 'Click point from plot to view algae counts')
   )
   
-  out <- selfun(selin, boxplototb)
+  out <- selfun(selin, boxplototb, algdat, epcdata, 'OTB')
+  
+  validate(
+    need(nrow(out) > 0, 'No phtyoplankton data')
+  )
   
   return(out)
   
@@ -163,7 +167,7 @@ otbalg <- reactive({
   
   otbclkrct <- otbclkrct()
   
-  out <- algselplo(otbclkrct, bay_segment = 'OTB', algdat, epcdata, algnms, cols)
+  out <- algselplo(otbclkrct, algnms, cols)
   
   return(out)
   
@@ -190,7 +194,11 @@ hbclkrct <- reactive({
     need(!is.null(selin), 'Click point from plot to view algae counts')
   )
 
-  out <- selfun(selin, boxplothb)
+  out <- selfun(selin, boxplothb, algdat, epcdata, 'HB')
+  
+  validate(
+    need(nrow(out) > 0, 'No phtyoplankton data')
+  )
   
   return(out)
   
@@ -201,7 +209,7 @@ hbalg <- reactive({
   
   hbclkrct <- hbclkrct()
   
-  out <- algselplo(hbclkrct, bay_segment = 'HB', algdat, epcdata, algnms, cols)
+  out <- algselplo(hbclkrct, algnms, cols)
   
   return(out)
   
@@ -228,7 +236,11 @@ mtbclkrct <- reactive({
     need(!is.null(selin), 'Click point from plot to view algae counts')
   )
   
-  out <- selfun(selin, boxplotmtb)
+  out <- selfun(selin, boxplotmtb, algdat, epcdata, 'MTB')
+  
+  validate(
+    need(nrow(out) > 0, 'No phtyoplankton data')
+  )
   
   return(out)
   
@@ -239,7 +251,7 @@ mtbalg <- reactive({
   
   mtbclkrct <- mtbclkrct()
   
-  out <- algselplo(mtbclkrct, bay_segment = 'MTB', algdat, epcdata, algnms, cols)
+  out <- algselplo(mtbclkrct, algnms, cols)
   
   return(out)
   
@@ -266,7 +278,11 @@ ltbclkrct <- reactive({
     need(!is.null(selin), 'Click point from plot to view algae counts')
   )
     
-  out <- selfun(selin, boxplotltb)
+  out <- selfun(selin, boxplotltb, algdat, epcdata, 'LTB')
+  
+  validate(
+    need(nrow(out) > 0, 'No phtyoplankton data')
+  )
   
   return(out)
   
@@ -277,7 +293,7 @@ ltbalg <- reactive({
   
   ltbclkrct <- ltbclkrct()
   
-  out <- algselplo(ltbclkrct, bay_segment = 'LTB', algdat, epcdata, algnms, cols)
+  out <- algselplo(ltbclkrct, algnms, cols)
   
   return(out)
   
