@@ -110,19 +110,19 @@ boxplotly <- function(epcdata, bay_segment, maxyr, family, themein){
 # find data from plotly boxplot event selection
 selfun <- function(selin, plodat, algdat, epcdata, bay_segment){
 
-  if(!selin$curveNumber %in% c(5, 6, 13, 14))
+  if(!selin$curveNumber %in% c(1, 2, 5, 6))
     return(NULL)
   
   # get selection data
-  if(selin$curveNumber == 5) #top plot
+  if(selin$curveNumber == 1) # top plot
+    txt <- plodat$x$data[[2]]
+  if(selin$curveNumber == 2) # top plot
+    txt <- plodat$x$data[[3]]
+  if(selin$curveNumber == 5) # bottom plot
     txt <- plodat$x$data[[6]]
-  if(selin$curveNumber == 6) #top plot
+  if(selin$curveNumber == 6) # bottom plot
     txt <- plodat$x$data[[7]]
-  if(selin$curveNumber == 13) # bottom plot
-    txt <- plodat$x$data[[14]]
-  if(selin$curveNumber == 14) # bottom plot
-    txt <- plodat$x$data[[15]]
-
+  
   moval <- round(selin$x, 0)
   moval <- month(moval, label = T)
   moval <- as.character(moval)
