@@ -718,6 +718,8 @@ knitr::include_graphics('www/matrixcats.png')
 
 Questions and comments about the dashboard can be directed to [Marcus Beck](mailto:mbeck@tbep.org). The page source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).  Like this app? Share it on social media using the [\#TampaBayOpenSci](https://twitter.com/hashtag/TampaBayOpenSci?src=hashtag_click) hashtag.  
 
+Citation info here: [![DOI](https://zenodo.org/badge/223773148.svg)](https://zenodo.org/badge/latestdoi/223773148)
+
 1 ATTAINMENT MATRICES
 ===========================================================
 
