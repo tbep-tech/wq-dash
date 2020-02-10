@@ -738,7 +738,7 @@ This tab shows the overall report card for the bay as management action categori
 
 <span style="color:#FF3333; text-shadow: 0 0 3px #333;">__On Alert__</span>: Finalize development and implement appropriate management actions to get back on track.
 
-Each bay segment is assigned to one of the three above categories for each year of data from 1975 to the current year.  The results can be viewed in the *ATTAINMENT MATRIX* tab. Hovering the mouse pointer over each cell shows details about the data driving the attainment outcome for a given year: 
+Each bay segment is assigned to one of the three above categories for each year of data from 1975 to the current year.  The results can be viewed in the *DECISION MATRIX* tab. Hovering the mouse pointer over each cell shows details about the data driving the attainment outcome for a given year: 
 
 <br>
 ```{r, out.width='70%', fig.align='center'}
@@ -762,7 +762,7 @@ knitr::include_graphics('www/matrixcats.png')
 ```
 <br>
 
-Additional tabs show the chlorophyll and light attenuation exceedance outcomes for each year and bay segment (*CHLOROPHYLL MATRIX*, *LIGHT ATTENUATION MATRIX*).  For example, hovering a mouse over the chlorophyll matrix will show the average concentration for the segment and year, whether the value exceeded a "large" magnitude value, and the corresponding value defining the exceedance.  In this example, Old Tampa Bay in 1980 had an average chlorophyll concentration of 13.9 ug/L, which was above the threshold of 9.3 for the bay segment. 
+Additional tabs show the chlorophyll and light attenuation exceedance outcomes for each year and bay segment (*CHLOROPHYLL RESULTS*, *LIGHT ATTENUATION RESULTS*).  For example, hovering a mouse over the chlorophyll matrix will show the average concentration for the segment and year, whether the value exceeded a "large" magnitude value, and the corresponding value defining the exceedance.  In this example, Old Tampa Bay in 1980 had an average chlorophyll concentration of 13.9 ug/L, which was above the threshold of 9.3 for the bay segment. 
 
 <br>
 ```{r, out.width='70%', fig.align='center'}
@@ -782,21 +782,21 @@ knitr::include_graphics('www/targetmapex.PNG')
 
 Results for different years and for chlorophyll or light attenuation can be chosen from the drop-down menus. 
 
-### ATTAINMENT MATRIX
+### DECISION MATRIX
 
 ```{r}
 output$attmat <- renderPlotly(attmat())
 plotlyOutput('attmat')
 ```
 
-### CHLOROPHYLL MATRIX
+### CHLOROPHYLL RESULTS
 
 ```{r}
 output$chlmat <- renderPlotly(chlmat())
 plotlyOutput('chlmat')
 ```
 
-### LIGHT ATTENUATION MATRIX
+### LIGHT ATTENUATION RESULTS
 
 ```{r}
 output$lamat <- renderPlotly(lamat())
