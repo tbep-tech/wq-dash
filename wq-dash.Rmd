@@ -34,10 +34,13 @@ library(scales)
 library(RColorBrewer)
 library(extrafont)
 library(plotly)
-# library(shinycssloaders)
 library(lubridate)
 
 source(here::here('R', 'funcs.R'))
+
+# plotly objects
+# thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat
+data(plotlys)
 
 loadfonts(device = 'pdf', quiet = T)
 if(Sys.info()[1] == 'Windows')
@@ -72,16 +75,6 @@ locs <- epcdata %>%
   select(epchc_station, Longitude, Latitude) %>% 
   unique
 
-# plotly secondary axix
-ax <- list(
-  tickfont = list(size=14),
-  overlaying = "x",
-  nticks = 4,
-  side = "top"
-)
-seg <- c('OTB', 'HB', 'MTB', 'LTB') 
-nms <- factor(seg, levels = seg)
-
 # algae names and colors
 algnms <- c('Bacillariophyta', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
 cols <- pal_alg(algnms)
@@ -89,50 +82,6 @@ names(cols) <- algnms
 ```
 
 ```{r reactives}
-# OTB threshold plot
-thrplototb <- reactive({
-  
-  # inputs
-
-  out <- thrplotly(epcdata, 'OTB', maxyr, fml, pthm)
-
-  return(out)
-  
-})
-
-# HB threshold plot
-thrplothb <- reactive({
-  
-  # inputs
-
-  out <- thrplotly(epcdata, 'HB', maxyr, fml, pthm)
-
-  return(out)
-  
-})
-
-# MTB threshold plot
-thrplotmtb <- reactive({
-  
-  # inputs
-
-  out <- thrplotly(epcdata, 'MTB', maxyr, fml, pthm)
-
-  return(out)
-  
-})
-
-# LTB threshold plot
-thrplotltb <- reactive({
-  
-  # inputs
-  
-  out <- thrplotly(epcdata, 'LTB', maxyr, fml, pthm)
-
-  return(out)
-  
-})
-
 # OTB boxplot
 boxplototb <- reactive({
 
@@ -407,69 +356,6 @@ attmap <- reactive({
     ) %>% 
     addLegend("bottomright", pal = palyes, title = "Target met", labels = thrsel, opacity = 1, values = yesval) %>% 
     addLegend("bottomright", pal = palno, title = "Target not met", labels = thrsel, opacity = 1, values = noval)
-  
-})
-
-# attainment matrix
-attmat <- reactive({
-  
-  # input
-  
-  plo <- show_matrix(epcdata, yrrng = c(1975, maxyr), family = fml, txtsz = NULL) + 
-    theme(
-      axis.text = element_text(size = 12),
-      text = element_text(family = fml),
-      axis.text.x = element_blank(), 
-      axis.ticks.x = element_blank()
-    )
-
-  out <- ggplotly(plo, tooltip = 'Action') %>%
-    add_bars(x = ~nms,y = ~c(1, 1, 1, 1), xaxis = "x2", inherit = F) %>%
-    layout(xaxis2 = ax)
-
-  return(out)
-  
-})
-
-# chl matrix
-chlmat <- reactive({
-  
-  # input
-  
-  plo <- show_wqmatrix(epcdata, param = 'chla', yrrng = c(1975, maxyr), family = fml, txtsz = NULL) + 
-    theme(
-      axis.text = element_text(size = 12), 
-      text = element_text(family = fml),
-      axis.text.x = element_blank(), 
-      axis.ticks.x = element_blank()
-    ) 
-  
-  out <- ggplotly(plo, tooltip = 'Result') %>%
-    add_bars(x = ~nms,y = ~c(1, 1, 1, 1), xaxis = "x2", inherit = F) %>%
-    layout(xaxis2 = ax)
-  
-  return(out)
-  
-})
-
-# la matrix
-lamat <- reactive({
-  
-  # input
-  
-  plo <- show_wqmatrix(epcdata, param = 'la', yrrng = c(1975, maxyr), family = fml, txtsz = NULL) + 
-    theme(
-      axis.text = element_text(size = 12), 
-      text = element_text(family = fml),
-      axis.text.x = element_blank(), 
-      axis.ticks.x = element_blank()
-    ) 
-  
-  out <- ggplotly(plo, tooltip = 'Result') %>%
-    add_bars(x = ~nms,y = ~c(1, 1, 1, 1), xaxis = "x2", inherit = F) %>%
-    layout(xaxis2 = ax)
-  
-  return(out)
   
 })
 
@@ -785,22 +671,19 @@ Results for different years and for chlorophyll or light attenuation can be chos
 ### DECISION MATRIX
 
 ```{r}
-output$attmat <- renderPlotly(attmat())
-plotlyOutput('attmat')
+attmat
 ```
 
 ### CHLOROPHYLL RESULTS
 
 ```{r}
-output$chlmat <- renderPlotly(chlmat())
-plotlyOutput('chlmat')
+chlmat
 ```
 
 ### LIGHT ATTENUATION RESULTS
 
 ```{r}
-output$lamat <- renderPlotly(lamat())
-plotlyOutput('lamat')
+lamat
 ```
 
 Column {data-width=500}
@@ -877,29 +760,25 @@ Column {.tabset .tabset-fade data-width=650}
 ### OLD TAMPA BAY
 
 ```{r plot_otb, fig.height = 8, fig.width = 10}
-output$thrplototb <- renderPlotly(thrplototb())
-plotlyOutput('thrplototb')
+thrplototb
 ```
 
 ### HILLSBOROUGH BAY 
 
 ```{r plot_hb, fig.height = 8, fig.width = 10}
-output$thrplothb <- renderPlotly(thrplothb())
-plotlyOutput('thrplothb')
+thrplothb
 ```
 
 ### MIDDLE TAMPA BAY
 
 ```{r plot_mtb, fig.height = 8, fig.width = 10}
-output$thrplotmtb <- renderPlotly(thrplotmtb())
-plotlyOutput('thrplotmtb')
+thrplotmtb
 ```
 
 ### LOWER TAMPA BAY
 
 ```{r plot_ltb, fig.height = 8, fig.width = 10}
-output$thrplotltb <- renderPlotly(thrplotltb())
-plotlyOutput('thrplotltb')
+thrplotltb
 ```
 
 3 SEGMENT SEASONAL TRENDS
@@ -1011,6 +890,12 @@ fillRow(flex = c(1, 0.25),
 Column {.tabset .tabset-fade data-width=250}
 -----------------------------------------------------------------------
 
+### MAP SELECTION
+
+```{r mapout}
+leafletOutput('map')
+```
+
 ### Using this tab
 
 This tab shows the time series for chlorophyll and light attenuation at individual stations.  Data in this tab can be useful to determine which stations may be driving segment averages that are displayed on tabs 1-3.  Similarly, data in this tab can be used to understand spatial patterns at scales smaller than individual bay segments. Begin by selecting a station on the map.  The selected station will be outlined in brown: 
@@ -1044,12 +929,6 @@ The phytoplankton data on the top plot show summed cell counts for the selected 
 knitr::include_graphics('www/stationsel4.PNG')
 ```
 <br>
-
-### MAP SELECTION
-
-```{r mapout}
-leafletOutput('map')
-```
 
 Column {data-width=500}
 -----------------------------------------------------------------------
