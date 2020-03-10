@@ -341,7 +341,7 @@ attmap <- reactive({
       fillColor = ~cols,
       weight = 1,
       fillOpacity = 1,
-      radius=~rescale(val, from = scls, to = c(5, 20)),
+      radius=~scales::rescale(val, from = scls, to = c(5, 20)),
       label = ~paste0('Station ', epchc_station, ' (target met: ', trgtmet, ', value ', round(val, 2), ', target ', target, ')')
     ) %>% 
     addLegend("bottomright", pal = palyes, title = "Target met", labels = thrsel, opacity = 1, values = yesval) %>% 
