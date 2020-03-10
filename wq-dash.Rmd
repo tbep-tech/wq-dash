@@ -22,7 +22,6 @@ tags$head(includeHTML("google-analytics.html"))
 
 # libraries
 library(flexdashboard)
-library(here)
 library(mapview)
 library(leaflet)
 library(tbeptools)
@@ -30,31 +29,22 @@ library(tbeptools)
 library(tidyverse)
 library(shiny)
 library(sf)
-library(scales)
 library(RColorBrewer)
 library(extrafont)
 library(plotly)
 library(lubridate)
 
-source(here::here('R', 'funcs.R'))
-
-# plotly objects
-# thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat
-data(plotlys)
-
 loadfonts(device = 'pdf', quiet = T)
 if(Sys.info()[1] == 'Windows')
   loadfonts(device = 'win', quiet = T)
 
-# # style file
-# styles <- readLines('https://raw.githubusercontent.com/tbep-tech/css-styling/master/styles.css')
-# writeLines(styles, 'styles.css')
+source('R/funcs.R')
+
+load('data/epcdata.RData')
+load('data/algdat.RData')
+load('data/plotlys.RData') # thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat
 
 prj <- '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
-
-load(here::here('data', 'epcdata.RData'))
-load(here::here('data', 'algdat.RData'))
-
 maxyr <- 2019
 fml <- "Lato Light"
 
