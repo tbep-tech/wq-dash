@@ -545,11 +545,16 @@ Column {data-width=650}
 
 ### WELCOME TO THE TAMPA BAY WATER QUALITY REPORT CARD!
 
+<div class = "row">
+
+<div class = "col-md-2"></div>
+<div class = "col-md-8">
+
 #### Background 
 
 Light availability to seagrass is the guiding paradigm for TBEP’s Nitrogen Management Strategy. Because excessive nitrogen loads to the bay generally lead to increased algae blooms (higher chlorophyll-a levels) and reduce light penetration to seagrass, an evaluation method was developed to assess whether load reduction strategies are achieving desired water quality results (i.e. reduced chlorophyll-a concentrations and increased water clarity).
 
-```{r out.width='35%', fig.align='center', fig.cap='The guiding paradigm for seagrass restoration through nitrogen management.'}
+```{r out.width='50%', fig.align='center', fig.cap='The guiding paradigm for seagrass restoration through nitrogen management.'}
 knitr::include_graphics('www/nitro.jpg')
 ```
 
@@ -565,7 +570,7 @@ The different tabs on the dashboard can be used to view the long-term trends in 
 The plots in this dashboard are interactive and display options can be controlled using a mouse. Most plots include a [control menu](https://help.plot.ly/zoom-pan-hover-controls/) on the top with different options for viewing the data.  For example, click the camera icon to download a png file for a plot.
 
 <br>
-```{r, fig.align='center', out.width='20%'}
+```{r, fig.align='center', out.width='30%'}
 knitr::include_graphics('www/plotcontrols.PNG')
 ```
 <br>
@@ -582,13 +587,13 @@ The attainment outcomes shown in the various dashboard tabs are built on a rigor
 
 The management category or action is based on the combination of annual outcomes for chlorophyll and light attenuation.  For each year, major bay segments are assigned to outcome categories based on both the exceedance of the annual estimate above a threshold or target and duration of the exceedance for the years prior.  Exceedances are defined as either small or large based on the magnitude and short or long based on the duration within the previous four years.  The combination of these exceedance categories creates an outcome integer that each bay segment is assigned for both chlorophyll and light attenuation. 
 
-```{r out.width='40%', fig.align='center', fig.cap='Outcomes for annual estimates of water quality are assigned an integer value from zero to three depending on both magnitude and duration of the exceedence.'}
+```{r out.width='50%', fig.align='center', fig.cap='Outcomes for annual estimates of water quality are assigned an integer value from zero to three depending on both magnitude and duration of the exceedence.'}
 knitr::include_graphics('www/outints.png')
 ```
 
 The chlorophyll and light attenuation outcome integers are then combined to create the management category for each bay segment.
 
-```{r out.width='30%', fig.align='center', fig.cap='Management action categories assigned to each bay segment and year based on chlorophyll and light attenuation outcomes.'}
+```{r out.width='40%', fig.align='center', fig.cap='Management action categories assigned to each bay segment and year based on chlorophyll and light attenuation outcomes.'}
 knitr::include_graphics('www/matrixcats.png')
 ```
 
@@ -597,6 +602,10 @@ knitr::include_graphics('www/matrixcats.png')
 Questions and comments about the dashboard can be directed to [Marcus Beck](mailto:mbeck@tbep.org). The page source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).  Like this app? Share it on social media using the [\#TampaBayOpenSci](https://twitter.com/hashtag/TampaBayOpenSci?src=hashtag_click) hashtag.  
 
 Citation info here: [![DOI](https://zenodo.org/badge/223773148.svg)](https://zenodo.org/badge/latestdoi/223773148)
+
+</div>
+<div class = "col-md-2"></div>
+</div>
 
 1 ATTAINMENT MATRICES
 ===========================================================
@@ -684,10 +693,13 @@ Column {data-width=500}
 ```{r ecphc_validate}
 output$attmap <- renderLeaflet({attmap()})
 fillCol(flex = c(NA, 1),
-  inputPanel(
-    selectInput('yrsel', 'Select year:', choices = seq(1975, maxyr), selected = maxyr),
-    selectInput('thrsel', 'Select indicator:', choices = list('Chlorophyll-a (ug /l)' = 'chla', 'Light attenuation (m-1)' = 'la'))
-    ),
+  column(12,
+         column(6,
+      sliderInput('yrsel', 'Select year:', min = 1975, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%', animate = T),
+         ),
+      column(6, 
+      selectInput('thrsel', 'Select indicator:', choices = list('Chlorophyll-a (ug /l)' = 'chla', 'Light attenuation (m-1)' = 'la'))
+    )),
   leafletOutput('attmap')
 )
 ```
