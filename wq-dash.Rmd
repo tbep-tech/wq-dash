@@ -264,7 +264,7 @@ palyes <- reactive({
   mapdat <- mapdat()
   
   dmn <- mapdat %>% 
-    filter(trgtmet == 'yes') %>% 
+    filter(met == 'yes') %>% 
     pull(val) %>% 
     range(na.rm = T)
   
@@ -283,7 +283,7 @@ palno <- reactive({
   mapdat <- mapdat()
   
   dmn <- mapdat %>% 
-    filter(trgtmet == 'no') %>% 
+    filter(met == 'no') %>% 
     pull(val) %>% 
     range(na.rm = T)
   
@@ -310,16 +310,16 @@ attmap <- reactive({
     filter(yr %in% yrsel) %>% 
     mutate(
       cols = case_when(
-        trgtmet == 'yes' ~ palyes(val),
-        trgtmet == 'no' ~ palno(val)
+        met == 'yes' ~ palyes(val),
+        met == 'no' ~ palno(val)
       )
     ) %>% 
     left_join(locs, by = 'epchc_station') %>% 
     st_as_sf(coords = c('Longitude', 'Latitude'), crs = prj)
 
   # values to feed to legend  
-  yesval <- toplo %>% filter(trgtmet == 'yes') %>% pull(val)
-  noval <- toplo %>% filter(trgtmet == 'no') %>% pull(val)
+  yesval <- toplo %>% filter(met == 'yes') %>% pull(val)
+  noval <- toplo %>% filter(met == 'no') %>% pull(val)
   
   # for point scaling, original range
   scls <- dplyr::case_when(
@@ -342,7 +342,7 @@ attmap <- reactive({
       weight = 1,
       fillOpacity = 1,
       radius=~scales::rescale(val, from = scls, to = c(5, 20)),
-      label = ~paste0('Station ', epchc_station, ' (target met: ', trgtmet, ', value ', round(val, 2), ', target ', target, ')')
+      label = ~paste0('Station ', epchc_station, ' (target met: ', met, ', value ', round(val, 2), ', target ', target, ')')
     ) %>% 
     addLegend("bottomright", pal = palyes, title = "Target met", labels = thrsel, opacity = 1, values = yesval) %>% 
     addLegend("bottomright", pal = palno, title = "Target not met", labels = thrsel, opacity = 1, values = noval)
