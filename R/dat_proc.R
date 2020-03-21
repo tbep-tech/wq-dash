@@ -111,3 +111,32 @@ thrplotltb <- thrplotly(epcdata, 'LTB', maxyr, fml, pthm)
 save(thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat, file = 'data/plotlys.RData', compress = 'xz')
 
 
+# site data for map -------------------------------------------------------
+
+# data to map
+mapdat <- tibble(thr = c('chla', 'la')) %>% 
+  crossing(epcdata) %>% 
+  group_by(thr) %>% 
+  nest %>% 
+  mutate(
+    dat = purrr::pmap(list(data, thr), function(data, thr){
+      
+      out <- data %>% 
+        anlz_avedatsite %>% 
+        anlz_attainsite(thr = thr)
+      
+      return(out)
+      
+    })
+  ) %>% 
+  select(-data) %>% 
+  unnest(dat)
+
+save(mapdat, file = 'data/mapdat.RData', compress = 'xz')
+
+# matrix data for map -----------------------------------------------------
+
+avedat <- epcdata %>% anlz_avedat %>% anlz_attain
+anlz_attain(avedat)
+
+save(avedat, file = 'data/avedat.RData', compress = 'xz')

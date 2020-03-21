@@ -42,6 +42,8 @@ source('R/funcs.R')
 
 load('data/epcdata.RData')
 load('data/algdat.RData')
+load('data/avedat.RData')
+load('data/mapdat.RData')
 load('data/plotlys.RData') # thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat
 
 prj <- '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
@@ -240,30 +242,14 @@ ltbalg <- reactive({
   
 })
 
-# data to map based on yrsel, thrsel
-mapdat <- reactive({
-  
-  # inputs
-  yrsel <- input$yrsel
-  thrsel <- input$thrsel
-  
-  # data to map
-  toplo <- epcdata %>% 
-    anlz_avedatsite %>% 
-    anlz_attainsite(thr = thrsel)
-
-  return(toplo)
-  
-
-})
-
 # color palette for target met
 palyes <- reactive({
   
-  # input
-  mapdat <- mapdat()
+  # inputs
+  thrsel <- input$thrsel
   
   dmn <- mapdat %>% 
+    filter(thr == thrsel) %>% 
     filter(met == 'yes') %>% 
     pull(val) %>% 
     range(na.rm = T)
@@ -279,10 +265,11 @@ palyes <- reactive({
 # color palette for target not met
 palno <- reactive({
   
-  # input
-  mapdat <- mapdat()
+  # inputs
+  thrsel <- input$thrsel
   
   dmn <- mapdat %>% 
+    filter(thr == thrsel) %>% 
     filter(met == 'no') %>% 
     pull(val) %>% 
     range(na.rm = T)
@@ -303,10 +290,11 @@ attmap <- reactive({
   yrsel <- input$yrsel
   palyes <- palyes()
   palno <- palno()
-  mapdat <- mapdat()
   
   # filter by year to map
   toplo <- mapdat %>% 
+    filter(thr %in% thrsel) %>% 
+    select(-thr) %>% 
     filter(yr %in% yrsel) %>% 
     mutate(
       cols = case_when(
@@ -326,7 +314,7 @@ attmap <- reactive({
     thrsel == 'chla' ~ c(0.59, 58), 
     thrsel == 'la' ~ c(0.38, 5.92)
   )
-  
+
   # map with custom legends
   mapview(toplo, fill = F, homebutton = F, popup = NULL, legend = F) %>% 
     .@map %>% 
