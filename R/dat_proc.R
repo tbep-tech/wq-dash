@@ -136,7 +136,15 @@ save(mapdat, file = 'data/mapdat.RData', compress = 'xz')
 
 # matrix data for map -----------------------------------------------------
 
-avedat <- epcdata %>% anlz_avedat %>% anlz_attain
-anlz_attain(avedat)
+avedat <- epcdata %>% 
+  anlz_avedat %>% 
+  anlz_attain %>% 
+  mutate(
+    action = case_when(
+      outcome == 'green' ~ 'Stay the Course', 
+      outcome == 'yellow' ~ 'Caution', 
+      outcome == 'red' ~ 'On Alert'
+    )
+  )
 
 save(avedat, file = 'data/avedat.RData', compress = 'xz')

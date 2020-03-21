@@ -305,6 +305,11 @@ attmap <- reactive({
     left_join(locs, by = 'epchc_station') %>% 
     st_as_sf(coords = c('Longitude', 'Latitude'), crs = prj)
 
+  # attainment data for selected year
+  attyr <- avedat %>% 
+    filter(yr %in% yrsel) %>% 
+    left_join(tbseg, ., by = 'bay_segment')
+  
   # values to feed to legend  
   yesval <- toplo %>% filter(met == 'yes') %>% pull(val)
   noval <- toplo %>% filter(met == 'no') %>% pull(val)
@@ -320,6 +325,15 @@ attmap <- reactive({
     .@map %>% 
     clearMarkers() %>% 
     leafem::removeMouseCoordinates() %>%
+    addPolygons(
+      data = attyr, 
+      stroke = T, 
+      color = 'grey', 
+      weight = 1, 
+      layerId = ~long_name, 
+      fillColor = ~outcome, 
+      label = ~paste0(bay_segment, ': ', long_name, ', Action: ', action, ' (', outcome, ')')
+    ) %>% 
     addCircleMarkers(
       data = toplo, 
       layerId = ~epchc_station,
@@ -332,8 +346,8 @@ attmap <- reactive({
       radius=~scales::rescale(val, from = scls, to = c(5, 20)),
       label = ~paste0('Station ', epchc_station, ' (target met: ', met, ', value ', round(val, 2), ', target ', target, ')')
     ) %>% 
-    addLegend("bottomright", pal = palyes, title = "Target met", labels = thrsel, opacity = 1, values = yesval) %>% 
-    addLegend("bottomright", pal = palno, title = "Target not met", labels = thrsel, opacity = 1, values = noval)
+    addLegend("bottomright", pal = palyes, title = "Station target met", labels = thrsel, opacity = 1, values = yesval) %>% 
+    addLegend("bottomright", pal = palno, title = "Station target not met", labels = thrsel, opacity = 1, values = noval)
   
 })
 
