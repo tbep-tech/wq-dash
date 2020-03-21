@@ -552,7 +552,7 @@ Column {data-width=650}
 
 #### Background 
 
-Light availability to seagrass is the guiding paradigm for TBEP’s Nitrogen Management Strategy. Because excessive nitrogen loads to the bay generally lead to increased algae blooms (higher chlorophyll-a levels) and reduce light penetration to seagrass, an evaluation method was developed to assess whether load reduction strategies are achieving desired water quality results (i.e. reduced chlorophyll-a concentrations and increased water clarity).
+Light availability to seagrass is the guiding paradigm for the Tampa Bay Estuary Program's (TBEP) Nitrogen Management Strategy. Because excessive nitrogen loads to the bay generally lead to increased algae blooms (higher chlorophyll-a levels) and reduce light penetration to seagrass, an evaluation method was developed to assess whether load reduction strategies are achieving desired water quality results (i.e. reduced chlorophyll-a concentrations and increased water clarity).
 
 ```{r out.width='50%', fig.align='center', fig.cap='The guiding paradigm for seagrass restoration through nitrogen management.'}
 knitr::include_graphics('www/nitro.jpg')
@@ -599,7 +599,7 @@ knitr::include_graphics('www/matrixcats.png')
 
 #### Website information
 
-Questions and comments about the dashboard can be directed to [Marcus Beck](mailto:mbeck@tbep.org). The page source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).  Like this app? Share it on social media using the [\#TampaBayOpenSci](https://twitter.com/hashtag/TampaBayOpenSci?src=hashtag_click) hashtag.  
+Questions and comments about the dashboard can be sent to [Marcus Beck](mailto:mbeck@tbep.org). The page source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).  All data were obtained from the Hillsborough County Environmental Protection Commission (download [here](http://www.epchc.org/i-want-to/view-gis-maps-and-data)). Like this app? Share it on social media using the [\#TampaBayOpenSci](https://twitter.com/hashtag/TampaBayOpenSci?src=hashtag_click) hashtag.  
 
 Citation info here: [![DOI](https://zenodo.org/badge/223773148.svg)](https://zenodo.org/badge/latestdoi/223773148)
 
