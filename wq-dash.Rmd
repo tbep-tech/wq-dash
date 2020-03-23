@@ -67,6 +67,16 @@ locs <- epcdata %>%
   select(epchc_station, Longitude, Latitude) %>% 
   unique
 
+# domain for map color points
+mapdmn <- mapdat %>% 
+  group_by(thr, met) %>% 
+  nest %>% 
+  mutate(
+    rng = purrr::map(data, function(x) range(x$val, na.rm = T))
+  ) %>% 
+  select(-data) %>% 
+  unnest(rng)
+  
 # algae names and colors
 algnms <- c('Bacillariophyta', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
 cols <- pal_alg(algnms)
@@ -248,11 +258,10 @@ palyes <- reactive({
   # inputs
   thrsel <- input$thrsel
   
-  dmn <- mapdat %>% 
+  dmn <- mapdmn %>% 
     filter(thr == thrsel) %>% 
     filter(met == 'yes') %>% 
-    pull(val) %>% 
-    range(na.rm = T)
+    pull(rng)
   
   colorNumeric(
     palette = brewer.pal(4, 'Greens'),
@@ -268,11 +277,10 @@ palno <- reactive({
   # inputs
   thrsel <- input$thrsel
   
-  dmn <- mapdat %>% 
+  dmn <- mapdmn %>% 
     filter(thr == thrsel) %>% 
     filter(met == 'no') %>% 
-    pull(val) %>% 
-    range(na.rm = T)
+    pull(rng)
   
   colorNumeric(
     palette = brewer.pal(4, 'Reds'),
@@ -311,8 +319,8 @@ attmap <- reactive({
     left_join(tbseg, ., by = 'bay_segment')
   
   # values to feed to legend  
-  yesval <- toplo %>% filter(met == 'yes') %>% pull(val)
-  noval <- toplo %>% filter(met == 'no') %>% pull(val)
+  yesval <- mapdmn %>% filter(thr == thrsel) %>% filter(met == 'yes') %>% pull(rng)
+  noval <- mapdmn %>% filter(thr == thrsel) %>% filter(met == 'no') %>% pull(rng)
   
   # for point scaling, original range
   scls <- dplyr::case_when(
@@ -332,6 +340,7 @@ attmap <- reactive({
       weight = 1, 
       layerId = ~long_name, 
       fillColor = ~outcome, 
+      fillOpacit = 0.5,
       label = ~paste0(bay_segment, ': ', long_name, ', Action: ', action, ' (', outcome, ')')
     ) %>% 
     addCircleMarkers(
@@ -346,8 +355,9 @@ attmap <- reactive({
       radius=~scales::rescale(val, from = scls, to = c(5, 20)),
       label = ~paste0('Station ', epchc_station, ' (target met: ', met, ', value ', round(val, 2), ', target ', target, ')')
     ) %>% 
-    addLegend("bottomright", pal = palyes, title = "Station target met", labels = thrsel, opacity = 1, values = yesval) %>% 
-    addLegend("bottomright", pal = palno, title = "Station target not met", labels = thrsel, opacity = 1, values = noval)
+    addLegend("topright", labels = c("Stay the Course", "Caution", "On Alert"), colors = c("lightgreen", "yellow", "red"), title = "Bay segment decision<br>matrix outcomes", opacity = 1) %>% 
+    addLegend("bottomright", pal = palyes, title = "Station target<br>met", labels = thrsel, opacity = 1, values = yesval) %>% 
+    addLegend("bottomright", pal = palno, title = "Station target<br> not met", labels = thrsel, opacity = 1, values = noval)
   
 })
 
@@ -662,7 +672,7 @@ A similar matrix is provided for light attenuation. It is important to note that
 Finally, an interactive map is provided on the right to demonstrate which stations were above or below water quality targets defined for each bay segment.  These targets differ from the large exceedance values in the attainment matrices, where the latter was defined as twice the standard error of the former.  The points are color-coded to show if the target was met and sized by the relative concentration or attenuation values observed in the selected year.  Hovering the mouse pointer over each station will show the following: 
 
 <br>
-```{r, out.width='70%', fig.align='center'}
+```{r, out.width='85%', fig.align='center'}
 knitr::include_graphics('www/targetmapex.PNG')
 ```
 <br>

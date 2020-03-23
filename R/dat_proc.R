@@ -144,6 +144,10 @@ avedat <- epcdata %>%
       outcome == 'green' ~ 'Stay the Course', 
       outcome == 'yellow' ~ 'Caution', 
       outcome == 'red' ~ 'On Alert'
+    ), 
+    outcome = case_when(
+      outcome == 'green' ~ 'lightgreen', 
+      T ~ outcome
     )
   )
 
