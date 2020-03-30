@@ -71,16 +71,6 @@ locs <- epcdata %>%
   select(epchc_station, Longitude, Latitude) %>% 
   unique
 
-# domain for map color points
-mapdmn <- mapdat %>% 
-  group_by(thr, met) %>% 
-  nest %>% 
-  mutate(
-    rng = purrr::map(data, function(x) range(x$val, na.rm = T))
-  ) %>% 
-  select(-data) %>% 
-  unnest(rng)
-  
 # algae names and colors
 algnms <- c('Bacillariophyta', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
 cols <- pal_alg(algnms)
@@ -265,11 +255,53 @@ ltbalg <- reactive({
   
 })
 
+# map data 
+maprct <- reactive({
+  
+  # input
+  mapref <- input$mapref
+  
+  if(mapref == 'threshold')
+    out <- mapdat %>% 
+      mutate(
+        met = ifelse(val < thresh, 'yes', 'no')
+      )
+  
+  if(mapref == 'target')
+    out <- mapdat %>% 
+      mutate(
+        met = ifelse(val < target, 'yes', 'no')
+      )
+  
+  return(out)
+  
+})
+
+# domain for map color points
+mapdmn <- reactive({
+  
+  # input
+  maprct <- maprct()
+  
+  out <- maprct %>% 
+    group_by(thr, met) %>% 
+    nest %>% 
+    mutate(
+      rng = purrr::map(data, function(x) range(x$val, na.rm = T))
+    ) %>% 
+    select(-data) %>% 
+    unnest(rng)
+  
+  return(out)
+  
+})
+
 # color palette for target met
 palyes <- reactive({
   
   # inputs
   thrsel <- input$thrsel
+  mapdmn <- mapdmn()
   
   dmn <- mapdmn %>% 
     filter(thr == thrsel) %>% 
@@ -289,6 +321,7 @@ palno <- reactive({
   
   # inputs
   thrsel <- input$thrsel
+  mapdmn <- mapdmn()
   
   dmn <- mapdmn %>% 
     filter(thr == thrsel) %>% 
@@ -309,11 +342,14 @@ attmap <- reactive({
   # inputs
   thrsel <- input$thrsel
   yrsel <- input$yrsel
+  mapref <- input$mapref
   palyes <- palyes()
   palno <- palno()
+  maprct <- maprct()
+  mapdmn <- mapdmn()
   
   # filter by year to map
-  toplo <- mapdat %>% 
+  toplo <- maprct %>% 
     filter(thr %in% thrsel) %>% 
     select(-thr) %>% 
     filter(yr %in% yrsel) %>% 
@@ -369,12 +405,12 @@ attmap <- reactive({
       label = ~paste0('Station ', epchc_station, ' (target met: ', met, ', value ', round(val, 2), ', target ', target, ')')
     ) %>% 
     addLegend("topright", labels = c("Stay the Course", "Caution", "On Alert"), colors = c("lightgreen", "yellow", "red"), title = "Bay segment decision<br>matrix outcomes", opacity = 1) %>% 
-    addLegend("bottomright", pal = palyes, title = "Station target<br>met", labels = thrsel, opacity = 1, values = yesval) %>% 
-    addLegend("bottomright", pal = palno, title = "Station target<br> not met", labels = thrsel, opacity = 1, values = noval)
+    addLegend("bottomright", pal = palyes, title = paste0("Station ", mapref, "<br>met"), labels = thrsel, opacity = 1, values = yesval) %>% 
+    addLegend("bottomright", pal = palno, title = paste0("Station ", mapref, "<br>not met"), labels = thrsel, opacity = 1, values = noval)
   
 })
 
-# selectd site plots
+# selected site plots
 selplo <- reactive({
   
   validate(
@@ -719,12 +755,16 @@ Column {data-width=500}
 output$attmap <- renderLeaflet({attmap()})
 fillCol(flex = c(NA, 1),
   column(12,
-         column(6,
+    column(6,
       sliderInput('yrsel', 'Select year:', min = 1975, max = maxyr, value = maxyr, step = 1, sep = '', width = '200%', animate = T),
-         ),
-      column(6, 
+    ),
+    column(3, 
       selectInput('thrsel', 'Select indicator:', choices = list('Chlorophyll-a (ug /l)' = 'chla', 'Light attenuation (m-1)' = 'la'))
-    )),
+    ), 
+    column(3, 
+      selectInput('mapref', 'Select map reference:', choices = list('Management target' = 'target', 'Threshold (+2 se)' = 'threshold'))   
+    )
+  ),
   leafletOutput('attmap')
 )
 ```
