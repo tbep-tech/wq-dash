@@ -2,6 +2,7 @@ library(tidyverse)
 library(readxl)
 library(lubridate)
 library(tbeptools)
+# devtools::load_all("../tbeptools")
 library(plotly)
 library(extrafont)
 library(leaflet)
@@ -76,7 +77,8 @@ plo <- show_matrix(epcdata, yrrng = c(1975, maxyr), family = fml, txtsz = NULL) 
   )
 attmat <- ggplotly(plo, tooltip = 'Action') %>%
   add_bars(x = nms,y = c(1, 1, 1, 1), xaxis = "x2", inherit = F) %>%
-  layout(xaxis2 = ax)
+  layout(xaxis2 = ax) %>% 
+  config(displayModeBar = FALSE)
 
 # chl matrix
 plo <- show_wqmatrix(epcdata, param = 'chla', yrrng = c(1975, maxyr), family = fml, txtsz = NULL) + 
@@ -88,7 +90,8 @@ plo <- show_wqmatrix(epcdata, param = 'chla', yrrng = c(1975, maxyr), family = f
   ) 
 chlmat <- ggplotly(plo, tooltip = 'Result') %>%
   add_bars(x = nms,y = c(1, 1, 1, 1), xaxis = "x2", inherit = F) %>%
-  layout(xaxis2 = ax)
+  layout(xaxis2 = ax) %>% 
+  config(displayModeBar = FALSE)
   
 # la matrix
 plo <- show_wqmatrix(epcdata, param = 'la', yrrng = c(1975, maxyr), family = fml, txtsz = NULL) + 
@@ -100,7 +103,8 @@ plo <- show_wqmatrix(epcdata, param = 'la', yrrng = c(1975, maxyr), family = fml
   ) 
 lamat <- ggplotly(plo, tooltip = 'Result') %>%
   add_bars(x = nms,y = c(1, 1, 1, 1), xaxis = "x2", inherit = F) %>%
-  layout(xaxis2 = ax)
+  layout(xaxis2 = ax) %>% 
+  config(displayModeBar = FALSE)
 
 # threshold plots
 thrplototb <- thrplotly(epcdata, 'OTB', maxyr, fml, pthm)
@@ -111,6 +115,8 @@ thrplotltb <- thrplotly(epcdata, 'LTB', maxyr, fml, pthm)
 save(thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat, file = 'data/plotlys.RData', compress = 'xz')
 
 # site data for map -------------------------------------------------------
+
+load(file = 'data/epcdata.RData')
 
 # data to map
 mapdat <- tibble(thr = c('chla', 'la')) %>% 
