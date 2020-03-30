@@ -110,7 +110,6 @@ thrplotltb <- thrplotly(epcdata, 'LTB', maxyr, fml, pthm)
 
 save(thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat, file = 'data/plotlys.RData', compress = 'xz')
 
-
 # site data for map -------------------------------------------------------
 
 # data to map

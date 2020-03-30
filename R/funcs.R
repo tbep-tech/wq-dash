@@ -36,6 +36,10 @@ thrplotly <- function(epcdata, bay_segment, maxyr, family, themein){
   p2$x$data[[3]]$showlegend <- FALSE
   p2$x$data[[4]]$showlegend <- FALSE
   
+  # remove unnecessary hover text
+  p1$x$data[[1]]$text <- gsub('colour:\\sAnnual\\sMean$', '', p1$x$data[[1]]$text)
+  p2$x$data[[1]]$text <- gsub('colour:\\sAnnual\\sMean$', '', p2$x$data[[1]]$text)
+  
   out <- subplot(p1, p3, p2, nrows = 3, heights = c(0.4, 0.2, 0.4), shareX = T, titleY = TRUE)
   
   return(out)
@@ -46,7 +50,7 @@ thrplotly <- function(epcdata, bay_segment, maxyr, family, themein){
 boxplotly <- function(epcdata, bay_segment, maxyr, yrrng, family, themein){
 
   maxyr <- as.numeric(maxyr)
-  
+
   p1 <- show_boxplot(epcdata, param = 'chla', bay_segment = bay_segment, yrrng = yrrng, yrsel = maxyr, family = family, labelexp = F, txtlab = F) + 
     ggtitle(NULL) +
     themein
@@ -77,6 +81,12 @@ boxplotly <- function(epcdata, bay_segment, maxyr, yrrng, family, themein){
   # remove hoverinfo for boxplots and line
   p2$x$data[[3]]$hoveron <- NULL
   p2$x$data[[4]]$hoveron <- NULL
+
+  # replace hover text weird label for year
+  p1$x$data[[2]]$text <- gsub('names\\(cols\\)\\[1\\].*$', '', p1$x$data[[2]]$text)
+  p1$x$data[[3]]$text <- gsub('names\\(cols\\)\\[2\\].*$', '', p1$x$data[[3]]$text)
+  p2$x$data[[2]]$text <- gsub('names\\(cols\\)\\[1\\].*$', '', p2$x$data[[2]]$text)
+  p2$x$data[[3]]$text <- gsub('names\\(cols\\)\\[2\\].*$', '', p2$x$data[[3]]$text)
   
   out <- subplot(p1, p2, nrows = 2, shareX = T, titleY = TRUE)
   

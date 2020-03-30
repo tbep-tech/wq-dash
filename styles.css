@@ -14,28 +14,23 @@
 h1 {
   font-family: 'Lato';
   font-weight: 300;
-  color: #958984;
 }
 h2 {
   font-family: 'Lato';
   font-weight: 300;
-  color: #958984;
 }
 h3 {
   font-family: 'Lato';
   font-weight: 300;
-  color: #958984;
 }
 h4 {
   font-family: 'Lato';
   font-weight: 300;
-  color: #958984;
   font-style: italic;
 }
 h5 {
   font-family: 'Lato';
   font-weight: 300;
-  color: #958984;
   font-style: italic;
 }
 
@@ -65,7 +60,6 @@ h5 {
 .sidebar {
   font-family: 'Lato';
   font-weight: 300;
-  color: #958984;
 }
 
 .section.sidebar {
@@ -85,39 +79,35 @@ h5 {
 .level3 {
   font-family: 'Lato';
   font-weight: 300;
-  color: #958984;
 }
 
 .chart-title {
   font-family: 'Lato';
   font-weight: 300;
   font-style: italic;
-  color: #958984;
+
 }
 
 .nav-tabs {
   font-family: 'Lato';
   font-weight: 300;
   font-style: italic;
-  color: #958984;
 }
 
 .control-label {
   font-family: 'Lato';
   font-weight: 300;
-  color: #958984;
 }
 
 .shiny-text-output {
   font-family: 'Lato';
   font-weight: 300;
-  color: #958984;
+
 }
 
 .material-switch {
   font-family: 'Lato';
   font-weight: 300;
-  color: #958984;
 }
 
 /* shiny slider stuff */
@@ -168,7 +158,6 @@ h5 {
 .leaflet-control { /* leaflet legends, control boxes */
   font-family: 'Lato';
   font-weight: 300;
-  color: #958984;
 }
 
 /* figure captions */
@@ -176,6 +165,5 @@ h5 {
 .caption {
   font-family: 'Lato';
   font-weight: 300;
-  color: #958984;
   font-style: italic;
 }

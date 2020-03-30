@@ -730,7 +730,7 @@ knitr::include_graphics('www/targetmapex.PNG')
 ```
 <br>
 
-Results for different years, for chlorophyll or light attenuation, and references relative to targets or thresholds can be chosen from the drop-down menus. 
+The legends on the bottom-right of the map show the range of values for either chlorophyll (ug/L) or light attenuation (m-1) for stations where targets or thresholds were met or not met.  The color ramps can overlap because each segment has different targets or thresholds. Results for different years, for chlorophyll or light attenuation, and references relative to targets or thresholds can be chosen from the drop-down menus. 
 
 ### DECISION MATRIX
 
