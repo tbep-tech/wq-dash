@@ -76,6 +76,10 @@ h5 {
   height: calc(100vh - 60px) !important;
 } 
 
+#map { /* this sets map height dynamically if in sidebar */
+  height: calc(100vh - 60px) !important;
+} 
+
 /* sub sections */
 
 .level3 {
@@ -99,6 +103,18 @@ h5 {
 }
 
 .control-label {
+  font-family: 'Lato';
+  font-weight: 300;
+  color: #958984;
+}
+
+.shiny-text-output {
+  font-family: 'Lato';
+  font-weight: 300;
+  color: #958984;
+}
+
+.material-switch {
   font-family: 'Lato';
   font-weight: 300;
   color: #958984;
