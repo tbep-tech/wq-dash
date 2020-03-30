@@ -13,24 +13,24 @@
 
 h1 {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
 }
 h2 {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
 }
 h3 {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
 }
 h4 {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
   font-style: italic;
 }
 h5 {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
   font-style: italic;
 }
 
@@ -40,7 +40,7 @@ h5 {
   background-color:#00806E;
   border-color: black;
   font-family: 'Lato'; /* main tab fonts */
-  font-weight: 300;
+  font-weight: 500;
 }
 
 .navbar-brand { /* dashboard title */
@@ -59,7 +59,7 @@ h5 {
 
 .sidebar {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
 }
 
 .section.sidebar {
@@ -78,36 +78,36 @@ h5 {
 
 .level3 {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
 }
 
 .chart-title {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
   font-style: italic;
 
 }
 
 .nav-tabs {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
   font-style: italic;
 }
 
 .control-label {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
 }
 
 .shiny-text-output {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
 
 }
 
 .material-switch {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
 }
 
 /* shiny slider stuff */
@@ -157,13 +157,13 @@ h5 {
 
 .leaflet-control { /* leaflet legends, control boxes */
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
 }
 
 /* figure captions */
 
 .caption {
   font-family: 'Lato';
-  font-weight: 300;
+  font-weight: 500;
   font-style: italic;
 }

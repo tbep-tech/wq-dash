@@ -409,9 +409,9 @@ attmap <- reactive({
       label = ~paste0('Station ', epchc_station, ' (', mapref, ' met: ', met, ', value ', round(val, 2), ', ', mapref, ' ', ptlab, ')')
     ) %>% 
     addLegend("topright", labels = c("Stay the Course", "Caution", "On Alert"), colors = c("lightgreen", "yellow", "red"), title = "Bay segment decision<br>matrix outcomes", opacity = 1) %>% 
-    addLegend("bottomright", pal = palyes, title = paste0("Station ", mapref, "<br>met"), labels = thrsel, opacity = 1, values = yesval) %>% 
-    addLegend("bottomright", pal = palno, title = paste0("Station ", mapref, "<br>not met"), labels = thrsel, opacity = 1, values = noval)
-  
+    addLegend("bottomright", pal = palno, title = paste0("Station ", mapref, "<br>not met"), labels = thrsel, opacity = 1, values = noval) %>% 
+    addLegend("bottomright", pal = palyes, title = paste0("Station ", mapref, "<br>met"), labels = thrsel, opacity = 1, values = yesval)
+
 })
 
 # selected site plots
