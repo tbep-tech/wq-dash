@@ -357,12 +357,16 @@ attmap <- reactive({
       cols = case_when(
         met == 'yes' ~ palyes(val),
         met == 'no' ~ palno(val)
+      ), 
+      ptlab = case_when(
+        mapref == 'threshold' ~ thresh, 
+        mapref == 'target' ~ target
       )
     ) %>% 
     left_join(locs, by = 'epchc_station') %>% 
     st_as_sf(coords = c('Longitude', 'Latitude'), crs = prj)
 
-  # attainment data for selected year
+  # polygon attainment data for selected year
   attyr <- avedat %>% 
     filter(yr %in% yrsel) %>% 
     left_join(tbseg, ., by = 'bay_segment')
@@ -376,7 +380,7 @@ attmap <- reactive({
     thrsel == 'chla' ~ c(0.59, 58), 
     thrsel == 'la' ~ c(0.38, 5.92)
   )
-
+  
   # map with custom legends
   mapview(toplo, fill = F, homebutton = F, popup = NULL, legend = F) %>% 
     .@map %>% 
@@ -402,7 +406,7 @@ attmap <- reactive({
       weight = 1,
       fillOpacity = 1,
       radius=~scales::rescale(val, from = scls, to = c(5, 20)),
-      label = ~paste0('Station ', epchc_station, ' (target met: ', met, ', value ', round(val, 2), ', target ', target, ')')
+      label = ~paste0('Station ', epchc_station, ' (', mapref, ' met: ', met, ', value ', round(val, 2), ', ', mapref, ' ', ptlab, ')')
     ) %>% 
     addLegend("topright", labels = c("Stay the Course", "Caution", "On Alert"), colors = c("lightgreen", "yellow", "red"), title = "Bay segment decision<br>matrix outcomes", opacity = 1) %>% 
     addLegend("bottomright", pal = palyes, title = paste0("Station ", mapref, "<br>met"), labels = thrsel, opacity = 1, values = yesval) %>% 
@@ -718,7 +722,7 @@ knitr::include_graphics('www/chlattainex.PNG')
 
 A similar matrix is provided for light attenuation. It is important to note that in both the chlorophyll and light attenuation matrices, the reference values represent a large exceedance value defined as twice the standard error of the historic average for years when water quality conditions were favorable for seagrass growth. 
 
-Finally, an interactive map is provided on the right to demonstrate which stations were above or below water quality targets defined for each bay segment.  These targets differ from the large exceedance values in the attainment matrices, where the latter was defined as twice the standard error of the former.  The points are color-coded to show if the target was met and sized by the relative concentration or attenuation values observed in the selected year.  Hovering the mouse pointer over each station will show the following: 
+Finally, an interactive map is provided on the right to demonstrate which stations were above or below water quality targets or thresholds defined for each bay segment.  The points are color-coded to show if the target or threshold was met and sized by the relative concentration or attenuation values observed in the selected year.  Hovering the mouse pointer over each station will show the following: 
 
 <br>
 ```{r, out.width='85%', fig.align='center'}
@@ -726,7 +730,7 @@ knitr::include_graphics('www/targetmapex.PNG')
 ```
 <br>
 
-Results for different years and for chlorophyll or light attenuation can be chosen from the drop-down menus. 
+Results for different years, for chlorophyll or light attenuation, and references relative to targets or thresholds can be chosen from the drop-down menus. 
 
 ### DECISION MATRIX
 

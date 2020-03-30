@@ -131,7 +131,8 @@ mapdat <- tibble(thr = c('chla', 'la')) %>%
   ) %>% 
   select(-data) %>% 
   unnest(dat) %>% 
-  select(-met)
+  select(-met) %>% 
+  ungroup()
 
 save(mapdat, file = 'data/mapdat.RData', compress = 'xz')
 
