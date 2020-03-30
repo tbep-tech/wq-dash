@@ -88,8 +88,10 @@ names(cols) <- algnms
 boxplototb <- reactive({
 
   # inputs
-
-  out <- boxplotly(epcdata, 'OTB', maxyr, fml, pthm)
+  yrsselseas <- input$yrsselseas
+  yrselseas <- input$yrselseas
+  
+  out <- boxplotly(epcdata, 'OTB', yrselseas, yrsselseas, fml, pthm)
 
   return(out)
 
@@ -98,15 +100,16 @@ boxplototb <- reactive({
 # OTB boxplot click
 otbclkrct <- reactive({
   
-  selin <- event_data("plotly_click", source = 'otbclk')
-  boxplototb <- boxplototb()
+  selin <- event_data("plotly_click", source = 'otbclk', priority = 'event')
   
+  boxplototb <- boxplototb()
+
   validate(
     need(!is.null(selin), 'Click point from plot to view algae counts')
   )
-  
-  out <- selfun(selin, boxplototb, algdat, epcdata, 'OTB')
-  
+
+  out <- try({selfun(selin, boxplototb, algdat, epcdata, 'OTB')}, silent = TRUE)
+
   validate(
     need(nrow(out) > 0, 'No phytoplankton data')
   )
@@ -121,7 +124,7 @@ otbalg <- reactive({
   otbclkrct <- otbclkrct()
   
   out <- algselplo(otbclkrct, algnms, cols)
-  
+
   return(out)
   
 })
@@ -130,8 +133,10 @@ otbalg <- reactive({
 boxplothb <- reactive({
   
   # inputs
-
-  out <- boxplotly(epcdata, 'HB', maxyr, fml, pthm)
+  yrsselseas <- input$yrsselseas
+  yrselseas <- input$yrselseas
+  
+  out <- boxplotly(epcdata, 'HB', yrselseas, yrsselseas, fml, pthm)
 
   return(out)
   
@@ -172,9 +177,11 @@ hbalg <- reactive({
 boxplotmtb <- reactive({
   
   # inputs
-
-  out <- boxplotly(epcdata, 'MTB', maxyr, fml, pthm)
-
+  yrsselseas <- input$yrsselseas
+  yrselseas <- input$yrselseas
+  
+  out <- boxplotly(epcdata, 'MTB', yrselseas, yrsselseas, fml, pthm)
+  
   return(out)
   
 })
@@ -214,8 +221,10 @@ mtbalg <- reactive({
 boxplotltb <- reactive({
   
   # inputs
-
-  out <- boxplotly(epcdata, 'LTB', maxyr, fml, pthm)
+  yrsselseas <- input$yrsselseas
+  yrselseas <- input$yrselseas
+  
+  out <- boxplotly(epcdata, 'LTB', yrselseas, yrsselseas, fml, pthm)
 
   return(out)
   
@@ -811,7 +820,7 @@ knitr::include_graphics('www/boxplotex.png')
 ```
 <br>
 
-Conceptually, boxplots show different values along the distribution range for a collection of observations (e.g., all January chlorophyll observations in Old Tampa Bay across all years).  The horizontal line is the median and box is bounded by the first and third quartiles (i.e., the 25th and 75th percentiles defining the interquartile range) for the data.  The whiskers extend beyond the boxes to describe the minimum and maximum values in the data, defined as 1.5 x the interquartile range.  Outliers are present above or below the whiskers.  
+Conceptually, boxplots show different values along the distribution range for a collection of observations (e.g., all January chlorophyll observations in Old Tampa Bay across all years).  The horizontal line is the median and the box is bounded by the first and third quartiles (i.e., the 25th and 75th percentiles defining the interquartile range) for the data.  The whiskers extend beyond the boxes to describe the minimum and maximum values in the data, defined as 1.5 x the interquartile range.  Outliers are present above or below the whiskers.  
 
 The jittered points overlaid on the boxplots show the individual monthly values for a specific year (i.e., the values that define the dimensions of the boxplot) and the large red point shows the current year.  Hovering the mouse pointer over a point shows the year, month, and chlorophyll/light attenuation value for the point. The below example shows the popup text displayed for Old Tampa Bay after hovering over a point in the light attenuation plot on the bottom. The outlier value in July was observed in 1979.   
 
@@ -833,6 +842,17 @@ knitr::include_graphics('www/otbexphytocount.PNG')
 
 Column {.tabset .tabset-fade data-width=650}
 -----------------------------------------------------------------------
+<br>
+```{r}
+mainPanel(
+  column(6,
+    sliderInput('yrsselseas', 'Select year range:', min = 1975, max = maxyr, value = c(1975, maxyr), step = 1, sep = '', width = '400%')
+  ),
+  column(6,
+    selectInput('yrselseas', 'Select focal year:', selected = maxyr, choices = seq(1975, maxyr))
+  )
+)
+```
 
 ### OLD TAMPA BAY
 

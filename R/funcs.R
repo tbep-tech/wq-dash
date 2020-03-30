@@ -43,13 +43,15 @@ thrplotly <- function(epcdata, bay_segment, maxyr, family, themein){
 }
 
 # plotly function for boxplots
-boxplotly <- function(epcdata, bay_segment, maxyr, family, themein){
+boxplotly <- function(epcdata, bay_segment, maxyr, yrrng, family, themein){
+
+  maxyr <- as.numeric(maxyr)
   
-  p1 <- show_boxplot(epcdata, param = 'chla', bay_segment = bay_segment, yrrng = c(1975, maxyr - 1), yrsel = maxyr, family = family, labelexp = F, txtlab = F) + 
+  p1 <- show_boxplot(epcdata, param = 'chla', bay_segment = bay_segment, yrrng = yrrng, yrsel = maxyr, family = family, labelexp = F, txtlab = F) + 
     ggtitle(NULL) +
     themein
 
-  p2 <- show_boxplot(epcdata, param = 'la', bay_segment = bay_segment, yrrng = c(1975, maxyr - 1), yrsel = maxyr, family = family, labelexp = F, txtlab = F) + 
+  p2 <- show_boxplot(epcdata, param = 'la', bay_segment = bay_segment, yrrng = yrrng, yrsel = maxyr, family = family, labelexp = F, txtlab = F) + 
     ggtitle(NULL) +
     themein
 
@@ -97,13 +99,14 @@ selfun <- function(selin, plodat, algdat, epcdata, bay_segment){
     txt <- plodat$x$data[[6]]
   if(selin$curveNumber == 6) # bottom plot
     txt <- plodat$x$data[[7]]
-  
+
   moval <- round(selin$x, 0)
   moval <- month(moval, label = T)
   moval <- as.character(moval)
   yval <- selin$y
-  tosel <- paste0('mo: ', moval, '<br />val:\\s*', trunc(yval * 1e3)/ 1e3)
-  txtsel <- txt$text[grepl(tosel, txt$text)]
+  # tosel <- paste0('mo: ', moval, '<br />val:\\s*', trunc(yval * 1e3)/ 1e3)
+  # txtsel <- txt$text[grepl(tosel, txt$text)]
+  txtsel <- txt$text[which.min(abs(txt$y - yval))]
   yrval <- gsub('^mo.*yr:\\s+([0-9]+)<br.*$', '\\1',txtsel)
   
   # clicked parsed data
