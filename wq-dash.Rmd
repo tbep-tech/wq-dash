@@ -439,6 +439,7 @@ selplo <- reactive({
   # chl plot
   p1 <- ggplot(toplo, aes(x = Date, y = chla)) + 
     geom_line(colour = "#427355") + 
+    geom_point(colour = "#423755", size = 0.5) +
     # scale_y_log10() + 
     labs(
       y = 'Chlorophyll-a (ug/L)', 
@@ -449,6 +450,7 @@ selplo <- reactive({
   # secchi plot
   p2 <- ggplot(toplo, aes(x = Date, y = sd_m)) + 
     geom_line(colour = "#0047FE") + 
+    geom_point(size = 0.5, colour = "#0047FE") + 
     labs(
       y = 'Secchi depth (m)', 
       x = NULL, 
