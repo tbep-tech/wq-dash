@@ -12,7 +12,6 @@ css: styles.css
 <style>
 .rangeslider-rangeplot .overplot{
     display:none;
-}
 </style>
 
 ```{r setup, include=F}
@@ -439,7 +438,7 @@ selplo <- reactive({
   # chl plot
   p1 <- ggplot(toplo, aes(x = Date, y = chla)) + 
     geom_line(colour = "#427355") + 
-    geom_point(colour = "#423755", size = 0.5) +
+    geom_point(colour = "#427355", size = 0.5) +
     # scale_y_log10() + 
     labs(
       y = 'Chlorophyll-a (ug/L)', 
@@ -458,21 +457,20 @@ selplo <- reactive({
       ) + 
     pthm
 
-  
   p1 <- ggplotly(p1, dynamicTicks = T)
   p2 <- ggplotly(p2, dynamicTicks = T)
-  p3 <-  plot_ly(algplo, x = ~ yrqrt, y= ~ other, type = 'bar', name = 'other', color = cols['other'], text = ~paste0('other, ', yrqrt)) %>% 
-    add_trace(y = ~`Tripos hircus`, name = 'Tripos hircus', color = cols['Tripos hircus'], text = ~paste0('Tripos hircus, ', yrqrt)) %>% 
-    add_trace(y = ~`Pyrodinium bahamense`, name = 'Pyrodinium bahamense', color = cols['Pyrodinium bahamense'], text = ~paste0('Pyrodinium bahamense, ', yrqrt)) %>% 
-    add_trace(y = ~`Pseudo-nitzschia sp.`, name = 'Pseudo-nitzschia sp.', color = cols['Pseudo-nitzschia sp.'], text = ~paste0('Pseudo-nitzschia sp., ', yrqrt)) %>% 
-    add_trace(y = ~`Pseudo-nitzschia pungens`, name = 'Pseudo-nitzschia pungens', color = cols['Pseudo-nitzschia pungens'], text = ~paste0('Pseudo-nitzschia pungens, ', yrqrt)) %>% 
-    add_trace(y = ~`Karenia brevis`, name = 'Karenia brevis', color = cols['Karenia brevis'], text = ~paste0('Karenia brevis, ', yrqrt)) %>% 
-    add_trace(y = ~Cyanobacteria, name = 'Cyanobacteria', color = cols['Cyanobacteria'], text = ~paste0('Cyanobacteria, ', yrqrt)) %>% 
-    add_trace(y = ~Bacillariophyta, name = 'Bacillariophyta', color = cols['Bacillariophyta'], text = ~paste0('Bacillariophyta, ', yrqrt)) %>% 
+  p3 <-  plot_ly(algplo, x = ~ yrqrt, y= ~ other, type = 'bar', name = 'other', color = cols['other'], text = ~paste0('other, ', yrqrt), hoverinfo = 'text') %>% 
+    add_trace(y = ~`Tripos hircus`, name = 'Tripos hircus', color = cols['Tripos hircus'], text = ~paste0('Tripos hircus, ', yrqrt), hoverinfo = 'text') %>% 
+    add_trace(y = ~`Pyrodinium bahamense`, name = 'Pyrodinium bahamense', color = cols['Pyrodinium bahamense'], text = ~paste0('Pyrodinium bahamense, ', yrqrt), hoverinfo = 'text') %>% 
+    add_trace(y = ~`Pseudo-nitzschia sp.`, name = 'Pseudo-nitzschia sp.', color = cols['Pseudo-nitzschia sp.'], text = ~paste0('Pseudo-nitzschia sp., ', yrqrt), hoverinfo = 'text') %>% 
+    add_trace(y = ~`Pseudo-nitzschia pungens`, name = 'Pseudo-nitzschia pungens', color = cols['Pseudo-nitzschia pungens'], text = ~paste0('Pseudo-nitzschia pungens, ', yrqrt), hoverinfo = 'text') %>% 
+    add_trace(y = ~`Karenia brevis`, name = 'Karenia brevis', color = cols['Karenia brevis'], text = ~paste0('Karenia brevis, ', yrqrt), hoverinfo = 'text') %>% 
+    add_trace(y = ~Cyanobacteria, name = 'Cyanobacteria', color = cols['Cyanobacteria'], text = ~paste0('Cyanobacteria, ', yrqrt), hoverinfo = 'text') %>% 
+    add_trace(y = ~Bacillariophyta, name = 'Bacillariophyta', color = cols['Bacillariophyta'], text = ~paste0('Bacillariophyta, ', yrqrt), hoverinfo = 'text') %>% 
     layout(yaxis = list(title = 'Count (0.1/ml)', gridcolor = '#FFFFFF'), barmode = 'stack', plot_bgcolor= '#ECECEC')
 
   out <- subplot(p3, p1, p2, nrows = 3, shareX = T, titleY = T, which_layout = 1) %>% 
-    rangeslider() %>%
+    rangeslider(thickness = 0.02) %>%
     layout(
       title = paste('Station', selsit),
       xaxis = list(
