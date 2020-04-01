@@ -39,21 +39,28 @@ seg <- c('OTB', 'HB', 'MTB', 'LTB')
 nms <- factor(seg, levels = seg)
 
 # import and save epcdata -------------------------------------------------
-# 
-# # # local file path
-# # xlsx <- here('data-raw', '2018_Results_Updated.xls')
-# # 
-# # # import data
-# # epcdata <- read_importwq(xlsx, download_latest_epchc = F)
-# 
+
+# local file path
+xlsx <- 'C:/Users/Marcus/Desktop/epcdata.xls'
+
+# import data
+epcdata <- read_importwq(xlsx, download_latest_epchc = T) %>%
+  filter(yr <= 2019) %>% 
+  mutate(
+    sd_q = case_when(
+      is.na(sd_q) ~ T, 
+      !is.na(sd_q) ~ F
+    )
+  )
+
 # # local file path
 # xlsx <- 'T:/03_BOARDS_COMMITTEES/05_TBNMC/BAY_TARGETS/2019_update/data-raw/epchc.xlsx'
 # 
 # # import and download if new
 # epcdata <- read_importwq(xlsx, download_latest_epchc = F, tryurl = T, connecttimeout = 20)
 # 
-# save(epcdata, file = 'data/epcdata.RData', compress = 'xz')
-# 
+save(epcdata, file = 'data/epcdata.RData', compress = 'xz')
+
 # # algae data --------------------------------------------------------------
 # 
 # # file path

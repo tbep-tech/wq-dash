@@ -1,5 +1,5 @@
 ---
-title: "WATER QUALITY DASHBOARD"
+title: "TAMPA BAY WATER QUALITY DASHBOARD"
 output: 
   flexdashboard::flex_dashboard:
      logo: www/tarponlogo.png
@@ -418,7 +418,7 @@ selplo <- reactive({
   toplo <- epcdata %>% 
     filter(epchc_station %in% selsit) %>% 
     filter(yr >= 1975) %>% 
-    select(Date = SampleTime, sd_m, chla) %>% 
+    select(Date = SampleTime, sd_raw_m, sd_q, chla) %>% 
     mutate(Date = as.Date(Date))
   
   algplo <- algdat %>% 
@@ -426,47 +426,61 @@ selplo <- reactive({
     group_by(yrqrt, name) %>%
     summarise(count = sum(count, na.rm = T)) %>% 
     ungroup %>% 
-    mutate(name = factor(name, levels = algnms)) %>% 
-    spread(name, count, fill = 0, drop = F)
-  
+    mutate(
+      name = factor(name, levels = algnms, labels = algnms)
+      )
+
   # chl plot
   p1 <- ggplot(toplo, aes(x = Date, y = chla)) + 
-    geom_line(colour = "#427355") + 
-    geom_point(colour = "#427355", size = 0.5) +
+    geom_line(aes(colour = 'Chlorophyll-a')) + 
+    scale_colour_manual(values = "#427355") + 
+    # geom_point(colour = "#427355", size = 0.5) +
     # scale_y_log10() + 
     labs(
-      y = 'Chlorophyll-a (ug/L)', 
+      y = 'Concentration (ug/L)', 
       x = NULL
       ) +
-    pthm
+    pthm + 
+    theme(
+      legend.title = element_blank()
+    )
   
   # secchi plot
-  p2 <- ggplot(toplo, aes(x = Date, y = sd_m)) + 
-    geom_line(colour = "#0047FE") + 
-    geom_point(size = 0.5, colour = "#0047FE") + 
+  p2 <- ggplot() + 
+    geom_line(data = toplo, aes(x = Date, y = sd_raw_m, colour = 'Secchi depth')) + 
     labs(
-      y = 'Secchi depth (m)', 
+      y = 'Depth (m)', 
       x = NULL, 
       title = paste0('Station ', selsit)
       ) + 
-    pthm
+    scale_colour_manual(values = "#0047FE") +
+    pthm +
+    theme(
+      legend.title = element_blank()
+    )
+  
+  if(any(!toplo$sd_q))
+    p2 <- p2 +
+      geom_point(data = toplo[!toplo$sd_q, ], aes(x = Date, y = sd_raw_m, colour = 'Secchi on bottom'), size = 1.5) +
+      scale_colour_manual(values = c('#0047FE', 'tomato1'))
 
   p1 <- ggplotly(p1, dynamicTicks = T)
   p2 <- ggplotly(p2, dynamicTicks = T)
-  p3 <-  plot_ly(algplo, x = ~ yrqrt, y= ~ other, type = 'bar', name = 'other', color = cols['other'], text = ~paste0('other, ', yrqrt), hoverinfo = 'text') %>% 
-    add_trace(y = ~`Tripos hircus`, name = 'Tripos hircus', color = cols['Tripos hircus'], text = ~paste0('Tripos hircus, ', yrqrt), hoverinfo = 'text') %>% 
-    add_trace(y = ~`Pyrodinium bahamense`, name = 'Pyrodinium bahamense', color = cols['Pyrodinium bahamense'], text = ~paste0('Pyrodinium bahamense, ', yrqrt), hoverinfo = 'text') %>% 
-    add_trace(y = ~`Pseudo-nitzschia sp.`, name = 'Pseudo-nitzschia sp.', color = cols['Pseudo-nitzschia sp.'], text = ~paste0('Pseudo-nitzschia sp., ', yrqrt), hoverinfo = 'text') %>% 
-    add_trace(y = ~`Pseudo-nitzschia pungens`, name = 'Pseudo-nitzschia pungens', color = cols['Pseudo-nitzschia pungens'], text = ~paste0('Pseudo-nitzschia pungens, ', yrqrt), hoverinfo = 'text') %>% 
-    add_trace(y = ~`Karenia brevis`, name = 'Karenia brevis', color = cols['Karenia brevis'], text = ~paste0('Karenia brevis, ', yrqrt), hoverinfo = 'text') %>% 
-    add_trace(y = ~Cyanobacteria, name = 'Cyanobacteria', color = cols['Cyanobacteria'], text = ~paste0('Cyanobacteria, ', yrqrt), hoverinfo = 'text') %>% 
-    add_trace(y = ~Bacillariophyta, name = 'Bacillariophyta', color = cols['Bacillariophyta'], text = ~paste0('Bacillariophyta, ', yrqrt), hoverinfo = 'text') %>% 
-    layout(yaxis = list(title = 'Count (0.1/ml)', gridcolor = '#FFFFFF'), barmode = 'stack', plot_bgcolor= '#ECECEC')
-
+  p3 <-  plot_ly(algplo, x = ~ yrqrt, y= ~count, color = ~name) %>% 
+    add_bars() %>% 
+    layout(
+      yaxis = list(title = 'Phytoplankton cell count (0.1/ml)', gridcolor = '#FFFFFF'),
+      barmode = 'stack',
+      showlegend = T, 
+      font = list(family = fml), 
+      plot_bgcolor = '#ECECEC'
+    )
+  
   out <- subplot(p3, p1, p2, nrows = 3, shareX = T, titleY = T, which_layout = 1) %>% 
     rangeslider(thickness = 0.02) %>%
     layout(
       title = paste('Station', selsit),
+      legend = list(font = list(size = 16)), 
       font = list(family = fml),
       xaxis = list(
         domain = c(0.02, 1),
@@ -612,7 +626,7 @@ Column {data-width=650}
 
 #### Background 
 
-Light availability to seagrass is the guiding paradigm for the Tampa Bay Estuary Program's (TBEP) Nitrogen Management Strategy. Because excessive nitrogen loads to the bay generally lead to increased algae blooms (higher chlorophyll-a levels) and reduce light penetration to seagrass, an evaluation method was developed to assess whether load reduction strategies are achieving desired water quality results (i.e. reduced chlorophyll-a concentrations and increased water clarity).
+Light availability to seagrass is the guiding paradigm for the Tampa Bay Estuary Program's ([TBEP](https://www.tbep.org)) Nitrogen Management Strategy. Because excessive nitrogen loads to the bay generally lead to increased algae blooms (higher chlorophyll-a levels) and reduce light penetration to seagrass, an evaluation method was developed to assess whether load reduction strategies are achieving desired water quality results (i.e. reduced chlorophyll-a concentrations and increased water clarity).
 
 ```{r out.width='50%', fig.align='center', fig.cap='The guiding paradigm for seagrass restoration through nitrogen management.'}
 knitr::include_graphics('www/nitro.jpg')
