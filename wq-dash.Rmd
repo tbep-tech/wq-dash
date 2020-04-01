@@ -627,7 +627,7 @@ output$wqdwntab <- downloadHandler(
     # inputs
     seldl <- input$seldl
     
-    todl <- ecpdata %>% 
+    todl <- epcdata %>% 
       filter(epchc_station %in% as.numeric(seldl)) %>% 
       select(bay_segment, epchc_station, SampleTime, yr, mo, Latitude, Longitude, secchi_m = sd_raw_m, secchi_q = sd_q, chla, chla_q)
     
@@ -715,7 +715,7 @@ knitr::include_graphics('www/matrixcats.png')
 
 #### Download data
 
-Click the buttons below to download water quality and phytoplankton cell count data. Select all data or specific stations. 
+Click the buttons below to download water quality and phytoplankton cell count data. Select all data or specific stations.  Please note that these data have been modified from the raw data provided by EPC (link below) for the purposes of this application.  View the separate tabs for an explanation of the data.  
 
 ```{r}
 column(12, 
@@ -733,9 +733,6 @@ column(12,
        column(4, downloadButtonRmd('algdwntab', 'Download'))
 )
 ```
-
-
-
 
 #### Website information
 
@@ -1063,7 +1060,7 @@ knitr::include_graphics('www/stationsel.PNG')
 ```
 <br>
 
-Plots will appear on the right after a station is selected.  The plots show phytoplankton cell counts (top), chlorophyll concentration (middle), and secchi depth (bottom, from which light attenuation is derived).  The three plots are linked and the x-axis can be adjusted to zoom in on a time period of interest. The subplot on the very bottom shows only the cell count data as a reference for the relative zoom on the x-axis:
+Plots will appear on the right after a station is selected.  The plots show phytoplankton cell counts (top), chlorophyll concentration (middle), and secchi depth (bottom, from which light attenuation is derived).  For secchi data, red points indicate when the observation was marked as ">", which usually means the secchi disk was on the bottom and water clarity exceeded the depth at the station at the time of sampling.  The three plots are linked and the x-axis can be adjusted to zoom in on a time period of interest. The subplot on the very bottom is a reference for the relative zoom on the x-axis:
 
 <br>
 ```{r, fig.align='center', out.width='80%'}
