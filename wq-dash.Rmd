@@ -26,6 +26,7 @@ library(RColorBrewer)
 library(extrafont)
 library(plotly)
 library(lubridate)
+library(shinyWidgets)
 
 # # style file
 # styles <- readLines('https://raw.githubusercontent.com/tbep-tech/css-styling/master/styles.css')
@@ -68,6 +69,12 @@ locs <- epcdata %>%
 algnms <- c('Bacillariophyta', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
 cols <- pal_alg(algnms)
 names(cols) <- algnms
+
+downloadButtonRmd <- function (outputId, label = "Download", class = NULL, ...)  {
+  tags$a(id = outputId, class = paste("btn btn-default shiny-download-link", 
+                                      class), href = "", target = "_blank", download = NA, 
+         icon("download"), label, ...)
+}
 ```
 
 ```{r reactives}
@@ -611,6 +618,41 @@ observeEvent(input$map_marker_click, {
 })
 ```
 
+```{r downloadhandlers}
+# wq data
+output$wqdwntab <- downloadHandler(
+  filename = function(){'wqdat.csv'},
+  content = function(file){
+    
+    # inputs
+    seldl <- input$seldl
+    
+    todl <- ecpdata %>% 
+      filter(epchc_station %in% as.numeric(seldl)) %>% 
+      select(bay_segment, epchc_station, SampleTime, yr, mo, Latitude, Longitude, secchi_m = sd_raw_m, secchi_q = sd_q, chla, chla_q)
+    
+    write.csv(todl, file, quote = T, row.names = F)
+    
+  }
+)
+
+# algae data
+output$algdwntab <- downloadHandler(
+  filename = function(){'algdat.csv'},
+  content = function(file){
+    
+    # inputs
+    seldl <- input$seldl
+    
+    todl <- algdat %>%
+      filter(epchc_station %in% as.numeric(seldl))
+    
+    write.csv(todl, file, quote = T, row.names = F)
+    
+  }
+)
+```
+
 OVERVIEW
 ===========================================================
 
@@ -670,6 +712,30 @@ The chlorophyll and light attenuation outcome integers are then combined to crea
 ```{r out.width='40%', fig.align='center', fig.cap='Management action categories assigned to each bay segment and year based on chlorophyll and light attenuation outcomes.'}
 knitr::include_graphics('www/matrixcats.png')
 ```
+
+#### Download data
+
+Click the buttons below to download water quality and phytoplankton cell count data. Select all data or specific stations. 
+
+```{r}
+column(12, 
+       column(4, "Select stations to download:"),
+       column(4, "Water quality data:"), 
+       column(4, "Phytoplankton data:")
+)
+column(12, 
+       column(4, 
+              pickerInput('seldl', NULL, choices = unique(locs$epchc_station), 
+                          selected = unique(locs$epchc_station), multiple = T,
+                          options = list(`actions-box` = TRUE, size = 20))
+              ),
+       column(4, downloadButtonRmd('wqdwntab', 'Download')), 
+       column(4, downloadButtonRmd('algdwntab', 'Download'))
+)
+```
+
+
+
 
 #### Website information
 
