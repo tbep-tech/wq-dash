@@ -727,7 +727,7 @@ column(12,
        column(4, 
               pickerInput('seldl', NULL, choices = unique(locs$epchc_station), 
                           selected = unique(locs$epchc_station), multiple = T,
-                          options = list(`actions-box` = TRUE, size = 20))
+                          options = list(`actions-box` = TRUE, size = 20), width = '100%')
               ),
        column(4, downloadButtonRmd('wqdwntab', 'Download')), 
        column(4, downloadButtonRmd('algdwntab', 'Download'))
