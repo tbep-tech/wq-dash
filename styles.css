@@ -167,3 +167,8 @@ h5 {
   font-weight: 500;
   font-style: italic;
 }
+
+/* removes all but one trace from the rangeslider */
+.rangeslider-rangeplot .overplot{
+    display:none;
+}

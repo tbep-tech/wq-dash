@@ -9,11 +9,6 @@ runtime: shiny
 css: styles.css
 ---
 
-<style>
-.rangeslider-rangeplot .overplot{
-    display:none;
-</style>
-
 ```{r setup, include=F}
 knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
@@ -24,7 +19,6 @@ library(flexdashboard)
 library(mapview)
 library(leaflet)
 library(tbeptools)
-# devtools::load_all('../tbeptools')
 library(tidyverse)
 library(shiny)
 library(sf)
@@ -116,7 +110,7 @@ otbalg <- reactive({
   
   otbclkrct <- otbclkrct()
   
-  out <- algselplo(otbclkrct, algnms, cols)
+  out <- algselplo(otbclkrct, algnms, cols, fml)
 
   return(out)
   
@@ -160,7 +154,7 @@ hbalg <- reactive({
   
   hbclkrct <- hbclkrct()
   
-  out <- algselplo(hbclkrct, algnms, cols)
+  out <- algselplo(hbclkrct, algnms, cols, fml)
   
   return(out)
   
@@ -204,7 +198,7 @@ mtbalg <- reactive({
   
   mtbclkrct <- mtbclkrct()
   
-  out <- algselplo(mtbclkrct, algnms, cols)
+  out <- algselplo(mtbclkrct, algnms, cols, fml)
   
   return(out)
   
@@ -248,7 +242,7 @@ ltbalg <- reactive({
   
   ltbclkrct <- ltbclkrct()
   
-  out <- algselplo(ltbclkrct, algnms, cols)
+  out <- algselplo(ltbclkrct, algnms, cols, fml)
   
   return(out)
   
@@ -410,7 +404,7 @@ attmap <- reactive({
     addLegend("topright", labels = c("Stay the Course", "Caution", "On Alert"), colors = c("lightgreen", "yellow", "red"), title = "Bay segment decision<br>matrix outcomes", opacity = 1) %>% 
     addLegend("bottomright", pal = palno, title = paste0("Station ", mapref, "<br>not met"), labels = thrsel, opacity = 1, values = noval) %>% 
     addLegend("bottomright", pal = palyes, title = paste0("Station ", mapref, "<br>met"), labels = thrsel, opacity = 1, values = yesval)
-
+  
 })
 
 # selected site plots
@@ -473,6 +467,7 @@ selplo <- reactive({
     rangeslider(thickness = 0.02) %>%
     layout(
       title = paste('Station', selsit),
+      font = list(family = fml),
       xaxis = list(
         domain = c(0.02, 1),
         rangeselector = list(
@@ -664,7 +659,7 @@ knitr::include_graphics('www/matrixcats.png')
 
 #### Website information
 
-Questions and comments about the dashboard can be sent to [Marcus Beck](mailto:mbeck@tbep.org). The page source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).  All data were obtained from the Hillsborough County Environmental Protection Commission (download [here](http://www.epchc.org/i-want-to/view-gis-maps-and-data)). Like this app? Share it on social media using the [\#TampaBayOpenSci](https://twitter.com/hashtag/TampaBayOpenSci?src=hashtag_click) hashtag.  
+Questions and comments about the dashboard can be sent to [Marcus Beck](mailto:mbeck@tbep.org). The page source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).  All data were obtained from the Hillsborough County Environmental Protection Commission (accessible [here](http://www.epchc.org/i-want-to/view-gis-maps-and-data)). Like this app? Share it on social media using the [\#TampaBayOpenSci](https://twitter.com/hashtag/TampaBayOpenSci?src=hashtag_click) hashtag.  
 
 Citation info here: [![DOI](https://zenodo.org/badge/223773148.svg)](https://zenodo.org/badge/latestdoi/223773148)
 
@@ -688,7 +683,7 @@ This tab shows the overall report card for the bay as management action categori
 
 <span style="color:#FF3333; text-shadow: 0 0 3px #333;">__On Alert__</span>: Finalize development and implement appropriate management actions to get back on track.
 
-Each bay segment is assigned to one of the three above categories for each year of data from 1975 to the current year.  The results can be viewed in the *DECISION MATRIX* tab. Hovering the mouse pointer over each cell shows details about the data driving the attainment outcome for a given year: 
+Each bay segment (__OTB__: Old Tampa Bay, __HB__: Hillsborough Bay, __MTB__: Middle Tampa Bay, __LTB__: Lower Tampa Bay) is assigned to one of the three above categories for each year of data from 1975 to the current year.  The results can be viewed in the *DECISION MATRIX* tab. Hovering the mouse pointer over each cell shows details about the data driving the attainment outcome for a given year: 
 
 <br>
 ```{r, out.width='70%', fig.align='center'}
@@ -868,7 +863,7 @@ knitr::include_graphics('www/boxplotex.png')
 ```
 <br>
 
-Conceptually, boxplots show different values along the distribution range for a collection of observations (e.g., all January chlorophyll observations in Old Tampa Bay across all years).  The horizontal line is the median and the box is bounded by the first and third quartiles (i.e., the 25th and 75th percentiles defining the interquartile range) for the data.  The whiskers extend beyond the boxes to describe the minimum and maximum values in the data, defined as 1.5 x the interquartile range.  Outliers are present above or below the whiskers.  
+Conceptually, boxplots show different values along the distribution range for a collection of observations (e.g., all January chlorophyll observations in Old Tampa Bay across all years).  The horizontal line is the median and the box is bounded by the first and third quartiles (i.e., the 25th and 75th percentiles defining the interquartile range) for the data.  The whiskers extend beyond the boxes to describe the minimum and maximum values in the data, defined as 1.5 x the interquartile range.  Outliers are present above or below the whiskers.
 
 The jittered points overlaid on the boxplots show the individual monthly values for a specific year (i.e., the values that define the dimensions of the boxplot) and the large red point shows the current year.  Hovering the mouse pointer over a point shows the year, month, and chlorophyll/light attenuation value for the point. The below example shows the popup text displayed for Old Tampa Bay after hovering over a point in the light attenuation plot on the bottom. The outlier value in July was observed in 1979.   
 

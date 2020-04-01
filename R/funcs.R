@@ -138,7 +138,7 @@ selfun <- function(selin, plodat, algdat, epcdata, bay_segment){
 }
 
 # selected month/year algae plot
-algselplo <- function(clkrct, algnms, cols){
+algselplo <- function(clkrct, algnms, cols, family){
 
   toplo <- clkrct %>% 
     mutate(name = factor(name, levels = rev(algnms))) %>% 
@@ -153,11 +153,12 @@ algselplo <- function(clkrct, algnms, cols){
   p <-  plot_ly(toplo, x = ~ x, y= ~count, color = ~name, marker = list(color = ~color)) %>% 
     add_bars(width = ~width) %>% 
     layout(
-      yaxis = list(title = 'Count (0.1/ml)', zeroline = F, showgrid = F), #gridcolor = '#FFFFFF'),
-      xaxis = list(title = '', zeroline = F, showgrid = F),
+      yaxis = list(title = 'Phytoplankton cell count (0.1/ml)', zeroline = F, showgrid = F, titlefont = list(size = 18)),
+      xaxis = list(title = '', zeroline = F, showgrid = F, tickfont = list(size = 18)),
       legend = list(x = 0, y = 1.1, borderwidth = 0), 
       barmode = 'stack',
-      showlegend = T
+      showlegend = T, 
+      font = list(family = family)
       # width = 300, 
     ) %>% 
     config(displayModeBar = F)
