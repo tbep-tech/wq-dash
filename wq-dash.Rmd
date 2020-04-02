@@ -473,7 +473,7 @@ selplo <- reactive({
 
   p1 <- ggplotly(p1, dynamicTicks = T)
   p2 <- ggplotly(p2, dynamicTicks = T)
-  p3 <-  plot_ly(algplo, x = ~ yrqrt, y= ~count, color = ~name) %>% 
+  p3 <-  plot_ly(algplo, x = ~ yrqrt, y= ~count, color = ~name, text = ~paste0(name, ', ', yrqrt), hoverinfo = 'text') %>% 
     add_bars() %>% 
     layout(
       yaxis = list(title = 'Phytoplankton cell count (0.1/ml)', gridcolor = '#FFFFFF'),

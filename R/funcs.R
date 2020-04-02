@@ -155,7 +155,7 @@ algselplo <- function(clkrct, algnms, cols, family){
     layout(
       yaxis = list(title = 'Phytoplankton cell count (0.1/ml)', zeroline = F, showgrid = F, titlefont = list(size = 18)),
       xaxis = list(title = '', zeroline = F, showgrid = F, tickfont = list(size = 18)),
-      legend = list(x = 0, y = 1.1, borderwidth = 0, font = list(size = 16)), 
+      legend = list(x = 0, y = 1.2, borderwidth = 0, font = list(size = 16)), 
       barmode = 'stack',
       showlegend = T, 
       font = list(family = family)
