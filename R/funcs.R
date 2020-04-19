@@ -5,47 +5,6 @@ pal_alg <- colorFactor(
   levels = c('Bacillariophyta', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
   )
 
-# plotly function for threshold plots
-thrplotly <- function(epcdata, bay_segment, maxyr, family, themein){
-  
-  p1 <- show_thrplot(epcdata, bay_segment = bay_segment, thr = "chla", yrrng = c(1975, maxyr), family = family, txtlab = F, labelexp = F) + 
-    ggtitle(NULL) +
-    themein +
-    scale_x_continuous(expand = c(0.01, 0.01), breaks = seq(1975, maxyr))
-  p2 <- show_thrplot(epcdata, bay_segment = bay_segment, thr = "la", yrrng = c(1975, maxyr), family = family, txtlab = F, labelexp = F) + 
-    ggtitle(NULL) +
-    themein + 
-    scale_x_continuous(expand = c(0.01, 0.01), breaks = seq(1975, maxyr))
-  
-  p3 <- show_segmatrix(epcdata, bay_segment = bay_segment, yrrng = c(1975, maxyr), txtsz = NULL) + 
-    scale_y_continuous(expand = c(0,0), breaks = c(1975:maxyr)) +
-    coord_flip() +
-    theme(
-      axis.text.x = element_text(angle = 45, hjust = 1, size = 7),
-      axis.text = element_text(size = 12), 
-      text = element_text(family = family)
-    ) 
-  
-  p3 <- ggplotly(p3, tooltip = 'Result') 
-  for(i in 1:length(p3$x$data)) p3$x$data[[i]]$showlegend <- FALSE    
-
-  p1 <- ggplotly(p1)
-  p2 <- ggplotly(p2)
-  p2$x$data[[1]]$showlegend <- FALSE
-  p2$x$data[[2]]$showlegend <- FALSE
-  p2$x$data[[3]]$showlegend <- FALSE
-  p2$x$data[[4]]$showlegend <- FALSE
-  
-  # remove unnecessary hover text
-  p1$x$data[[1]]$text <- gsub('colour:\\sAnnual\\sMean$', '', p1$x$data[[1]]$text)
-  p2$x$data[[1]]$text <- gsub('colour:\\sAnnual\\sMean$', '', p2$x$data[[1]]$text)
-  
-  out <- subplot(p1, p3, p2, nrows = 3, heights = c(0.4, 0.2, 0.4), shareX = T, titleY = TRUE)
-  
-  return(out)
-  
-}
-
 # plotly function for boxplots
 boxplotly <- function(epcdata, bay_segment, maxyr, yrrng, family, themein){
 

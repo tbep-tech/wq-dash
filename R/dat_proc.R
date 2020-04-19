@@ -114,10 +114,10 @@ lamat <- ggplotly(plo, tooltip = 'Result') %>%
   config(displayModeBar = FALSE)
 
 # threshold plots
-thrplototb <- thrplotly(epcdata, 'OTB', maxyr, fml, pthm)
-thrplothb <- thrplotly(epcdata, 'HB', maxyr, fml, pthm)
-thrplotmtb <- thrplotly(epcdata, 'MTB', maxyr, fml, pthm)
-thrplotltb <- thrplotly(epcdata, 'LTB', maxyr, fml, pthm)
+thrplototb <- show_segplotly(epcdata, 'OTB', c(1975, maxyr), fml)
+thrplothb <- show_segplotly(epcdata, 'HB', c(1975, maxyr), fml)
+thrplotmtb <- show_segplotly(epcdata, 'MTB', c(1975, maxyr), fml)
+thrplotltb <- show_segplotly(epcdata, 'LTB', c(1975, maxyr), fml)
 
 save(thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat, file = 'data/plotlys.RData', compress = 'xz')
 
