@@ -45,7 +45,7 @@ load('data/mapdat.RData')
 load('data/plotlys.RData') # thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat
 
 prj <- '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
-maxyr <- 2019
+maxyr <- 2020
 fml <- "Lato Light"
 
 # minor theme tweaks
@@ -671,7 +671,7 @@ Column {.tabset .tabset-fade data-width=650}
 knitr::include_graphics('www/bannerimage.jpg')
 ```
 
-This dashboard synthesizes over forty years of water quality data from Tampa Bay, Florida.  Information from this dashboard informs the management of environmental resources for the region under direction of the Tampa Bay Estuary Program. The different pages under the __PAGE SELECTION__ menu can be used to view the long-term trends in water quality for each bay segment and individual monitoring stations.  
+This dashboard synthesizes over forty years of water quality data from Tampa Bay, Florida.  The data have been collected monthly, with the only exception being March and April 2020. Information from this dashboard informs the management of environmental resources for the region under direction of the Tampa Bay Estuary Program. The different pages under the __PAGE SELECTION__ menu can be used to view the long-term trends in water quality for each bay segment and individual monitoring stations.  
 
 1) __ATTAINMENT MATRICES__: This page shows the overall report card for the bay as management action categories described in the methods tab.  Separate matrices for chlorophyll and light attenuation exceedances for major bay segments are also shown. An interactive map is provided that shows attainment outcomes by year for individual stations in the bay.
 1) __SEGMENT ANNUAL TRENDS__: This page shows time series of annual chlorophyll and light attenuation averages for each bay segment.  Blue lines on each plot show management targets or thresholds that define exceedance categories used to create the management action categories.  In between the chlorophyll and light attenuation plots is the attainment matrix outcomes that are specific to each segment. 

@@ -13,7 +13,7 @@ loadfonts(device = 'pdf', quiet = T)
 if(Sys.info()[1] == 'Windows')
   loadfonts(device = 'win', quiet = T)
 
-maxyr <- 2019
+maxyr <- 2020
 fml <- "Lato Light"
 
 # minor theme tweaks
@@ -41,11 +41,11 @@ nms <- factor(seg, levels = seg)
 # import and save epcdata -------------------------------------------------
 
 # local file path
-xlsx <- 'C:/Users/Marcus/Desktop/epcdata.xls'
+xlsx <- '~/Desktop/epcdata.xls'
 
 # import data
-epcdata <- read_importwq(xlsx, download_latest_epchc = T) %>%
-  filter(yr <= 2019) %>% 
+epcdata <- read_importwq(xlsx, download_latest = T) %>%
+  filter(yr <= maxyr) %>% 
   mutate(
     sd_q = case_when(
       is.na(sd_q) ~ T, 
@@ -53,24 +53,18 @@ epcdata <- read_importwq(xlsx, download_latest_epchc = T) %>%
     )
   )
 
-# # local file path
-# xlsx <- 'T:/03_BOARDS_COMMITTEES/05_TBNMC/BAY_TARGETS/2019_update/data-raw/epchc.xlsx'
-# 
-# # import and download if new
-# epcdata <- read_importwq(xlsx, download_latest_epchc = F, tryurl = T, connecttimeout = 20)
-# 
 save(epcdata, file = 'data/epcdata.RData', compress = 'xz')
 
-# # algae data --------------------------------------------------------------
-# 
-# # file path
-# xlsx <- 'C:/Users/Marcus/Desktop/phyto_data.xlsx'
-# 
-# # load and assign to object
-# algdat <- read_importphyto(xlsx, download_latest_epchc = T, tryurl = T) %>% 
-#   filter(yr < 2020)
-# 
-# save(algdat, file = here::here('data', 'algdat.RData'), compress = 'xz')
+# algae data --------------------------------------------------------------
+
+# file path
+xlsx <- '~/Desktop/phyto_data.xlsx'
+
+# load and assign to object
+algdat <- read_importphyto(xlsx, download_latest = T) %>%
+  filter(yr < maxyr)
+
+save(algdat, file = here::here('data', 'algdat.RData'), compress = 'xz')
 
 # graphics for dash -------------------------------------------------------
 
