@@ -62,7 +62,7 @@ xlsx <- '~/Desktop/phyto_data.xlsx'
 
 # load and assign to object
 algdat <- read_importphyto(xlsx, download_latest = T) %>%
-  filter(yr < maxyr)
+  filter(yr <= maxyr)
 
 save(algdat, file = here::here('data', 'algdat.RData'), compress = 'xz')
 
