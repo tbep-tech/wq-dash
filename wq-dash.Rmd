@@ -13,6 +13,8 @@ css: styles.css
 ```{r setup, include=F}
 knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
+tags$head(includeScript("google-analytics.js"))
+
 # libraries
 library(flexdashboard)
 library(mapview)
