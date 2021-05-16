@@ -417,6 +417,8 @@ attmap <- reactive({
 # selected site plots
 selplo <- reactive({
   
+  selsit <- input$map_marker_click$id
+  
   validate(
     need(!is.null(selsit), "Select station on map")
   )
@@ -563,15 +565,9 @@ output$map <- renderLeaflet({
 # leaflet proxy for marker select
 map <- leafletProxy('map')
 
-# binding for marker select and year
-makeReactiveBinding('selsit')
-
-# the selection
 observeEvent(input$map_marker_click, {
-  selsit <<- input$map_marker_click$id
-})
-
-observeEvent(input$map_marker_click, {
+  
+  selsit <- input$map_marker_click$id
   
   # station locations
   toplo <- locs %>% 
