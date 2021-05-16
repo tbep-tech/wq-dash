@@ -63,7 +63,8 @@ pthm <- theme(
 # locations
 locs <- epcdata %>% 
   select(epchc_station, Longitude, Latitude) %>% 
-  unique
+  unique %>% 
+  st_as_sf(coords = c('Longitude', 'Latitude'), crs = prj)
 
 # algae names and colors
 algnms <- c('Bacillariophyta', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
@@ -363,8 +364,7 @@ attmap <- reactive({
         mapref == 'target' ~ target
       )
     ) %>% 
-    left_join(locs, by = 'epchc_station') %>% 
-    st_as_sf(coords = c('Longitude', 'Latitude'), crs = prj)
+    left_join(locs, ., by = 'epchc_station') 
 
   # polygon attainment data for selected year
   attyr <- avedat %>% 
@@ -384,8 +384,8 @@ attmap <- reactive({
   # map with custom legends
   mapview(toplo, fill = F, homebutton = F, popup = NULL, legend = F) %>% 
     .@map %>% 
+    leafem::removeMouseCoordinates() %>% 
     clearMarkers() %>% 
-    leafem::removeMouseCoordinates() %>%
     addPolygons(
       data = attyr, 
       stroke = T, 
@@ -527,40 +527,28 @@ selplo <- reactive({
 ```
 
 ```{r map}
-# site selection map
-output$map <- renderLeaflet({
-  
-  # filter by year to map
-  toplo <- locs %>% 
-    st_as_sf(coords = c('Longitude', 'Latitude'), crs = prj)
-  
-  # map with custom legends
-  mapview(toplo, fill = F, homebutton = F, popup = NULL, legend = F) %>% 
-    .@map %>% 
-    clearMarkers() %>%
-    leafem::removeMouseCoordinates() %>%
-    addCircleMarkers(
-      data = locs,
-      lng = ~Longitude, 
-      lat = ~Latitude,
-      layerId = ~epchc_station,
-      color = '#00806E',
-      stroke = F,
-      fillOpacity = 0.9,
-      radius = 15,
-      label = ~epchc_station,
-      labelOptions = labelOptions(
-        textOnly = T,
-        noHide = T,
-        style = list(
-          "color" = "#FFFFFF",
-          "font-family" = fml
-          ),
-        direction = 'center'
-      )
+bsmap <- mapview(locs, homebutton = F, legend = F) %>% 
+  .@map %>% 
+  leafem::removeMouseCoordinates() %>% 
+  clearMarkers() %>%
+  addCircleMarkers(
+    data = locs,
+    layerId = ~epchc_station,
+    color = '#00806E',
+    stroke = F,
+    fillOpacity = 0.9,
+    radius = 15,
+    label = ~epchc_station,
+    labelOptions = labelOptions(
+      textOnly = T,
+      noHide = T,
+      style = list(
+        "color" = "#FFFFFF",
+        "font-family" = fml
+        ),
+      direction = 'center'
     )
-
-})
+  )
 
 # leaflet proxy for marker select
 map <- leafletProxy('map')
@@ -568,49 +556,24 @@ map <- leafletProxy('map')
 observeEvent(input$map_marker_click, {
   
   selsit <- input$map_marker_click$id
-  
-  # station locations
-  toplo <- locs %>% 
-    st_as_sf(coords = c('Longitude', 'Latitude'), crs = prj)
 
-  # filter the pour points by selection
-  selsitplo <- toplo %>% 
+  # get station selection
+  selsitplo <- locs %>% 
     filter(epchc_station %in% selsit)
 
   # clear markers on input select, add all points and selected point
   map <- map %>% 
-    clearMarkers() %>% 
-    leafem::removeMouseCoordinates() %>%
+    removeMarker('selsit') %>% 
     addCircleMarkers(
       data = selsitplo,
-      layerId = ~epchc_station,
-      stroke = F,
+      layerId = 'selsit',
+      stroke = T,
       color = '#5C4A42',
-      fill = T,
-      radius = 25,
-      fillOpacity = 0.9
-    ) %>%
-    addCircleMarkers(
-      data = locs,
-      lng = ~Longitude, 
-      lat = ~Latitude,
-      layerId = ~epchc_station,
-      color = '#00806E',
-      stroke = F,
-      fillOpacity = 0.9,
-      radius = 15,
-      label = ~epchc_station,
-      labelOptions = labelOptions(
-        textOnly = T,
-        noHide = T,
-        style = list(
-          "color" = "#FFFFFF",
-          "font-family" = fml
-          ),
-        direction = 'center'
-      )
+      fill = F,
+      radius = 16, 
+      opacity = 1
     )
-
+  
 })
 ```
 
@@ -1063,7 +1026,8 @@ Column {.tabset .tabset-fade data-width=250}
 
 ### MAP SELECTION
 
-```{r mapout}
+```{r}
+output$map <- renderLeaflet(bsmap)
 leafletOutput('map')
 ```
 
