@@ -1,5 +1,7 @@
 # README
 
+[![build](https://github.com/tbep-tech/wq-dash/actions/workflows/databuild.yaml/badge.svg)](https://github.com/tbep-tech/wq-dash/actions/workflows/databuild.yaml)
+
 Materials for TBEP water quality dashboard.  
 
 [Shiny](http://shiny.tbep.org/wq-dash/)

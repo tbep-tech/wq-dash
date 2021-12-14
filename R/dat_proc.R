@@ -2,10 +2,10 @@ library(tidyverse)
 library(readxl)
 library(lubridate)
 library(tbeptools)
-# devtools::load_all("../tbeptools")
 library(plotly)
 library(extrafont)
 library(leaflet)
+library(here)
 
 source('R/funcs.R')
 
@@ -38,33 +38,9 @@ ax <- list(
 seg <- c('OTB', 'HB', 'MTB', 'LTB') 
 nms <- factor(seg, levels = seg)
 
-# import and save epcdata -------------------------------------------------
-
-# local file path
-xlsx <- '~/Desktop/epcdata.xls'
-
-# import data
-epcdata <- read_importwq(xlsx, download_latest = T) %>%
-  filter(yr <= maxyr) %>% 
-  mutate(
-    sd_q = case_when(
-      is.na(sd_q) ~ T, 
-      !is.na(sd_q) ~ F
-    )
-  )
-
-save(epcdata, file = 'data/epcdata.RData', compress = 'xz')
-
-# algae data --------------------------------------------------------------
-
-# file path
-xlsx <- '~/Desktop/phyto_data.xlsx'
-
-# load and assign to object
-algdat <- read_importphyto(xlsx, download_latest = T) %>%
-  filter(yr <= maxyr)
-
-save(algdat, file = here::here('data', 'algdat.RData'), compress = 'xz')
+# load wq and alg data created through cron on gh actions
+load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
+load(url('https://tbep-tech.github.io/wq-dash/data/algdata.RData'))
 
 # graphics for dash -------------------------------------------------------
 
@@ -121,7 +97,8 @@ load(file = 'data/epcdata.RData')
 
 # data to map
 mapdat <- tibble(thr = c('chla', 'la')) %>% 
-  crossing(epcdata) %>% 
+  crossing(epcdata) %>%
+  filter(yr <= maxyr) %>% 
   group_by(thr) %>% 
   nest %>% 
   mutate(
@@ -147,6 +124,7 @@ save(mapdat, file = 'data/mapdat.RData', compress = 'xz')
 avedat <- epcdata %>% 
   anlz_avedat %>% 
   anlz_attain %>% 
+  filter(yr <=  maxyr) %>% 
   mutate(
     action = case_when(
       outcome == 'green' ~ 'Stay the Course', 
