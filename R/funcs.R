@@ -47,7 +47,8 @@ boxplotly <- function(epcdata, bay_segment, maxyr, yrrng, family, themein){
   p2$x$data[[2]]$text <- gsub('names\\(cols\\)\\[1\\].*$', '', p2$x$data[[2]]$text)
   p2$x$data[[3]]$text <- gsub('names\\(cols\\)\\[2\\].*$', '', p2$x$data[[3]]$text)
   
-  out <- subplot(p1, p2, nrows = 2, shareX = T, titleY = TRUE)
+  out <- subplot(p1, p2, nrows = 2, shareX = T, titleY = TRUE) %>%
+    plotly::layout(legend = list(title = ''))
   
   return(out)
   

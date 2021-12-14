@@ -38,9 +38,8 @@ ax <- list(
 seg <- c('OTB', 'HB', 'MTB', 'LTB') 
 nms <- factor(seg, levels = seg)
 
-# load wq and alg data created through cron on gh actions
+# load wq data created through cron on gh actions
 load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
-load(url('https://tbep-tech.github.io/wq-dash/data/algdata.RData'))
 
 # graphics for dash -------------------------------------------------------
 
