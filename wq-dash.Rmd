@@ -419,9 +419,12 @@ selplo <- reactive({
   
   selsit <- input$map_marker_click$id
   
-  validate(
-    need(!is.null(selsit), "Select station on map")
-  )
+  # validate(
+  #   need(!is.null(selsit), "Select station on map")
+  # )
+  
+  if(is.null(selsit))
+    selsit <- locs[1, ]$epchc_station 
   
   # data to plot
   toplo <- epcdata %>% 
@@ -548,7 +551,16 @@ bsmap <- mapview(locs, homebutton = F, legend = F) %>%
         ),
       direction = 'center'
     )
-  )
+  ) %>% 
+  addCircleMarkers(
+      data = locs[1, ],
+      layerId = 'selsit',
+      stroke = T,
+      color = '#5C4A42',
+      fill = F,
+      radius = 16, 
+      opacity = 1
+    )
 
 # leaflet proxy for marker select
 map <- leafletProxy('map')
