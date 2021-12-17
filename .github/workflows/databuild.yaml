@@ -24,7 +24,7 @@ jobs:
           options(repos = c(fawda123 = 'https://fawda123.r-universe.dev', tbeptech = 'https://tbep-tech.r-universe.dev', CRAN = 'https://cloud.r-project.org'))
           install.packages(c("dplyr", "tbeptools"))
         shell: Rscript {0}
-      - name: Build lobo data
+      - name: Build data
         run: Rscript -e 'source("R/dat_build.R")'
       - name: Commit results
         run: |
