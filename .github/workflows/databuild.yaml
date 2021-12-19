@@ -2,28 +2,33 @@ on:
   push:
     branches:
       - main
-      - master
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * *" 
     
-name: databuild 
+name: build
 
 jobs:
   render:
-    name: databuild
-    runs-on: macOS-latest
+    name: build
+    runs-on: ubuntu-20.04
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@v1
-      - name: Install macOS dependencies for tbeptools
+      - uses: r-lib/actions/setup-pandoc@v1
+      - name: Install ubuntu dependencies
         run: |
-          brew install cairo
-          brew install gdal
-          brew install udunits
-          brew install xquartz
-      - name: Install dependencies
+          sudo apt-get install libcurl4-gnutls-dev 
+          sudo apt-get install libcairo2-dev 
+          sudo apt-get install libxt-dev 
+          sudo apt-get install libssl-dev 
+          sudo apt-get install libssh2-1-dev 
+          sudo apt-get install libudunits2-dev 
+          sudo apt-get install libgdal-dev 
+          sudo apt-get install libgeos-dev 
+          sudo apt-get install libproj-dev
+      - name: Install R packages
         run: |
           options(repos = c(fawda123 = 'https://fawda123.r-universe.dev', tbeptech = 'https://tbep-tech.r-universe.dev', CRAN = 'https://cloud.r-project.org'))
           install.packages("sf", configure.args="--with-gdal-config=/usr/local/gdal-3.2.0/bin/gdal-config --with-geos-config=/usr/local/bin/geos-config")
