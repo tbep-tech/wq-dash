@@ -28,6 +28,7 @@ jobs:
         run: |
           options(repos = c(fawda123 = 'https://fawda123.r-universe.dev', tbeptech = 'https://tbep-tech.r-universe.dev', CRAN = 'https://cloud.r-project.org'))
           install.packages(c("dplyr", "tbeptools"))
+          install.packages("lwgeom", configure.args=c("--with-proj-include=/usr/local, --with-proj-lib=/usr/local"))
           install.packages("sf", configure.args = "--with-proj-lib=/usr/local/lib/")
         shell: Rscript {0}
       - name: Build data
