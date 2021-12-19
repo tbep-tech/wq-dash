@@ -23,6 +23,7 @@ jobs:
           brew install gdal
           brew install udunits
           brew install xquartz
+          brew install liblwgeom
       - name: Install dependencies
         run: |
           options(repos = c(fawda123 = 'https://fawda123.r-universe.dev', tbeptech = 'https://tbep-tech.r-universe.dev', CRAN = 'https://cloud.r-project.org'))
