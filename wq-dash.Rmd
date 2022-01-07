@@ -38,14 +38,15 @@ if(Sys.info()[1] == 'Windows')
 
 source('R/funcs.R')
 
-load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
+load('data/epcdata.RData')
+# load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
 load(url('https://tbep-tech.github.io/wq-dash/data/algdat.RData'))
 load('data/avedat.RData')
 load('data/mapdat.RData')
 load('data/plotlys.RData') # thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat
 
 prj <- '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
-maxyr <- 2020
+maxyr <- 2021
 fml <- "Lato Light"
 
 # minor theme tweaks
@@ -425,7 +426,7 @@ selplo <- reactive({
   
   if(is.null(selsit))
     selsit <- locs[1, ]$epchc_station 
-  
+
   # data to plot
   toplo <- epcdata %>% 
     filter(epchc_station %in% selsit) %>% 
@@ -470,7 +471,7 @@ selplo <- reactive({
     theme(
       legend.title = element_blank()
     )
-  
+
   if(any(!toplo$sd_q))
     p2 <- p2 +
       geom_point(data = toplo[!toplo$sd_q, ], aes(x = Date, y = sd_raw_m, colour = 'Secchi on bottom'), size = 1.5) +

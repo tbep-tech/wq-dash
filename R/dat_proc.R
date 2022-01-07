@@ -9,11 +9,15 @@ library(here)
 
 source('R/funcs.R')
 
+# load wq data created through cron on gh actions
+load(file = here('data/epcdata.RData'))
+# load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
+
 loadfonts(device = 'pdf', quiet = T)
 if(Sys.info()[1] == 'Windows')
   loadfonts(device = 'win', quiet = T)
 
-maxyr <- 2020
+maxyr <- 2021
 fml <- "Lato Light"
 
 # minor theme tweaks
@@ -37,9 +41,6 @@ ax <- list(
 )
 seg <- c('OTB', 'HB', 'MTB', 'LTB') 
 nms <- factor(seg, levels = seg)
-
-# load wq data created through cron on gh actions
-load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
 
 # graphics for dash -------------------------------------------------------
 
@@ -91,8 +92,6 @@ thrplotltb <- show_segplotly(epcdata, 'LTB', c(1975, maxyr), fml)
 save(thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat, file = 'data/plotlys.RData', compress = 'xz')
 
 # site data for map -------------------------------------------------------
-
-load(file = 'data/epcdata.RData')
 
 # data to map
 mapdat <- tibble(thr = c('chla', 'la')) %>% 

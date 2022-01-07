@@ -1,10 +1,10 @@
-on:
-  push:
-    branches:
-      - main
-      - master
-  schedule:
-    - cron: "0 0 * * *" 
+# on:
+#   push:
+#     branches:
+#       - main
+#       - master
+#   schedule:
+#     - cron: "0 0 * * *" 
     
 name: build
 
