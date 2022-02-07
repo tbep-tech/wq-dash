@@ -48,7 +48,13 @@ boxplotly <- function(epcdata, bay_segment, maxyr, yrrng, family, themein){
   p2$x$data[[3]]$text <- gsub('names\\(cols\\)\\[2\\].*$', '', p2$x$data[[3]]$text)
   
   out <- subplot(p1, p2, nrows = 2, shareX = T, titleY = TRUE) %>%
-    plotly::layout(legend = list(title = ''))
+    plotly::layout(legend = list(title = '')) %>% 
+    plotly::config(
+      toImageButtonOptions = list(
+        format = "svg",
+        filename = "myplot"
+      )
+    )
   
   return(out)
   
@@ -121,7 +127,12 @@ algselplo <- function(clkrct, algnms, cols, family){
       font = list(family = family)
       # width = 300, 
     ) %>% 
-    config(displayModeBar = F)
+    plotly::config(
+      toImageButtonOptions = list(
+        format = "svg",
+        filename = "myplot"
+      )
+    )
   
   return(p)
 
