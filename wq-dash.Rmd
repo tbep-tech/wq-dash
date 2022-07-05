@@ -707,13 +707,13 @@ The attainment outcomes shown in the various dashboard pages are built on a rigo
 
 The management category or action is based on the combination of annual outcomes for chlorophyll and light attenuation.  For each year, major bay segments are assigned to outcome categories based on both the exceedance of the annual estimate above a threshold or target and duration of the exceedance for the years prior.  Exceedances are defined as either small or large based on the magnitude and short or long based on the duration within the previous four years.  The combination of these exceedance categories creates an outcome integer that each bay segment is assigned for both chlorophyll and light attenuation. 
 
-```{r out.width='50%', fig.align='center', fig.cap='Outcomes for annual estimates of water quality are assigned an integer value from zero to three depending on both magnitude and duration of the exceedence.'}
+```{r out.width='60%', fig.align='center', fig.cap='Outcomes for annual estimates of water quality are assigned an integer value from zero to three depending on both magnitude and duration of the exceedence.'}
 knitr::include_graphics('www/outints.png')
 ```
 
 The chlorophyll and light attenuation outcome integers are then combined to create the management category for each bay segment.
 
-```{r out.width='40%', fig.align='center', fig.cap='Management action categories assigned to each bay segment and year based on chlorophyll and light attenuation outcomes.'}
+```{r out.width='60%', fig.align='center', fig.cap='Management action categories assigned to each bay segment and year based on chlorophyll and light attenuation outcomes.'}
 knitr::include_graphics('www/matrixcats.png')
 ```
 
