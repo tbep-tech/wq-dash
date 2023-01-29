@@ -349,6 +349,7 @@ attmap <- reactive({
   palno <- palno()
   maprct <- maprct()
   mapdmn <- mapdmn()
+  attmaploc <- isolate(attmaploc())
 
   # filter by year to map
   toplo <- maprct %>% 
@@ -390,7 +391,7 @@ attmap <- reactive({
   )
   
   # map with custom legends
-  mapview(toplo, fill = F, homebutton = F, popup = NULL, legend = F) %>% 
+  out <- mapview(toplo, fill = F, homebutton = F, popup = NULL, legend = F) %>% 
     .@map %>% 
     leafem::removeMouseCoordinates() %>% 
     clearMarkers() %>% 
@@ -419,6 +420,26 @@ attmap <- reactive({
     addLegend("topright", labels = c("Stay the Course", "Caution", "On Alert"), colors = c("#2DC938", "#E9C318", "#CC3231"), title = "Bay segment decision<br>matrix outcomes", opacity = 1) %>% 
     addLegend("bottomright", pal = palno, title = paste0("Station ", mapref, "<br>not met"), labels = thrsel, opacity = 1, values = noval) %>% 
     addLegend("bottomright", pal = palyes, title = paste0("Station ", mapref, "<br>met"), labels = thrsel, opacity = 1, values = yesval)
+  
+  if(length(attmaploc) != 0)
+    out <- out %>% 
+      leaflet::setView(lng = attmaploc$lng, lat = attmaploc$lat, zoom = attmaploc$zoom)
+  
+  return(out)
+  
+})
+
+# attmap locations
+attmaploc <- reactive({
+  
+  if(is.null(input$attmap_center))
+    return(list())
+  
+  list(
+    zoom = input$attmap_zoom,
+    lat = input$attmap_center$lat,
+    lng = input$attmap_center$lng
+  )
   
 })
 
