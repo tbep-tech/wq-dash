@@ -38,8 +38,8 @@ if(Sys.info()[1] == 'Windows')
 
 source('R/funcs.R')
 
-load('data/epcdata.RData')
-# load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
+# load('data/epcdata.RData')
+load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
 load(url('https://tbep-tech.github.io/wq-dash/data/algdat.RData'))
 load('data/avedat.RData')
 load('data/mapdat.RData')
