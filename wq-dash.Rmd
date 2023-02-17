@@ -720,11 +720,11 @@ knitr::include_graphics('www/nitro.jpg')
 
 The attainment outcomes shown in the various dashboard pages are built on a rigorous technical foundation.  Year to year algae abundance (measured as chlorophyll-a concentrations) and visible light penetration through the water column (secchi disk depth visibility) have been identified as critical water quality indicators in Tampa Bay. Tracking the attainment of bay segment specific targets for these indicators provides the framework for developing and initiating bay management actions. TBEP management actions adopted in response to the annually-assessed decision support results are shown below.
 
-<span style="color:#2DC938; text-shadow: 0 0 3px #333;">__Stay the Course__</span>: Continue planned projects. Report data via annual progress reports and Baywide Environmental Monitoring Report. 
+<span style="color:#2DC938">__Stay the Course__</span>: Continue planned projects. Report data via annual progress reports and Baywide Environmental Monitoring Report. 
 
-<span style="color:#E9C318; text-shadow: 0 0 3px #333;">__Caution__</span>: Review monitoring data and nitrogen loading estimates. Begin/continue TAC and Management Board development of specific management recommendations.
+<span style="color:#E9C318">__Caution__</span>: Review monitoring data and nitrogen loading estimates. Begin/continue TAC and Management Board development of specific management recommendations.
 
-<span style="color:#CC3231; text-shadow: 0 0 3px #333;">__On Alert__</span>: Finalize development and implement appropriate management actions to get back on track.
+<span style="color:#CC3231">__On Alert__</span>: Finalize development and implement appropriate management actions to get back on track.
 
 The management category or action is based on the combination of annual outcomes for chlorophyll and light attenuation.  For each year, major bay segments are assigned to outcome categories based on both the exceedance of the annual estimate above a threshold or target and duration of the exceedance for the years prior.  Exceedances are defined as either small or large based on the magnitude and short or long based on the duration within the previous four years.  The combination of these exceedance categories creates an outcome integer that each bay segment is assigned for both chlorophyll and light attenuation. 
 
@@ -781,11 +781,11 @@ Column {.tabset .tabset-fade data-width=275}
 
 This page shows the overall report card for the bay as management action categories:
 
-<span style="color:#2DC938; text-shadow: 0 0 3px #333;">__Stay the Course__</span>: Continue planned projects. Report data via annual progress reports and Baywide Environmental Monitoring Report. 
+<span style="color:#2DC938">__Stay the Course__</span>: Continue planned projects. Report data via annual progress reports and Baywide Environmental Monitoring Report. 
 
-<span style="color:#E9C318; text-shadow: 0 0 3px #333;">__Caution__</span>: Review monitoring data and nitrogen loading estimates. Begin/continue TAC and Management Board development of specific management recommendations.
+<span style="color:#E9C318">__Caution__</span>: Review monitoring data and nitrogen loading estimates. Begin/continue TAC and Management Board development of specific management recommendations.
 
-<span style="color:#CC3231; text-shadow: 0 0 3px #333;">__On Alert__</span>: Finalize development and implement appropriate management actions to get back on track.
+<span style="color:#CC3231">__On Alert__</span>: Finalize development and implement appropriate management actions to get back on track.
 
 Each bay segment (__OTB__: Old Tampa Bay, __HB__: Hillsborough Bay, __MTB__: Middle Tampa Bay, __LTB__: Lower Tampa Bay) is assigned to one of the three above categories for each year of data from 1975 to the current year.  The results can be viewed in the *DECISION MATRIX* tab. Hovering the mouse pointer over each cell shows details about the data driving the attainment outcome for a given year: 
 
@@ -795,7 +795,7 @@ knitr::include_graphics('www/attainex.PNG')
 ```
 <br>
 
-In the above example, the attainment outcome for Old Tampa Bay in 1980 was <span style="color:#CC3231; text-shadow: 0 0 3px #333;">On Alert</span>.  Additional information on chlorophyll and light attenuation outcomes that drive the overall attainment outcome are also provided.  Old Tampa Bay received an outcome of "3" for both chlorophyll and light attenuation results in 1980.  Possible integer values range from 0 to 3, with three indicating water quality conditions less suitable for seagrass growth.  The integer values describe both a magnitude and duration of exceedance for chlorophyll or light attenuation targets: 
+In the above example, the attainment outcome for Old Tampa Bay in 1980 was <span style="color:#CC3231">On Alert</span>.  Additional information on chlorophyll and light attenuation outcomes that drive the overall attainment outcome are also provided.  Old Tampa Bay received an outcome of "3" for both chlorophyll and light attenuation results in 1980.  Possible integer values range from 0 to 3, with three indicating water quality conditions less suitable for seagrass growth.  The integer values describe both a magnitude and duration of exceedance for chlorophyll or light attenuation targets: 
 
 <br>
 ```{r out.width='70%', fig.align='center'}
@@ -880,7 +880,7 @@ Column {data-width=275}
 
 ### Using this page
 
-This page shows time series of annual chlorophyll and light attenuation averages for each bay segment.  Blue lines on each plot show management targets or thresholds that define exceedance categories used to create the management action categories (i.e., <span style="color:#2DC938; text-shadow: 0 0 3px #333;">__Stay the Course__</span>, <span style="color:#E9C318; text-shadow: 0 0 3px #333;">__Caution__</span>, or <span style="color:#CC3231; text-shadow: 0 0 3px #333;">__On Alert__</span>).
+This page shows time series of annual chlorophyll and light attenuation averages for each bay segment.  Blue lines on each plot show management targets or thresholds that define exceedance categories used to create the management action categories (i.e., <span style="color:#2DC938">__Stay the Course__</span>, <span style="color:#E9C318">__Caution__</span>, or <span style="color:#CC3231">__On Alert__</span>).
 
 In between the chlorophyll (top) and light attenuation (bottom) plots are the attainment matrix outcomes that are specific to each segment.  The top row in the matrix shows the attainment outcome for chlorophyll, the bottom row shows the attainment outcome for light attenuation, and the middle row shows the overall management attainment outcome that combines information from both the chlorophyll and light attenuation outcomes.  These are the same matrix outcomes as in the __ATTAINMENT MATRICES__ page, but specific to the selected bay segment.  
 
@@ -892,7 +892,7 @@ knitr::include_graphics('www/outints.png')
 ```
 <br>
 
-For each year, the average chlorophyll and light attenuation values are assigned an integer value from 0 to 3, with higher values indicating less favorable water quality conditions for seagrass growth.  Hovering over the center matrix will show the information that was used from the time series plots to determine the management outcome for a given year.  For example, Old Tampa Bay in 1980 received a management outcome of <span style="color:#CC3231; text-shadow: 0 0 3px #333;">__On Alert__</span>:
+For each year, the average chlorophyll and light attenuation values are assigned an integer value from 0 to 3, with higher values indicating less favorable water quality conditions for seagrass growth.  Hovering over the center matrix will show the information that was used from the time series plots to determine the management outcome for a given year.  For example, Old Tampa Bay in 1980 received a management outcome of <span style="color:#CC3231">__On Alert__</span>:
 
 <br>
 ```{r out.width='70%', fig.align='center'}
@@ -916,7 +916,7 @@ knitr::include_graphics('www/otbout3.PNG')
 
 In both cases, the average values for 1980 for chlorophyll and light attenuation had a large magnitude exceedance of long duration, placing the year in the "3" category. The exceedance values are defined by the blue lines in the time series plots above and below the center matrix. The duration values are defined by how many times the average values were above the management target within the previous four years.  A "long" duration means that average values in the previous four years were all above the management target, i.e., the water quality conditions have persisted for some time. 
 
-The plots are especially useful to identify which water quality conditions are driving the overall management outcome. Zooming in on 2015 to 2019 for Old Tampa Bay shows that the consistent <span style="color:#E9C318; text-shadow: 0 0 3px #333;">__Caution__</span> categories are driven by non-sequential years of large magnitude and long duration exceedances for chlorophyll.  Light attenuation values have remained below the target.    
+The plots are especially useful to identify which water quality conditions are driving the overall management outcome. Zooming in on 2015 to 2019 for Old Tampa Bay shows that the consistent <span style="color:#E9C318">__Caution__</span> categories are driven by non-sequential years of large magnitude and long duration exceedances for chlorophyll.  Light attenuation values have remained below the target.    
 
 <br>
 ```{r out.width='100%', fig.align='center'}
