@@ -16,7 +16,9 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
-      - uses: r-lib/actions/setup-r@v1
+      - uses: r-lib/actions/setup-r@v2
+        with: 
+          extra-repositories: 'https://tbep-tech.r-universe.dev'
       - uses: r-lib/actions/setup-pandoc@v1
       - name: Install ubuntu dependencies
         run: |
@@ -29,12 +31,13 @@ jobs:
           sudo apt-get install libgdal-dev 
           sudo apt-get install libgeos-dev 
           sudo apt-get install libproj-dev
-      - name: Install R packages
-        run: |
-          options(repos = c(fawda123 = 'https://fawda123.r-universe.dev', tbeptech = 'https://tbep-tech.r-universe.dev', CRAN = 'https://cloud.r-project.org'))
-          install.packages("sf", configure.args="--with-gdal-config=/usr/local/gdal-3.2.0/bin/gdal-config --with-geos-config=/usr/local/bin/geos-config")
-          install.packages(c("dplyr", "tbeptools"))
-        shell: Rscript {0}
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::dplyr
+            any::sf
+            tbeptools
+   
       - name: Build data
         run: Rscript -e 'source("R/dat_build.R")'
       - name: Commit results
