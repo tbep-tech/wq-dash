@@ -46,7 +46,7 @@ load('data/mapdat.RData')
 load('data/plotlys.RData') # thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat
 
 prj <- '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
-maxyr <- 2023
+maxyr <- 2022
 fml <- "Lato Light"
 
 # minor theme tweaks

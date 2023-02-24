@@ -17,7 +17,7 @@ loadfonts(device = 'pdf', quiet = T)
 if(Sys.info()[1] == 'Windows')
   loadfonts(device = 'win', quiet = T)
 
-maxyr <- 2023
+maxyr <- 2022
 fml <- "Lato Light"
 
 # minor theme tweaks
