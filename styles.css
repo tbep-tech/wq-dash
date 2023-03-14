@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@600;700&display=swap');
 
 /* Frutiger Light approximate */
-@import url("//fonts.googleapis.com/css?family=Lato:100,300,500,700,900"); 
+@import url("//fonts.googleapis.com/css?family=Lato:100,300,500,700,900");
 
 /* DIN condensed approximate */
 @import url("//fonts.googleapis.com/css?family=Roboto+Condensed&display=swap");
@@ -64,11 +64,11 @@ h2,h3,h4,h5 {
 
 #editor-map { /* this sets map editor height dynamically if in sidebar */
   height: calc(100vh - 60px) !important;
-} 
+}
 
 #map { /* this sets map height dynamically if in sidebar */
   height: calc(100vh - 60px) !important;
-} 
+}
 
 /* sub sections */
 
@@ -113,19 +113,27 @@ h2,h3,h4,h5 {
 /* shiny slider stuff */
 
 .irs-bar {
-  background: #00806E
+  background: #00806E !important
 }
 .irs-bar {
-  border-top: 1px #00806E
+  border-top: 1px #00806E !important
 }
 .irs-bar-edge {
-  background: #00806E
+  background: #00806E !important
 }
 .irs-bar-edge {
-  border: 1px #00806E
+  border: 1px #00806E !important
 }
 .irs-single {
-  background: #00806E;
+  background: #00806E !important
+}
+
+.irs-to {
+  background: #00806E !important
+}
+
+.irs-from {
+  background: #00806E !important
 }
 
 /* tabset top border */
@@ -159,6 +167,11 @@ h2,h3,h4,h5 {
   font-family: 'Roboto';
   font-weight: 300;
   color: #958984;
+}
+
+/* removes all but one trace from the rangeslider */
+.rangeslider-rangeplot .overplot{
+    display:none;
 }
 
 /* figure captions */
