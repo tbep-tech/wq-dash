@@ -20,6 +20,11 @@ jobs:
         with: 
           extra-repositories: 'https://tbep-tech.r-universe.dev'
       - uses: r-lib/actions/setup-pandoc@v2
+      - name: Setup Ubuntu dependencies
+        run: |
+          sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+          sudo apt-get update
+          sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite0-dev
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages: |
