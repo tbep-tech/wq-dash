@@ -19,18 +19,7 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
         with: 
           extra-repositories: 'https://tbep-tech.r-universe.dev'
-      - uses: r-lib/actions/setup-pandoc@v1
-      - name: Install ubuntu dependencies
-        run: |
-          sudo apt-get install libcurl4-gnutls-dev 
-          sudo apt-get install libcairo2-dev 
-          sudo apt-get install libxt-dev 
-          sudo apt-get install libssl-dev 
-          sudo apt-get install libssh2-1-dev 
-          sudo apt-get install libudunits2-dev 
-          sudo apt-get install libgdal-dev 
-          sudo apt-get install libgeos-dev 
-          sudo apt-get install libproj-dev
+      - uses: r-lib/actions/setup-pandoc@v2
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages: |
