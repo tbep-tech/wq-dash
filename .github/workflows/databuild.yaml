@@ -22,7 +22,7 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v2
       - name: Setup Ubuntu dependencies
         run: |
-          sudo apt-get -y update && apt-get install -y  libudunits2-dev libgdal-dev libgeos-dev libproj-dev
+          apt-get -y update && apt-get install -y  libudunits2-dev libgdal-dev libgeos-dev libproj-dev
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages: |
