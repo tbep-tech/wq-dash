@@ -694,7 +694,7 @@ knitr::include_graphics('www/plotcontrols.PNG')
 
 #### Website information
 
-Questions and comments about the dashboard can be sent to [Marcus Beck](mailto:mbeck@tbep.org). The website source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).  All data were obtained from the Hillsborough County Environmental Protection Commission (accessible [here](http://www.epchc.org/i-want-to/view-gis-maps-and-data)). Like this app? Share it on social media using the [\#TampaBayOpenSci](https://twitter.com/hashtag/TampaBayOpenSci?src=hashtag_click) hashtag.  
+Questions and comments about the dashboard can be sent to [Marcus Beck](mailto:mbeck@tbep.org). The website source content can be viewed on [Github](https://github.com/tbep-tech/wq-dash).  All data were obtained from the Environmental Protection Commission of Hillsborough County (accessible [here](http://www.epchc.org/i-want-to/view-gis-maps-and-data)). Like this app? Share it on social media using the [\#TampaBayOpenSci](https://twitter.com/hashtag/TampaBayOpenSci?src=hashtag_click) hashtag.  
 
 Citation info here: [![DOI](https://zenodo.org/badge/223773148.svg)](https://zenodo.org/badge/latestdoi/223773148)
 
