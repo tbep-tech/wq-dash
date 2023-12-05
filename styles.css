@@ -1,32 +1,42 @@
 /* Rubik */
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@600;700&display=swap');
-
-/* Frutiger Light approximate */
-@import url("//fonts.googleapis.com/css?family=Lato:100,300,500,700,900");
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700&display=swap');
 
 /* DIN condensed approximate */
-@import url("//fonts.googleapis.com/css?family=Roboto+Condensed&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 
 /* Whole document: */
 
 body{
   font-family: 'Roboto';
-  font-size: 17px;
   font-weight: 400;
+  font-size: 18px;
+  color: #636363;
 }
 
 /* header styles */
 
-h1{
-  font-family: 'Rubik';
-  font-weight: 700;
+h1,h2,h3,h4,h5 {
+  font-weight: 500;
   color: #005293;
+  font-family: 'Rubik',Helvetica,Arial,Lucida,sans-serif;
 }
-
-h2,h3,h4,h5 {
-  font-family: 'Roboto';
-  font-weight: 800;
-  color: #00806E
+h1 {
+	font-size:40px;
+}
+h2 {
+	font-size:32px;
+}
+h3 {
+	font-size:24px;
+}
+h4 {
+	font-size:18px;
+}
+h5 {
+	font-size:16px;
+}
+h6 {
+	font-size:14px;
 }
 
 /* top navbar styles */
@@ -64,11 +74,11 @@ h2,h3,h4,h5 {
 
 #editor-map { /* this sets map editor height dynamically if in sidebar */
   height: calc(100vh - 60px) !important;
-}
+} 
 
 #map { /* this sets map height dynamically if in sidebar */
   height: calc(100vh - 60px) !important;
-}
+} 
 
 /* sub sections */
 
@@ -113,27 +123,19 @@ h2,h3,h4,h5 {
 /* shiny slider stuff */
 
 .irs-bar {
-  background: #00806E !important
+  background: #00806E
 }
 .irs-bar {
-  border-top: 1px #00806E !important
+  border-top: 1px #00806E
 }
 .irs-bar-edge {
-  background: #00806E !important
+  background: #00806E
 }
 .irs-bar-edge {
-  border: 1px #00806E !important
+  border: 1px #00806E
 }
 .irs-single {
-  background: #00806E !important
-}
-
-.irs-to {
-  background: #00806E !important
-}
-
-.irs-from {
-  background: #00806E !important
+  background: #00806E;
 }
 
 /* tabset top border */
@@ -243,20 +245,32 @@ h2,h3,h4,h5 {
 }
 
 /* change link colors to match wordpress */
-a:link {
-  color: #ea6f17;
-  background-color: transparent;
-  text-decoration: none;
+a {
+    color: #db5b25;
+    font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif;
+    font-weight: 500;
+	text-decoration:none;
 }
 
 a:visited {
-  color: #ea6f17;
-  background-color: transparent;
-  text-decoration: none;
+  color: #db5b25;
 }
 
 a:hover {
-  color: #0078db;
-  background-color: transparent;
-  text-decoration: none;
+  color: #f57d05;
 }
+
+/* tabset pills */
+.nav-pills>li>a {
+    border-radius: 4px;
+    color: #ffffff!important;
+    font-size: 16px;
+    font-family: 'Rubik',Helvetica,Arial,Lucida,sans-serif!important;
+    background-color: #F0AD4E;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 500;
+}
+.nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+     background-color: #ea6f17;
+     }
