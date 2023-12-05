@@ -20,7 +20,7 @@ boxplotly <- function(epcdata, bay_segment, maxyr, yrrng, family, themein){
 
   p1 <- ggplotly(p1)
   for(i in 1:length(p1$x$data)){ # fix legend
-    p1$x$data[[i]]$name <- gsub('^\\(|,solid\\)$|,1\\)$', '', p1$x$data[[i]]$name)
+    p1$x$data[[i]]$name <- gsub('^\\(|,solid\\)$|,1,NA\\)$', '', p1$x$data[[i]]$name)
   }
   
   p1$x$data[[1]]$marker = list(opacity = 0) # remove outlier from plot
