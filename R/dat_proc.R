@@ -10,14 +10,14 @@ library(here)
 source('R/funcs.R')
 
 # load wq data created through cron on gh actions
-# load(file = here('data/epcdata.RData'))
-load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
+load(file = here('data/epcdata.RData'))
+# load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
 
 loadfonts(device = 'pdf', quiet = T)
 if(Sys.info()[1] == 'Windows')
   loadfonts(device = 'win', quiet = T)
 
-maxyr <- 2022
+maxyr <- 2023
 fml <- "Lato Light"
 
 # minor theme tweaks
