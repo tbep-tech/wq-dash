@@ -391,8 +391,6 @@ attmap <- reactive({
   
   # map with custom legends
   out <- tbeptools::util_map(toplo) %>%
-    leafem::removeMouseCoordinates() %>% 
-    clearMarkers() %>% 
     addPolygons(
       data = attyr, 
       stroke = T, 
@@ -564,8 +562,6 @@ selplo <- reactive({
 
 ```{r map}
 bsmap <- tbeptools::util_map(locs) %>%
-  leafem::removeMouseCoordinates() %>% 
-  clearMarkers() %>%
   addCircleMarkers(
     data = locs,
     layerId = ~epchc_station,
