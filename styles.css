@@ -48,6 +48,13 @@ h6 {
   font-weight: 300;
 }
 
+.dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
+    color: #ffffff;
+    text-decoration: none;
+    outline: 0;
+    background-color: #00806E;
+}
+
 .navbar-brand { /* dashboard title */
   font-family: 'Roboto Condensed';
   font-weight: bold;
