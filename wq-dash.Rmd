@@ -16,7 +16,6 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
 # libraries
 library(flexdashboard)
-library(mapview)
 library(leaflet)
 library(tbeptools)
 library(tidyverse)
@@ -391,8 +390,7 @@ attmap <- reactive({
   )
   
   # map with custom legends
-  out <- mapview(toplo, fill = F, homebutton = F, popup = NULL, legend = F) %>% 
-    .@map %>% 
+  out <- tbeptools::util_map(toplo) %>%
     leafem::removeMouseCoordinates() %>% 
     clearMarkers() %>% 
     addPolygons(
@@ -565,8 +563,7 @@ selplo <- reactive({
 ```
 
 ```{r map}
-bsmap <- mapview(locs, homebutton = F, legend = F) %>% 
-  .@map %>% 
+bsmap <- tbeptools::util_map(locs) %>%
   leafem::removeMouseCoordinates() %>% 
   clearMarkers() %>%
   addCircleMarkers(
