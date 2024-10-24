@@ -59,7 +59,9 @@ attmat <- ggplotly(plo, tooltip = 'Action') %>%
     toImageButtonOptions = list(
       format = "svg",
       filename = "myplot"
-    )
+    ),
+    displaylogo = F, 
+    modeBarButtonsToRemove = c('autoScale', 'select2d', 'lasso2d')
   )
 
 # chl matrix
@@ -77,7 +79,9 @@ chlmat <- ggplotly(plo, tooltip = 'Result') %>%
     toImageButtonOptions = list(
       format = "svg",
       filename = "myplot"
-    )
+    ),
+    displaylogo = F, 
+    modeBarButtonsToRemove = c('autoScale', 'select2d', 'lasso2d')
   )
   
 # la matrix
@@ -95,14 +99,20 @@ lamat <- ggplotly(plo, tooltip = 'Result') %>%
     toImageButtonOptions = list(
       format = "svg",
       filename = "myplot"
-    )
+    ),
+    displaylogo = F, 
+    modeBarButtonsToRemove = c('autoScale', 'select2d', 'lasso2d')
   )
 
 # threshold plots
-thrplototb <- show_segplotly(epcdata, 'OTB', c(1975, maxyr), fml)
-thrplothb <- show_segplotly(epcdata, 'HB', c(1975, maxyr), fml)
-thrplotmtb <- show_segplotly(epcdata, 'MTB', c(1975, maxyr), fml)
-thrplotltb <- show_segplotly(epcdata, 'LTB', c(1975, maxyr), fml)
+thrplototb <- show_segplotly(epcdata, 'OTB', c(1975, maxyr), fml) %>% 
+  plotly::config(displaylogo = F, modeBarButtonsToRemove = c('autoScale', 'select2d', 'lasso2d'))
+thrplothb <- show_segplotly(epcdata, 'HB', c(1975, maxyr), fml) %>% 
+  plotly::config(displaylogo = F, modeBarButtonsToRemove = c('autoScale', 'select2d', 'lasso2d'))
+thrplotmtb <- show_segplotly(epcdata, 'MTB', c(1975, maxyr), fml) %>% 
+  plotly::config(displaylogo = F, modeBarButtonsToRemove = c('autoScale', 'select2d', 'lasso2d'))
+thrplotltb <- show_segplotly(epcdata, 'LTB', c(1975, maxyr), fml) %>% 
+  plotly::config(displaylogo = F, modeBarButtonsToRemove = c('autoScale', 'select2d', 'lasso2d'))
 
 save(thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat, file = 'data/plotlys.RData', compress = 'xz')
 

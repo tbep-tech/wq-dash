@@ -59,7 +59,9 @@ boxplotly <- function(epcdata, bay_segment, maxyr, yrrng, themein, family = NULL
       toImageButtonOptions = list(
         format = "svg",
         filename = "myplot"
-      )
+      ),
+      displaylogo = F, 
+      modeBarButtonsToRemove = c('autoScale', 'select2d', 'lasso2d')
     )
   
   return(out)
@@ -83,7 +85,7 @@ selfun <- function(selin, plodat, algdat, epcdata, bay_segment){
     txt <- plodat$x$data[[7]]
 
   moval <- round(selin$x, 0)
-  moval <- month(moval, label = T)
+  moval <- lubridate::month(moval, label = T)
   moval <- as.character(moval)
   yval <- selin$y
   # tosel <- paste0('mo: ', moval, '<br />val:\\s*', trunc(yval * 1e3)/ 1e3)
@@ -136,7 +138,9 @@ algselplo <- function(clkrct, algnms, cols, family = NULL){
       toImageButtonOptions = list(
         format = "svg",
         filename = "myplot"
-      )
+      ),
+      displaylogo = F, 
+      modeBarButtonsToRemove = c('autoScale', 'select2d', 'lasso2d')
     )
   
   return(p)
@@ -267,7 +271,9 @@ selsit_plo <- function(selsit){
       toImageButtonOptions = list(
         format = "svg",
         filename = "myplot"
-      )
+      ),
+      displaylogo = F, 
+      modeBarButtonsToRemove = c('autoScale', 'select2d', 'lasso2d')
     )
   
   return(out)
