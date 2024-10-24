@@ -12,70 +12,7 @@ css: styles.css
 ---
 
 ```{r setup, include=F}
-knitr::opts_chunk$set(echo = F, message = F, warning = F)
-
-# libraries
-library(flexdashboard)
-library(leaflet)
-library(tbeptools)
-library(tidyverse)
-library(shiny)
-library(sf)
-library(RColorBrewer)
-library(extrafont)
-library(plotly)
-library(lubridate)
-library(shinyWidgets)
-
-# # style file
-# styles <- readLines('https://raw.githubusercontent.com/tbep-tech/css-styling/master/styles.css')
-# writeLines(styles, 'styles.css')
-
-loadfonts(device = 'pdf', quiet = T)
-if(Sys.info()[1] == 'Windows')
-  loadfonts(device = 'win', quiet = T)
-
-source('R/funcs.R')
-
-# load('data/epcdata.RData')
-load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
-load(url('https://tbep-tech.github.io/wq-dash/data/algdat.RData'))
-load('data/avedat.RData')
-load('data/mapdat.RData')
-load('data/plotlys.RData') # thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat
-
-prj <- '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
-maxyr <- 2023
-fml <- "Lato Light"
-
-# minor theme tweaks
-pthm <- theme(
-    axis.text.x = element_text(size = 11, angle = 45, hjust = 1),
-    legend.text = element_text(size = 12), 
-    axis.title.y = element_text(size = 12),
-    text = element_text(fml), 
-    legend.position = 'top',
-    # panel.grid.minor=element_blank(),
-    # panel.grid.major=element_blank(),
-    panel.background = element_rect(fill = '#ECECEC')
-    ) 
-
-# locations
-locs <- epcdata %>% 
-  select(epchc_station, Longitude, Latitude) %>% 
-  unique %>% 
-  st_as_sf(coords = c('Longitude', 'Latitude'), crs = prj)
-
-# algae names and colors
-algnms <- c('Bacillariophyta', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
-cols <- pal_alg(algnms)
-names(cols) <- algnms
-
-downloadButtonRmd <- function (outputId, label = "Download", class = NULL, ...)  {
-  tags$a(id = outputId, class = paste("btn btn-default shiny-download-link", 
-                                      class), href = "", target = "_blank", download = NA, 
-         icon("download"), label, ...)
-}
+source(here::here('global.R'))
 ```
 
 ```{r reactives}
@@ -86,7 +23,7 @@ boxplototb <- reactive({
   yrsselseas <- input$yrsselseas
   yrselseas <- input$yrselseas
   
-  out <- boxplotly(epcdata, 'OTB', yrselseas, yrsselseas, fml, pthm)
+  out <- boxplotly(epcdata, 'OTB', yrselseas, yrsselseas, pthm)
 
   return(out)
 
@@ -95,7 +32,7 @@ boxplototb <- reactive({
 # OTB boxplot click
 otbclkrct <- reactive({
   
-  selin <- event_data("plotly_click", source = 'otbclk', priority = 'event')
+  selin <- plotly::event_data("plotly_click", source = 'otbclk', priority = 'event')
   
   boxplototb <- boxplototb()
 
@@ -118,7 +55,7 @@ otbalg <- reactive({
   
   otbclkrct <- otbclkrct()
   
-  out <- algselplo(otbclkrct, algnms, cols, fml)
+  out <- algselplo(otbclkrct, algnms, cols)
 
   return(out)
   
@@ -131,7 +68,7 @@ boxplothb <- reactive({
   yrsselseas <- input$yrsselseas
   yrselseas <- input$yrselseas
   
-  out <- boxplotly(epcdata, 'HB', yrselseas, yrsselseas, fml, pthm)
+  out <- boxplotly(epcdata, 'HB', yrselseas, yrsselseas, pthm)
 
   return(out)
   
@@ -140,7 +77,7 @@ boxplothb <- reactive({
 # HB boxplot click
 hbclkrct <- reactive({
   
-  selin <- event_data("plotly_click", source = 'hbclk')
+  selin <- plotly::event_data("plotly_click", source = 'hbclk')
   boxplothb <- boxplothb()
   
   validate(
@@ -162,7 +99,7 @@ hbalg <- reactive({
   
   hbclkrct <- hbclkrct()
   
-  out <- algselplo(hbclkrct, algnms, cols, fml)
+  out <- algselplo(hbclkrct, algnms, cols)
   
   return(out)
   
@@ -175,7 +112,7 @@ boxplotmtb <- reactive({
   yrsselseas <- input$yrsselseas
   yrselseas <- input$yrselseas
   
-  out <- boxplotly(epcdata, 'MTB', yrselseas, yrsselseas, fml, pthm)
+  out <- boxplotly(epcdata, 'MTB', yrselseas, yrsselseas, pthm)
   
   return(out)
   
@@ -184,7 +121,7 @@ boxplotmtb <- reactive({
 # MTB boxplot click
 mtbclkrct <- reactive({
   
-  selin <- event_data("plotly_click", source = 'mtbclk')
+  selin <- plotly::event_data("plotly_click", source = 'mtbclk')
   boxplotmtb <- boxplotmtb()
   
   validate(
@@ -206,7 +143,7 @@ mtbalg <- reactive({
   
   mtbclkrct <- mtbclkrct()
   
-  out <- algselplo(mtbclkrct, algnms, cols, fml)
+  out <- algselplo(mtbclkrct, algnms, cols)
   
   return(out)
   
@@ -219,7 +156,7 @@ boxplotltb <- reactive({
   yrsselseas <- input$yrsselseas
   yrselseas <- input$yrselseas
   
-  out <- boxplotly(epcdata, 'LTB', yrselseas, yrsselseas, fml, pthm)
+  out <- boxplotly(epcdata, 'LTB', yrselseas, yrsselseas, pthm)
 
   return(out)
   
@@ -228,7 +165,7 @@ boxplotltb <- reactive({
 # LTB boxplot click
 ltbclkrct <- reactive({
   
-  selin <- event_data("plotly_click", source = 'ltbclk')
+  selin <- plotly::event_data("plotly_click", source = 'ltbclk')
   boxplotltb <- boxplotltb()
   
   validate(
@@ -250,7 +187,7 @@ ltbalg <- reactive({
   
   ltbclkrct <- ltbclkrct()
   
-  out <- algselplo(ltbclkrct, algnms, cols, fml)
+  out <- algselplo(ltbclkrct, algnms, cols)
   
   return(out)
   
@@ -264,13 +201,13 @@ maprct <- reactive({
   
   if(mapref == 'threshold')
     out <- mapdat %>% 
-      mutate(
+      dplyr::mutate(
         met = ifelse(val < thresh, 'yes', 'no')
       )
   
   if(mapref == 'target')
     out <- mapdat %>% 
-      mutate(
+      dplyr::mutate(
         met = ifelse(val < target, 'yes', 'no')
       )
   
@@ -285,13 +222,14 @@ mapdmn <- reactive({
   maprct <- maprct()
   
   out <- maprct %>% 
-    group_by(thr, met) %>% 
-    nest %>% 
-    mutate(
+    dplyr::group_by(thr, met) %>% 
+    tidyr::nest() %>% 
+    dplyr::mutate(
       rng = purrr::map(data, function(x) range(x$val, na.rm = T))
     ) %>% 
-    select(-data) %>% 
-    unnest(rng)
+    dplyr::select(-data) %>% 
+    tidyr::unnest(rng) %>% 
+    dplyr::ungroup()
   
   return(out)
   
@@ -305,12 +243,12 @@ palyes <- reactive({
   mapdmn <- mapdmn()
   
   dmn <- mapdmn %>% 
-    filter(thr == thrsel) %>% 
-    filter(met == 'yes') %>% 
-    pull(rng)
+    dplyr::filter(thr == thrsel) %>% 
+    dplyr::filter(met == 'yes') %>% 
+    dplyr::pull(rng)
   
-  colorNumeric(
-    palette = brewer.pal(4, 'Greens'),
+  leaflet::colorNumeric(
+    palette = RColorBrewer::brewer.pal(4, 'Greens'),
     na.color = 'yellow',
     domain = dmn
     )
@@ -325,12 +263,12 @@ palno <- reactive({
   mapdmn <- mapdmn()
   
   dmn <- mapdmn %>% 
-    filter(thr == thrsel) %>% 
-    filter(met == 'no') %>% 
-    pull(rng)
+    dplyr::filter(thr == thrsel) %>% 
+    dplyr::filter(met == 'no') %>% 
+    dplyr::pull(rng)
   
-  colorNumeric(
-    palette = brewer.pal(4, 'Reds'),
+  leaflet::colorNumeric(
+    palette = RColorBrewer::brewer.pal(4, 'Reds'),
     na.color = 'yellow',
     domain = dmn
     )
@@ -352,27 +290,27 @@ attmap <- reactive({
 
   # filter by year to map
   toplo <- maprct %>% 
-    filter(thr %in% thrsel) %>% 
-    select(-thr) %>% 
-    filter(yr %in% yrsel) %>% 
-    mutate(
-      cols = case_when(
+    dplyr::filter(thr %in% thrsel) %>% 
+    dplyr::select(-thr) %>% 
+    dplyr::filter(yr %in% yrsel) %>% 
+    dplyr::mutate(
+      cols = dplyr::case_when(
         met == 'yes' ~ palyes(val),
         met == 'no' ~ palno(val)
       ), 
-      ptlab = case_when(
+      ptlab = dplyr::case_when(
         mapref == 'threshold' ~ thresh, 
         mapref == 'target' ~ target
       )
     ) %>% 
-    left_join(locs, ., by = 'epchc_station') 
+    dplyr::left_join(locs, ., by = 'epchc_station') 
 
   # polygon attainment data for selected year
   attyr <- avedat %>% 
-    filter(yr %in% yrsel) %>% 
-    left_join(tbseg, ., by = 'bay_segment') %>% 
-    mutate(
-      outcome = case_when(
+    dplyr::filter(yr %in% yrsel) %>% 
+    dplyr::left_join(tbseg, ., by = 'bay_segment') %>% 
+    dplyr::mutate(
+      outcome = dplyr::case_when(
         outcome == 'lightgreen' ~ '#2DC938', 
         outcome == 'yellow' ~ '#E9C318', 
         outcome == 'red' ~ '#CC3231'
@@ -380,8 +318,8 @@ attmap <- reactive({
     )
 
   # values to feed to legend  
-  yesval <- mapdmn %>% filter(thr == thrsel) %>% filter(met == 'yes') %>% pull(rng)
-  noval <- mapdmn %>% filter(thr == thrsel) %>% filter(met == 'no') %>% pull(rng)
+  yesval <- mapdmn %>% dplyr::filter(thr == thrsel) %>% dplyr::filter(met == 'yes') %>% dplyr::pull(rng)
+  noval <- mapdmn %>% dplyr::filter(thr == thrsel) %>% dplyr::filter(met == 'no') %>% dplyr::pull(rng)
   
   # for point scaling, original range
   scls <- dplyr::case_when(
@@ -391,7 +329,7 @@ attmap <- reactive({
   
   # map with custom legends
   out <- tbeptools::util_map(toplo) %>%
-    addPolygons(
+    leaflet::addPolygons(
       data = attyr, 
       stroke = T, 
       color = 'grey', 
@@ -401,7 +339,7 @@ attmap <- reactive({
       fillOpacit = 0.5,
       label = ~paste0(bay_segment, ': ', long_name, ', Action: ', action, ' (', outcome, ')')
     ) %>% 
-    addCircleMarkers(
+    leaflet::addCircleMarkers(
       data = toplo, 
       layerId = ~epchc_station,
       stroke = TRUE,
@@ -413,9 +351,9 @@ attmap <- reactive({
       radius=~scales::rescale(val, from = scls, to = c(5, 20)),
       label = ~paste0('Station ', epchc_station, ' (', mapref, ' met: ', met, ', value ', round(val, 2), ', ', mapref, ' ', ptlab, ')')
     ) %>% 
-    addLegend("topright", labels = c("Stay the Course", "Caution", "On Alert"), colors = c("#2DC938", "#E9C318", "#CC3231"), title = "Bay segment decision<br>matrix outcomes", opacity = 1) %>% 
-    addLegend("bottomright", pal = palno, title = paste0("Station ", mapref, "<br>not met"), labels = thrsel, opacity = 1, values = noval) %>% 
-    addLegend("bottomright", pal = palyes, title = paste0("Station ", mapref, "<br>met"), labels = thrsel, opacity = 1, values = yesval)
+    leaflet::addLegend("topright", labels = c("Stay the Course", "Caution", "On Alert"), colors = c("#2DC938", "#E9C318", "#CC3231"), title = "Bay segment decision<br>matrix outcomes", opacity = 1) %>% 
+    leaflet::addLegend("bottomright", pal = palno, title = paste0("Station ", mapref, "<br>not met"), labels = thrsel, opacity = 1, values = noval) %>% 
+    leaflet::addLegend("bottomright", pal = palyes, title = paste0("Station ", mapref, "<br>met"), labels = thrsel, opacity = 1, values = yesval)
   
   if(length(attmaploc) != 0)
     out <- out %>% 
@@ -453,72 +391,66 @@ selplo <- reactive({
 
   # data to plot
   toplo <- epcdata %>% 
-    filter(epchc_station %in% selsit) %>% 
-    filter(yr >= 1975) %>% 
-    select(Date = SampleTime, sd_raw_m, sd_q, chla) %>% 
-    mutate(Date = as.Date(Date))
+    dplyr::filter(epchc_station %in% selsit) %>% 
+    dplyr::filter(yr >= 1975) %>% 
+    dplyr::select(Date = SampleTime, sd_raw_m, sd_q, chla) %>% 
+    dplyr::mutate(Date = as.Date(Date))
   
   algplo <- algdat %>% 
-    filter(epchc_station %in% selsit) %>% 
-    group_by(yrqrt, name) %>%
-    summarise(count = sum(count, na.rm = T)) %>% 
-    ungroup %>% 
-    mutate(
+    dplyr::filter(epchc_station %in% selsit) %>% 
+    dplyr::summarise(count = sum(count, na.rm = T), .by = c(yrqrt, name)) %>% 
+    dplyr::mutate(
       name = factor(name, levels = algnms, labels = algnms)
       )
 
   # chl plot
-  p1 <- ggplot(toplo, aes(x = Date, y = chla)) + 
-    geom_line(aes(colour = 'Chlorophyll-a')) + 
-    scale_colour_manual(values = "#427355") + 
-    # geom_point(colour = "#427355", size = 0.5) +
-    # scale_y_log10() + 
-    labs(
+  p1 <- ggplot2::ggplot(toplo, ggplot2::aes(x = Date, y = chla)) + 
+    ggplot2::geom_line(ggplot2::aes(colour = 'Chlorophyll-a')) + 
+    ggplot2::scale_colour_manual(values = "#427355") + 
+    ggplot2::labs(
       y = 'Concentration (ug/L)', 
       x = NULL
       ) +
     pthm + 
-    theme(
-      legend.title = element_blank()
+    ggplot2::theme(
+      legend.title = ggplot2::element_blank()
     )
   
   # secchi plot
-  p2 <- ggplot() + 
-    geom_line(data = toplo, aes(x = Date, y = sd_raw_m, colour = 'Secchi depth')) + 
-    labs(
+  p2 <- ggplot2::ggplot() + 
+    ggplot2::geom_line(data = toplo, ggplot2::aes(x = Date, y = sd_raw_m, colour = 'Secchi depth')) + 
+    ggplot2::labs(
       y = 'Depth (m)', 
       x = NULL, 
       title = paste0('Station ', selsit)
       ) + 
-    scale_colour_manual(values = "#0047FE") +
+    ggplot2::scale_colour_manual(values = "#0047FE") +
     pthm +
-    theme(
-      legend.title = element_blank()
+    ggplot2::theme(
+      legend.title = ggplot2::element_blank()
     )
 
   if(any(!toplo$sd_q))
     p2 <- p2 +
-      geom_point(data = toplo[!toplo$sd_q, ], aes(x = Date, y = sd_raw_m, colour = 'Secchi on bottom'), size = 1.5) +
-      scale_colour_manual(values = c('#0047FE', 'tomato1'))
+      ggplot2::geom_point(data = toplo[!toplo$sd_q, ], ggplot2::aes(x = Date, y = sd_raw_m, colour = 'Secchi on bottom'), size = 1.5) +
+      ggplot2::scale_colour_manual(values = c('#0047FE', 'tomato1'))
 
-  p1 <- ggplotly(p1, dynamicTicks = T)
-  p2 <- ggplotly(p2, dynamicTicks = T)
-  p3 <-  plot_ly(algplo, x = ~ yrqrt, y= ~count, color = ~name, text = ~paste0(name, ', ', yrqrt), hoverinfo = 'text') %>% 
-    add_bars() %>% 
-    layout(
+  p1 <- plotly::ggplotly(p1, dynamicTicks = T)
+  p2 <- plotly::ggplotly(p2, dynamicTicks = T)
+  p3 <- plotly::plot_ly(algplo, x = ~ yrqrt, y= ~count, color = ~name, text = ~paste0(name, ', ', yrqrt), hoverinfo = 'text') %>% 
+    plotly::add_bars() %>% 
+    plotly::layout(
       yaxis = list(title = 'Phytoplankton cell count (0.1/ml)', gridcolor = '#FFFFFF'),
       barmode = 'stack',
       showlegend = T, 
-      font = list(family = fml), 
       plot_bgcolor = '#ECECEC'
     )
   
-  out <- subplot(p3, p1, p2, nrows = 3, shareX = T, titleY = T, which_layout = 1) %>% 
-    rangeslider(thickness = 0.02) %>%
-    layout(
+  out <- plotly::subplot(p3, p1, p2, nrows = 3, shareX = T, titleY = T, which_layout = 1) %>% 
+    plotly::rangeslider(thickness = 0.02) %>%
+    plotly::layout(
       title = paste('Station', selsit),
       legend = list(font = list(size = 16)), 
-      font = list(family = fml),
       xaxis = list(
         domain = c(0.02, 1),
         rangeselector = list(
@@ -562,7 +494,7 @@ selplo <- reactive({
 
 ```{r map}
 bsmap <- tbeptools::util_map(locs) %>%
-  addCircleMarkers(
+  leaflet::addCircleMarkers(
     data = locs,
     layerId = ~epchc_station,
     color = '#00806E',
@@ -570,17 +502,16 @@ bsmap <- tbeptools::util_map(locs) %>%
     fillOpacity = 0.9,
     radius = 15,
     label = ~epchc_station,
-    labelOptions = labelOptions(
+    labelOptions = leaflet::labelOptions(
       textOnly = T,
       noHide = T,
       style = list(
-        "color" = "#FFFFFF",
-        "font-family" = fml
+        "color" = "#FFFFFF"
         ),
       direction = 'center'
     )
   ) %>% 
-  addCircleMarkers(
+  leaflet::addCircleMarkers(
       data = locs[1, ],
       layerId = 'selsit',
       stroke = T,
@@ -591,7 +522,7 @@ bsmap <- tbeptools::util_map(locs) %>%
     )
 
 # leaflet proxy for marker select
-map <- leafletProxy('map')
+map <- leaflet::leafletProxy('map')
 
 observeEvent(input$map_marker_click, {
   
@@ -599,12 +530,12 @@ observeEvent(input$map_marker_click, {
 
   # get station selection
   selsitplo <- locs %>% 
-    filter(epchc_station %in% selsit)
+    dplyr::filter(epchc_station %in% selsit)
 
   # clear markers on input select, add all points and selected point
   map <- map %>% 
-    removeMarker('selsit') %>% 
-    addCircleMarkers(
+    leaflet::removeMarker('selsit') %>% 
+    leaflet::addCircleMarkers(
       data = selsitplo,
       layerId = 'selsit',
       stroke = T,
@@ -627,8 +558,8 @@ output$wqdwntab <- downloadHandler(
     seldl <- input$seldl
     
     todl <- epcdata %>% 
-      filter(epchc_station %in% as.numeric(seldl)) %>% 
-      select(bay_segment, epchc_station, SampleTime, yr, mo, Latitude, Longitude, secchi_m = sd_raw_m, secchi_q = sd_q, chla, chla_q)
+      dplyr::filter(epchc_station %in% as.numeric(seldl)) %>% 
+      dplyr::select(bay_segment, epchc_station, SampleTime, yr, mo, Latitude, Longitude, secchi_m = sd_raw_m, secchi_q = sd_q, chla, chla_q)
     
     write.csv(todl, file, quote = T, row.names = F)
     
@@ -644,7 +575,7 @@ output$algdwntab <- downloadHandler(
     seldl <- input$seldl
     
     todl <- algdat %>%
-      filter(epchc_station %in% as.numeric(seldl))
+      dplyr::filter(epchc_station %in% as.numeric(seldl))
     
     write.csv(todl, file, quote = T, row.names = F)
     
@@ -751,7 +682,7 @@ column(12,
 )
 column(12, 
        column(4, 
-              pickerInput('seldl', NULL, choices = unique(locs$epchc_station), 
+              shinyWidgets::pickerInput('seldl', NULL, choices = unique(locs$epchc_station), 
                           selected = unique(locs$epchc_station), multiple = T,
                           options = list(`actions-box` = TRUE, size = 20), width = '100%')
               ),
@@ -848,7 +779,7 @@ Column {data-width=500}
 ### SITE ATTAINMENT BY YEAR
 
 ```{r ecphc_validate}
-output$attmap <- renderLeaflet({attmap()})
+output$attmap <- leaflet::renderLeaflet({attmap()})
 fillCol(flex = c(NA, 1),
   column(12,
     column(6,
@@ -861,7 +792,7 @@ fillCol(flex = c(NA, 1),
       selectInput('mapref', 'Select map reference:', choices = list('Management target' = 'target', 'Threshold (+2 se)' = 'threshold'))   
     )
   ),
-  leafletOutput('attmap')
+  leaflet::leafletOutput('attmap')
 )
 ```
 
@@ -997,64 +928,64 @@ mainPanel(
 ### OLD TAMPA BAY
 
 ```{r boxplot_otb, fig.height = 8, fig.width = 10}
-output$boxplototb <- renderPlotly({
+output$boxplototb <- plotly::renderPlotly({
   out <- boxplototb()
   out$x$source <- 'otbclk'
   out
 })
-output$otbalg <- renderPlotly(otbalg())
+output$otbalg <- plotly::renderPlotly(otbalg())
 
 fillRow(flex = c(1, 0.25),
-  plotlyOutput('boxplototb'),
-  plotlyOutput('otbalg')
+  plotly::plotlyOutput('boxplototb'),
+  plotly::plotlyOutput('otbalg')
 )
 ```
 
 ### HILLSBOROUGH BAY
 
 ```{r boxplot_hb, fig.height = 8, fig.width = 10}
-output$boxplothb <- renderPlotly({
+output$boxplothb <- plotly::renderPlotly({
   out <- boxplothb()
   out$x$source <- 'hbclk'
   out
 })
-output$hbalg <- renderPlotly(hbalg())
+output$hbalg <- plotly::renderPlotly(hbalg())
 
 fillRow(flex = c(1, 0.25),
-  plotlyOutput('boxplothb'),
-  plotlyOutput('hbalg')
+  plotly::plotlyOutput('boxplothb'),
+  plotly::plotlyOutput('hbalg')
 )
 ```
 
 ### MIDDLE TAMPA BAY
 
 ```{r boxplot_mtb, fig.height = 8, fig.width = 10}
-output$boxplotmtb <- renderPlotly({
+output$boxplotmtb <- plotly::renderPlotly({
   out <- boxplotmtb()
   out$x$source <- 'mtbclk'
   out
 })
-output$mtbalg <- renderPlotly(mtbalg())
+output$mtbalg <- plotly::renderPlotly(mtbalg())
 
 fillRow(flex = c(1, 0.25),
-  plotlyOutput('boxplotmtb'),
-  plotlyOutput('mtbalg')
+  plotly::plotlyOutput('boxplotmtb'),
+  plotly::plotlyOutput('mtbalg')
 )
 ```
 
 ### LOWER TAMPA BAY
 
 ```{r boxplot_ltb, fig.height = 8, fig.width = 10}
-output$boxplotltb <- renderPlotly({
+output$boxplotltb <- plotly::renderPlotly({
   out <- boxplotltb()
   out$x$source <- 'ltbclk'
   out
 })
-output$ltbalg <- renderPlotly(ltbalg())
+output$ltbalg <- plotly::renderPlotly(ltbalg())
 
 fillRow(flex = c(1, 0.25),
-  plotlyOutput('boxplotltb'),
-  plotlyOutput('ltbalg')
+  plotly::plotlyOutput('boxplotltb'),
+  plotly::plotlyOutput('ltbalg')
 )
 ```
 
@@ -1067,8 +998,8 @@ Column {.tabset .tabset-fade data-width=250}
 ### MAP SELECTION
 
 ```{r}
-output$map <- renderLeaflet(bsmap)
-leafletOutput('map')
+output$map <- leaflet::renderLeaflet(bsmap)
+leaflet::leafletOutput('map')
 ```
 
 ### Using this page
@@ -1111,7 +1042,7 @@ Column {data-width=500}
 ### PLOT
 
 ```{r}
-output$selplo <- renderPlotly(selplo())
-plotlyOutput('selplo')
+output$selplo <- plotly::renderPlotly(selplo())
+plotly::plotlyOutput('selplo')
 ```
 

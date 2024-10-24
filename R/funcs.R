@@ -1,24 +1,30 @@
+downloadButtonRmd <- function (outputId, label = "Download", class = NULL, ...)  {
+  tags$a(id = outputId, class = paste("btn btn-default shiny-download-link", 
+                                      class), href = "", target = "_blank", download = NA, 
+         shiny::icon("download"), label, ...)
+}
+
 # algae color palette
-pal_alg <- colorFactor(
+pal_alg <- leaflet::colorFactor(
   palette = RColorBrewer::brewer.pal(8,  'Dark2'),#c('#004F7E', '#00806E', '#427355', '#5C4A42', '#958984'),
   na.color = 'yellow',
   levels = c('Bacillariophyta', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
   )
 
 # plotly function for boxplots
-boxplotly <- function(epcdata, bay_segment, maxyr, yrrng, family, themein){
+boxplotly <- function(epcdata, bay_segment, maxyr, yrrng, themein, family = NULL){
 
   maxyr <- as.numeric(maxyr)
 
-  p1 <- show_boxplot(epcdata, param = 'chla', bay_segment = bay_segment, yrrng = yrrng, yrsel = maxyr, family = family, labelexp = F, txtlab = F) + 
-    ggtitle(NULL) +
+  p1 <- tbeptools::show_boxplot(epcdata, param = 'chla', bay_segment = bay_segment, yrrng = yrrng, yrsel = maxyr, family = family, labelexp = F, txtlab = F) + 
+    ggplot2::ggtitle(NULL) +
     themein
 
-  p2 <- show_boxplot(epcdata, param = 'la', bay_segment = bay_segment, yrrng = yrrng, yrsel = maxyr, family = family, labelexp = F, txtlab = F) + 
-    ggtitle(NULL) +
+  p2 <- tbeptools::show_boxplot(epcdata, param = 'la', bay_segment = bay_segment, yrrng = yrrng, yrsel = maxyr, family = family, labelexp = F, txtlab = F) + 
+    ggplot2::ggtitle(NULL) +
     themein
 
-  p1 <- ggplotly(p1)
+  p1 <- plotly::ggplotly(p1)
   for(i in 1:length(p1$x$data)){ # fix legend
     p1$x$data[[i]]$name <- gsub('^\\(|,solid\\)$|,1,NA\\)$', '', p1$x$data[[i]]$name)
   }
@@ -29,7 +35,7 @@ boxplotly <- function(epcdata, bay_segment, maxyr, yrrng, family, themein){
   p1$x$data[[3]]$hoveron <- NULL
   p1$x$data[[4]]$hoveron <- NULL
   
-  p2 <- ggplotly(p2)
+  p2 <- plotly::ggplotly(p2)
   for(i in 1:length(p2$x$data)){ # fix legend
     p2$x$data[[i]]$showlegend <- FALSE
   }
@@ -47,7 +53,7 @@ boxplotly <- function(epcdata, bay_segment, maxyr, yrrng, family, themein){
   p2$x$data[[2]]$text <- gsub('names\\(cols\\)\\[1\\].*$', '', p2$x$data[[2]]$text)
   p2$x$data[[3]]$text <- gsub('names\\(cols\\)\\[2\\].*$', '', p2$x$data[[3]]$text)
   
-  out <- subplot(p1, p2, nrows = 2, shareX = T, titleY = TRUE) %>%
+  out <- plotly::subplot(p1, p2, nrows = 2, shareX = T, titleY = TRUE) %>%
     plotly::layout(legend = list(title = '')) %>% 
     plotly::config(
       toImageButtonOptions = list(
@@ -90,36 +96,35 @@ selfun <- function(selin, plodat, algdat, epcdata, bay_segment){
   
   # selected algae month/year plot
   stas <- epcdata %>% 
-    filter(bay_segment %in% !!bay_segment) %>% 
-    pull(epchc_station) %>% 
+    dplyr::filter(bay_segment %in% !!bay_segment) %>% 
+    dplyr::pull(epchc_station) %>% 
     unique
   
   out <- algdat %>% 
-    filter(epchc_station %in% stas) %>% 
-    filter(mo %in% clkrct[['moval']]) %>%
-    filter(yr %in% clkrct[['yrval']])
+    dplyr::filter(epchc_station %in% stas) %>% 
+    dplyr::filter(mo %in% clkrct[['moval']]) %>%
+    dplyr::filter(yr %in% clkrct[['yrval']])
   
   return(out)
   
 }
 
 # selected month/year algae plot
-algselplo <- function(clkrct, algnms, cols, family){
+algselplo <- function(clkrct, algnms, cols, family = NULL){
 
   toplo <- clkrct %>% 
-    mutate(name = factor(name, levels = rev(algnms))) %>% 
-    unite('x', mo, yr, sep = ' ') %>% 
-    group_by(name, x) %>% 
-    summarise(count = sum(count, na.rm = T)) %>% 
-    mutate(
+    dplyr::mutate(name = factor(name, levels = rev(algnms))) %>% 
+    tidyr::unite('x', mo, yr, sep = ' ') %>% 
+    dplyr::summarise(count = sum(count, na.rm = T), .by = c('name', 'x')) %>% 
+    dplyr::mutate(
       width = 0.6, 
       color = factor(name, levels = rev(algnms), labels = rev(cols))
     )
 
-  p <-  plot_ly(toplo, x = ~ x, y= ~count, color = ~name, marker = list(color = ~color)) %>% 
-    add_bars(width = ~width) %>% 
-    layout(
-      yaxis = list(title = 'Phytoplankton cell count (0.1/ml)', zeroline = F, showgrid = F, titlefont = list(size = 18)),
+  p <-  plotly::plot_ly(toplo, x = ~ x, y= ~count, color = ~name, marker = list(color = ~color)) %>% 
+    plotly::add_bars(width = ~width) %>% 
+    plotly::layout(
+      yaxis = list(title = 'Phytoplankton\ncell count (0.1/ml)', zeroline = F, showgrid = F, titlefont = list(size = 18)),
       xaxis = list(title = '', zeroline = F, showgrid = F, tickfont = list(size = 18)),
       legend = list(x = 0, y = 1.2, borderwidth = 0, font = list(size = 16)), 
       barmode = 'stack',

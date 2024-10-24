@@ -114,20 +114,18 @@ h6 {
 
 /* shiny slider stuff */
 
-.irs-bar {
-  background: #00806E
-}
-.irs-bar {
-  border-top: 1px #00806E
-}
 .irs-bar-edge {
-  background: #00806E
+  background: #00806E !important;
+  border: 1px #00806E !important;
 }
-.irs-bar-edge {
-  border: 1px #00806E
-}
+
 .irs-single {
-  background: #00806E;
+  background: #00806E !important;
+}
+
+.js-irs-0 .irs-single-0, .js-irs-0 .irs-bar-edge-0, .js-irs-0 .irs-bar, .js-irs-0 .irs-line {
+  background: #E5E5E5 !important; 
+  border: 1px #E5E5E5 !important;
 }
 
 /* tabset top border */
