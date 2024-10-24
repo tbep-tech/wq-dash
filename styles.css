@@ -73,11 +73,11 @@ h6 {
 }
 
 #editor-map { /* this sets map editor height dynamically if in sidebar */
-  height: calc(100vh - 120px) !important;
+  height: calc(100vh - 240px) !important;
 } 
 
 #map { /* this sets map height dynamically if in sidebar */
-  height: calc(100vh - 120px) !important;
+  height: calc(100vh - 240px) !important;
 } 
 
 /* sub sections */
