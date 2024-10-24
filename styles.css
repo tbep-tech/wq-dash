@@ -72,6 +72,14 @@ h6 {
   background-color: #95898430; /* gray with alpha */
 }
 
+#editor-map { /* this sets map editor height dynamically if in sidebar */
+  height: calc(100vh - 120px) !important;
+} 
+
+#map { /* this sets map height dynamically if in sidebar */
+  height: calc(100vh - 120px) !important;
+} 
+
 /* sub sections */
 
 .level3 {
