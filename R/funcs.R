@@ -142,3 +142,134 @@ algselplo <- function(clkrct, algnms, cols, family = NULL){
   return(p)
 
 }
+
+# plot for time series of phyto, chl, and secchi from map selection (selsit)
+selsit_plo <- function(selsit){
+  
+  if(is.null(selsit))
+    selsit <- locs[1, ]$epchc_station 
+  
+  gridcol <- 'white'
+  plotcol <- '#E5E5E5'
+  
+  # data to plot
+  toplo <- epcdata %>% 
+    dplyr::filter(epchc_station %in% selsit) %>% 
+    dplyr::filter(yr >= 1975) %>% 
+    dplyr::select(Date = SampleTime, sd_raw_m, sd_q, chla) %>% 
+    dplyr::mutate(Date = as.Date(Date))
+  
+  algplo <- algdat %>% 
+    dplyr::filter(epchc_station %in% selsit) %>% 
+    dplyr::summarise(count = sum(count, na.rm = T), .by = c(yrqrt, name)) %>% 
+    dplyr::mutate(
+      name = factor(name, levels = algnms, labels = algnms)
+    )
+  
+  # algplot
+  p1 <- plotly::plot_ly(algplo, x = ~ yrqrt, y= ~count, color = ~name, text = ~paste0(name, ', ', yrqrt), hoverinfo = 'text') %>% 
+    plotly::add_bars() %>% 
+    plotly::layout(
+      yaxis = list(title = 'Phytoplankton\ncell count (0.1/ml)', gridcolor = gridcol),
+      barmode = 'stack',
+      showlegend = T
+    )
+  
+  # chl plot
+  p2 <- plotly::plot_ly(data = toplo, 
+                x = ~Date, 
+                y = ~chla, 
+                type = 'scatter', 
+                mode = 'lines', 
+                line = list(color = '#427355'), 
+                name = 'Chlorophyll-a') %>%
+    plotly::layout(
+      yaxis = list(title = 'Concentration (ug/L)', gridcolor = gridcol),
+      xaxis = list(title = NULL),
+      legend = list(title = list(text = NULL))
+    )
+
+  # secchi plot
+  p3 <- plotly::plot_ly() %>% 
+    plotly::add_trace(data = toplo, 
+                x = ~Date, 
+                y = ~sd_raw_m, 
+                type = 'scatter', 
+                mode = 'lines', 
+                line = list(color = '#0047FE'), 
+                name = 'Secchi depth')
+
+  if(any(!toplo$sd_q))
+    p3 <- p3 %>%
+      plotly::add_trace(
+        data = toplo[!toplo$sd_q, ],
+        x = ~Date,
+        y = ~sd_raw_m,
+        type = 'scatter',
+        mode = 'markers',
+        marker = list(color = '#FF6347', size = 6),  # Adjust size and color
+        name = 'Secchi on bottom'
+      )
+
+  p3 <- p3 %>% 
+    plotly::layout(
+      title = list(text = paste0('Station ', selsit)),
+      yaxis = list(title = 'Depth (m)', gridcolor = gridcol),
+      xaxis = list(title = NULL),
+      legend = list(title = list(text = NULL))
+    )
+  
+  out <- plotly::subplot(p1, p2, p3, nrows = 3, shareX = T, titleY = T) %>% 
+    plotly::rangeslider(thickness = 0.02) %>%
+    plotly::layout(
+      title = paste('Station', selsit),
+      legend = list(
+        font = list(size = 16),
+        # itemclick = FALSE, 
+        # itemdoubeclick = FALSE, 
+        groupclick = TRUE,
+        traceorder = 'normal'
+      ), 
+      xaxis = list(
+        domain = c(0.02, 1),
+        fixedrange = FALSE,
+        title = NULL,
+        range = range(toplo$Date),
+        rangeselector = list(
+          buttons = list(
+            list(step = "all"),
+            list(
+              count = 20,
+              label = "20 yr",
+              step = "year",
+              stepmode = "backward"),
+            list(
+              count = 10,
+              label = "10 yr",
+              step = "year",
+              stepmode = "backward"),
+            list(
+              count = 5,
+              label = "5 yr",
+              step = "year",
+              stepmode = "backward"),
+            list(
+              count = 1,
+              label = "1 yr",
+              step = "year",
+              stepmode = "backward")
+          )
+        )
+      ),
+      plot_bgcolor = plotcol
+    ) %>% 
+    plotly::config(
+      toImageButtonOptions = list(
+        format = "svg",
+        filename = "myplot"
+      )
+    )
+  
+  return(out)
+  
+}
