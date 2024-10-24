@@ -12,7 +12,7 @@ css: styles.css
 ---
 
 ```{r setup, include=F}
-source(here::here('global.R'))
+source(here::here('R/global.R'))
 ```
 
 ```{r reactives}

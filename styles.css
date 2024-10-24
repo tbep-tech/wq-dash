@@ -114,18 +114,29 @@ h6 {
 
 /* shiny slider stuff */
 
-.irs-bar-edge {
-  background: #00806E !important;
+
+.irs-line {
+  background: #E5E5E5 !important;
+  border: 1px #E5E5E5 !important;
+}
+
+.irs-single, .irs-from, .irs-to {
+  background: #00806E!important; 
+}
+
+.js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar{
+  background: #E5E5E5 !important; 
+  border: 1px #E5E5E5 !important;
+}
+
+.js-irs-1 .irs-bar-edge, .js-irs-1 .irs-bar {
+  background: #00806E!important; 
   border: 1px #00806E !important;
 }
 
-.irs-single {
+/* background color of selected option for shiny selectInput */
+.selectize-dropdown .option.selected {
   background: #00806E !important;
-}
-
-.js-irs-0 .irs-single-0, .js-irs-0 .irs-bar-edge-0, .js-irs-0 .irs-bar, .js-irs-0 .irs-line {
-  background: #E5E5E5 !important; 
-  border: 1px #E5E5E5 !important;
 }
 
 /* tabset top border */

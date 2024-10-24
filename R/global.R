@@ -9,6 +9,8 @@ source(here::here('R/funcs.R'))
 # load('data/epcdata.RData')
 load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
 load(url('https://tbep-tech.github.io/wq-dash/data/algdat.RData'))
+data(tbseg, package = 'tbeptools')
+data(targets, package = 'tbeptools')
 load(here::here('data/avedat.RData'))
 load(here::here('data/mapdat.RData'))
 load(here::here('data/plotlys.RData')) # thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat
