@@ -117,11 +117,12 @@ algselplo <- function(clkrct, algnms, cols, family = NULL){
   toplo <- clkrct %>% 
     dplyr::mutate(name = factor(name, levels = rev(algnms))) %>% 
     tidyr::unite('x', mo, yr, sep = ' ') %>% 
-    dplyr::summarise(count = sum(count, na.rm = T), .by = c('name', 'x')) %>% 
+    dplyr::summarise(count = median(count, na.rm = T), .by = c('name', 'x')) %>% 
     dplyr::mutate(
       width = 0.6, 
-      color = factor(name, levels = rev(algnms), labels = rev(cols))
-    )
+      color = as.character(factor(name, levels = rev(algnms), labels = rev(cols)))
+    ) %>% 
+    dplyr::arrange(name)
 
   p <-  plotly::plot_ly(toplo, x = ~ x, y= ~count, color = ~name, marker = list(color = ~color)) %>% 
     plotly::add_bars(width = ~width) %>% 
@@ -165,7 +166,7 @@ selsit_plo <- function(selsit){
   
   algplo <- algdat %>% 
     dplyr::filter(epchc_station %in% selsit) %>% 
-    dplyr::summarise(count = sum(count, na.rm = T), .by = c(yrqrt, name)) %>% 
+    dplyr::summarise(count = median(count, na.rm = T), .by = c(yrqrt, name)) %>% 
     dplyr::mutate(
       name = factor(name, levels = algnms, labels = algnms)
     )

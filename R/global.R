@@ -34,6 +34,6 @@ locs <- epcdata %>%
   sf::st_as_sf(coords = c('Longitude', 'Latitude'), crs = prj)
 
 # algae names and colors
-algnms <- c('Bacillariophyta', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
+algnms <- c('Diatoms', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
 cols <- pal_alg(algnms)
 names(cols) <- algnms
