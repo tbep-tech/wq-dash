@@ -8,7 +8,7 @@ downloadButtonRmd <- function (outputId, label = "Download", class = NULL, ...) 
 pal_alg <- leaflet::colorFactor(
   palette = RColorBrewer::brewer.pal(8,  'Dark2'),#c('#004F7E', '#00806E', '#427355', '#5C4A42', '#958984'),
   na.color = 'yellow',
-  levels = c('Bacillariophyta', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
+  levels = c('Diatoms', 'Cyanobacteria', 'Karenia brevis', 'Pseudo-nitzschia pungens', 'Pseudo-nitzschia sp.', 'Pyrodinium bahamense', 'Tripos hircus', 'other')
   )
 
 # plotly function for boxplots
