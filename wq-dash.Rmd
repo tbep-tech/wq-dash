@@ -796,7 +796,7 @@ knitr::include_graphics('www/boxplothoverex.PNG')
 ```
 <br>
 
-Each observation can also be clicked to view the observed phytoplankton cell counts for the selected year/month combination. Once a point is clicked, a stacked barplot of count values is shown on the right if phytoplankton data are available for the selected year, month, and bay segment combination. If data are unavailable, text indicating "No phytoplankton data" will be displayed where the plot should be.  The count data represent sums across segment stations for different phytoplankton taxa.
+Each observation can also be clicked to view the observed phytoplankton cell counts for the selected year/month combination. Once a point is clicked, a stacked barplot of count values is shown on the right if phytoplankton data are available for the selected year, month, and bay segment combination. If data are unavailable, text indicating "No phytoplankton data" will be displayed where the plot should be.  The count data represent medians across segment stations for different phytoplankton taxa.
 
 Viewing phytoplankton cell count data can be useful to determine if any bloom events may have contributed to conditions that differ from the typical seasonal ranges for a given month.  The example below shows counts for July 2019 in Old Tampa Bay.  High chlorophyll concentrations were observed in July, which can be explained by blooms of *Pyrodinium bahamense*.  The following cell count graph is returned by clicking on the point for July 2019 in the plots for Old Tampa Bay. 
 
@@ -923,7 +923,7 @@ knitr::include_graphics('www/stationsel3.PNG')
 ```
 <br>
 
-The phytoplankton data on the top plot show summed cell counts for the selected station in quarterly time steps (e.g., Jan/Feb/Mar 2005, Apr/May/Jun 2005, etc.).  These plots are useful to understand variation in dominant phytoplankton taxa over time at a station. The plot can also be filtered to show specific taxa by clicking on the names in the legend.  The example below shows trends in *Pyrodinium bahamense* at station 66.  Note that the legend entries for all phytoplankton taxa except *Pyrodinium bahamense* are shown in gray, indicating they have been removed from the plot by clicking each one with the mouse. 
+The phytoplankton data on the top plot show median cell counts for the selected station in quarterly time steps (e.g., Jan/Feb/Mar 2005, Apr/May/Jun 2005, etc.).  These plots are useful to understand variation in dominant phytoplankton taxa over time at a station. The plot can also be filtered to show specific taxa by clicking on the names in the legend.  The example below shows trends in *Pyrodinium bahamense* at station 66.  Note that the legend entries for all phytoplankton taxa except *Pyrodinium bahamense* are shown in gray, indicating they have been removed from the plot by clicking each one with the mouse. 
 
 <br>
 ```{r, fig.align='center', out.width='100%'}

@@ -172,10 +172,10 @@ selsit_plo <- function(selsit){
     )
   
   # algplot
-  p1 <- plotly::plot_ly(algplo, x = ~ yrqrt, y= ~count, color = ~name, text = ~paste0(name, ', ', yrqrt), hoverinfo = 'text') %>% 
+  p1 <- plotly::plot_ly(algplo, x = ~ yrqrt, y= ~count, color = ~name, text = ~paste0(name, ', ', count, ', ', yrqrt), hoverinfo = 'text') %>% 
     plotly::add_bars() %>% 
     plotly::layout(
-      yaxis = list(title = 'Phytoplankton\ncell count (0.1/ml)', gridcolor = gridcol),
+      yaxis = list(title = 'Phytoplankton\ncell count (0.1/ml)', gridcolor = gridcol, fixedrange = F),
       barmode = 'stack',
       showlegend = T
     )
@@ -189,7 +189,7 @@ selsit_plo <- function(selsit){
                 line = list(color = '#427355'), 
                 name = 'Chlorophyll-a') %>%
     plotly::layout(
-      yaxis = list(title = 'Concentration (ug/L)', gridcolor = gridcol),
+      yaxis = list(title = 'Concentration (ug/L)', gridcolor = gridcol, fixedrange = F),
       xaxis = list(title = NULL),
       legend = list(title = list(text = NULL))
     )
@@ -219,11 +219,11 @@ selsit_plo <- function(selsit){
   p3 <- p3 %>% 
     plotly::layout(
       title = list(text = paste0('Station ', selsit)),
-      yaxis = list(title = 'Depth (m)', gridcolor = gridcol),
+      yaxis = list(title = 'Depth (m)', gridcolor = gridcol, fixedrange = F),
       xaxis = list(title = NULL),
       legend = list(title = list(text = NULL))
     )
-  
+
   out <- plotly::subplot(p1, p2, p3, nrows = 3, shareX = T, titleY = T) %>% 
     plotly::rangeslider(thickness = 0.02) %>%
     plotly::layout(
