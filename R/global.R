@@ -6,8 +6,8 @@ box::use(
 
 source(here::here('R/funcs.R'))
 
-# load('data/epcdata.RData')
-load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
+load('data/epcdata.RData')
+# load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
 load(url('https://tbep-tech.github.io/wq-dash/data/algdat.RData'))
 data(tbseg, package = 'tbeptools')
 data(targets, package = 'tbeptools')
@@ -16,7 +16,7 @@ load(here::here('data/mapdat.RData'))
 load(here::here('data/plotlys.RData')) # thrplototb, thrplothb, thrplotmtb, thrplotltb, attmat, chlmat, lamat
 
 prj <- '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'
-maxyr <- 2023
+maxyr <- 2024
 
 # minor theme tweaks
 pthm <- ggplot2::theme(
