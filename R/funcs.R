@@ -162,7 +162,8 @@ selsit_plo <- function(selsit){
     dplyr::filter(epchc_station %in% selsit) %>% 
     dplyr::filter(yr >= 1975) %>% 
     dplyr::select(Date = SampleTime, sd_raw_m, sd_q, chla) %>% 
-    dplyr::mutate(Date = as.Date(Date))
+    dplyr::mutate(Date = as.Date(Date)) %>% 
+    dplyr::arrange(Date)
   
   algplo <- algdat %>% 
     dplyr::filter(epchc_station %in% selsit) %>% 
@@ -189,7 +190,7 @@ selsit_plo <- function(selsit){
                 line = list(color = '#427355'), 
                 name = 'Chlorophyll-a') %>%
     plotly::layout(
-      yaxis = list(title = 'Concentration (ug/L)', gridcolor = gridcol, fixedrange = F),
+      yaxis = list(title = 'Chlorophyll-a (ug/L)', gridcolor = gridcol, fixedrange = F),
       xaxis = list(title = NULL),
       legend = list(title = list(text = NULL))
     )
@@ -219,7 +220,7 @@ selsit_plo <- function(selsit){
   p3 <- p3 %>% 
     plotly::layout(
       title = list(text = paste0('Station ', selsit)),
-      yaxis = list(title = 'Depth (m)', gridcolor = gridcol, fixedrange = F),
+      yaxis = list(title = 'Secchi Depth (m)', gridcolor = gridcol, fixedrange = F),
       xaxis = list(title = NULL),
       legend = list(title = list(text = NULL))
     )
