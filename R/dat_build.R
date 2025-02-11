@@ -3,21 +3,21 @@ library(dplyr)
 
 # import and save epcdata -------------------------------------------------
   
-# # local file path
-# xlsx <- 'epcdata.xls'
-# 
-# # import data
-# epcdata <- read_importwq(xlsx, download_latest = T) %>%
-#   mutate(
-#     sd_q = case_when(
-#       is.na(sd_q) ~ T,
-#       !is.na(sd_q) ~ F
-#     )
-#   )
-# 
-# save(epcdata, file = 'data/epcdata.RData', version = 2)
-# 
-# file.remove(xlsx)
+# local file path
+xlsx <- 'epcdata.xls'
+
+# import data
+epcdata <- read_importwq(xlsx, download_latest = T) %>%
+  mutate(
+    sd_q = case_when(
+      is.na(sd_q) ~ T,
+      !is.na(sd_q) ~ F
+    )
+  )
+
+save(epcdata, file = 'data/epcdata.RData', version = 2)
+
+file.remove(xlsx)
 
 # algae data --------------------------------------------------------------
 
