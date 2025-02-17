@@ -7,7 +7,7 @@ name: build
 jobs:
   render:
     name: build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
           sudo apt-get update
-          sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite0-dev
+          sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages: |
