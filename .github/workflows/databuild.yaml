@@ -23,6 +23,7 @@ jobs:
           sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          pak-version: "devel"
           packages: |
             any::dplyr
             any::sf
