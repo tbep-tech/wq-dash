@@ -6,8 +6,8 @@ box::use(
 
 source(here::here('R/funcs.R'))
 
-load('data/epcdata.RData')
-# load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
+# load('data/epcdata.RData')
+load(url('https://tbep-tech.github.io/wq-dash/data/epcdata.RData'))
 load(url('https://tbep-tech.github.io/wq-dash/data/algdat.RData'))
 data(tbseg, package = 'tbeptools')
 data(targets, package = 'tbeptools')
