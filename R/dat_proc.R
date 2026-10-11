@@ -144,10 +144,19 @@ save(mapdat, file = 'data/mapdat.RData', compress = 'xz')
 
 # matrix data for map -----------------------------------------------------
 
-avedat <- epcdata %>% 
-  anlz_avedat %>% 
-  anlz_attain %>% 
-  filter(yr <=  maxyr) %>% 
+# outcomes as shown in the attainment matrix, show_matrix uses historic outcomes
+# for 2005 and earlier that cannot be reproduced from the data
+matout <- show_matrix(epcdata, yrrng = c(1975, maxyr))$data %>%
+  mutate(bay_segment = as.character(bay_segment)) %>%
+  select(bay_segment, yr, matout = outcome)
+
+avedat <- epcdata %>%
+  anlz_avedat %>%
+  anlz_attain %>%
+  filter(yr <=  maxyr) %>%
+  left_join(matout, by = c('bay_segment', 'yr')) %>%
+  mutate(outcome = matout) %>%
+  select(-matout) %>%
   mutate(
     action = case_when(
       outcome == 'green' ~ 'Stay the Course', 
