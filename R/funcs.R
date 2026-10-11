@@ -281,3 +281,28 @@ selsit_plo <- function(selsit){
   return(out)
   
 }
+
+# add black box for selected year to plotly attainment matrix
+# matrices from ggplotly have years as negative y values and segments at x = 1 to 4
+matbox <- function(mat, yrsel, lwid = 3){
+  
+  out <- plotly::plotly_build(mat)
+  
+  box <- list(
+    type = 'rect',
+    xref = 'x',
+    yref = 'y',
+    x0 = 0.5,
+    x1 = 4.5,
+    y0 = -yrsel - 0.5,
+    y1 = -yrsel + 0.5,
+    line = list(color = 'black', width = lwid),
+    fillcolor = 'rgba(0,0,0,0)',
+    layer = 'above'
+  )
+  
+  out$x$layout$shapes <- c(out$x$layout$shapes, list(box))
+  
+  return(out)
+  
+}

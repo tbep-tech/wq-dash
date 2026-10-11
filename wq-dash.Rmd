@@ -445,6 +445,9 @@ observeEvent(input$map_marker_click, {
 ```
 
 ```{r outputs, context='server'}
+output$attmat <- plotly::renderPlotly(matbox(attmat, input$yrsel))
+output$chlmat <- plotly::renderPlotly(matbox(chlmat, input$yrsel))
+output$lamat <- plotly::renderPlotly(matbox(lamat, input$yrsel))
 output$attmap <- leaflet::renderLeaflet({attmap()})
 output$boxplototb <- plotly::renderPlotly({
   out <- boxplototb()
@@ -679,24 +682,24 @@ knitr::include_graphics('www/targetmapex.PNG')
 ```
 <br>
 
-The legends on the bottom-right of the map show the range of values for either chlorophyll (ug/L) or light attenuation (m-1) for stations where targets or thresholds were met or not met.  The color ramps can overlap because each segment has different targets or thresholds. Results for different years, for chlorophyll or light attenuation, and references relative to targets or thresholds can be chosen from the drop-down menus. 
+The legends on the bottom-right of the map show the range of values for either chlorophyll (ug/L) or light attenuation (m-1) for stations where targets or thresholds were met or not met.  The color ramps can overlap because each segment has different targets or thresholds. Results for different years, for chlorophyll or light attenuation, and references relative to targets or thresholds can be chosen from the drop-down menus. The black rectangle on each matrix shows the year selected for the map.
 
 ### DECISION MATRIX
 
 ```{r}
-attmat
+plotly::plotlyOutput('attmat', height = '100%')
 ```
 
 ### CHLOROPHYLL RESULTS
 
 ```{r}
-chlmat
+plotly::plotlyOutput('chlmat', height = '100%')
 ```
 
 ### LIGHT ATTENUATION RESULTS
 
 ```{r}
-lamat
+plotly::plotlyOutput('lamat', height = '100%')
 ```
 
 Column {data-width=500}
