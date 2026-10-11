@@ -1,0 +1,92 @@
+<style>
+#loading-icon {
+  display: none;
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  z-index: 2000;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  color: #333333;
+}
+#loading-icon.active {
+  display: flex;
+}
+#loading-icon .spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #d6e6f7;
+  border-top-color: #0275D8;
+  border-radius: 50%;
+  animation: loading-spin 0.8s linear infinite;
+}
+@keyframes loading-spin {
+  to { transform: rotate(360deg); }
+}
+</style>
+<script>
+  // loading icon, shown when the page first loads and hidden once the shiny
+  // session has connected and the server is idle after rendering the initial
+  // outputs, idle events before the session connects are ignored
+  // after the initial load, the icon is also shown when a tab switch reveals
+  // outputs, which tells the server to render outputs that were hidden
+  // a server busy event within a short window after outputs are revealed
+  // shows the icon and every idle event hides it, the short delay before
+  // showing avoids a flash when the revealed outputs are already rendered
+  // jquery may load after this script, so wait for the document to be parsed
+  // unless it already has been, as when the page is inserted after loading
+  function loadingiconinit() {
+
+    var $ = window.jQuery;
+
+    var icon = $('<div id="loading-icon" class="active"><div class="spinner"></div><span>Loading...</span></div>');
+    $('body').append(icon);
+
+    var hiddeninp = /^\.clientdata_output_.+_hidden$/;
+    // the connected event may have fired before this code runs
+    var connected = !!(window.Shiny && Shiny.shinyapp && Shiny.shinyapp.isConnected());
+    var loaded = false;
+    var revealed = 0;
+    var timer = null;
+
+    $(document).on('shiny:connected', function() {
+      connected = true;
+    });
+
+    $(document).on('shiny:inputchanged', function(event) {
+      if (loaded && hiddeninp.test(event.name) && event.value === false) {
+        revealed = Date.now();
+      }
+    });
+
+    $(document).on('shiny:busy', function() {
+      if (Date.now() - revealed < 1000) {
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+          icon.addClass('active');
+        }, 250);
+      }
+    });
+
+    $(document).on('shiny:idle', function() {
+      if (!connected) {
+        return;
+      }
+      loaded = true;
+      clearTimeout(timer);
+      icon.removeClass('active');
+    });
+
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", loadingiconinit);
+  } else {
+    loadingiconinit();
+  }
+</script>

@@ -6,16 +6,47 @@ output:
      social: menu
      source_code: "https://github.com/tbep-tech/wq-dash"
      includes: 
-       in_header: google-analytics.html
-runtime: shiny
-css: styles.css
+       in_header: [google-analytics.html, loading_in_header.html]
+runtime: shiny_prerendered
+css: www/styles.css
 ---
 
-```{r setup, include=F}
+```{r setup, include=F, context='setup'}
+library(shiny)
+
 source(here::here('R/global.R'))
+
+# site selection base map
+bsmap <- tbeptools::util_map(locs) %>%
+  leaflet::addCircleMarkers(
+    data = locs,
+    layerId = ~epchc_station,
+    color = '#00806E',
+    stroke = F,
+    fillOpacity = 0.9,
+    radius = 15,
+    label = ~epchc_station,
+    labelOptions = leaflet::labelOptions(
+      textOnly = T,
+      noHide = T,
+      style = list(
+        "color" = "#FFFFFF"
+        ),
+      direction = 'center'
+    )
+  ) %>%
+  leaflet::addCircleMarkers(
+      data = locs[1, ],
+      layerId = 'selsit',
+      stroke = T,
+      color = '#5C4A42',
+      fill = F,
+      radius = 16,
+      opacity = 1
+    )
 ```
 
-```{r reactives}
+```{r reactives, context='server'}
 # OTB boxplot
 boxplototb <- reactive({
 
@@ -383,38 +414,8 @@ selplo <- reactive({
   selsit <- input$map_marker_click$id
   
   selsit_plo(selsit)
-  
-})
-```
 
-```{r map}
-bsmap <- tbeptools::util_map(locs) %>%
-  leaflet::addCircleMarkers(
-    data = locs,
-    layerId = ~epchc_station,
-    color = '#00806E',
-    stroke = F,
-    fillOpacity = 0.9,
-    radius = 15,
-    label = ~epchc_station,
-    labelOptions = leaflet::labelOptions(
-      textOnly = T,
-      noHide = T,
-      style = list(
-        "color" = "#FFFFFF"
-        ),
-      direction = 'center'
-    )
-  ) %>% 
-  leaflet::addCircleMarkers(
-      data = locs[1, ],
-      layerId = 'selsit',
-      stroke = T,
-      color = '#5C4A42',
-      fill = F,
-      radius = 16, 
-      opacity = 1
-    )
+})
 
 # leaflet proxy for marker select
 map <- leaflet::leafletProxy('map')
@@ -439,11 +440,41 @@ observeEvent(input$map_marker_click, {
       radius = 16, 
       opacity = 1
     )
-  
+
 })
 ```
 
-```{r downloadhandlers}
+```{r outputs, context='server'}
+output$attmap <- leaflet::renderLeaflet({attmap()})
+output$boxplototb <- plotly::renderPlotly({
+  out <- boxplototb()
+  out$x$source <- 'otbclk'
+  out
+})
+output$otbalg <- plotly::renderPlotly(otbalg())
+output$boxplothb <- plotly::renderPlotly({
+  out <- boxplothb()
+  out$x$source <- 'hbclk'
+  out
+})
+output$hbalg <- plotly::renderPlotly(hbalg())
+output$boxplotmtb <- plotly::renderPlotly({
+  out <- boxplotmtb()
+  out$x$source <- 'mtbclk'
+  out
+})
+output$mtbalg <- plotly::renderPlotly(mtbalg())
+output$boxplotltb <- plotly::renderPlotly({
+  out <- boxplotltb()
+  out$x$source <- 'ltbclk'
+  out
+})
+output$ltbalg <- plotly::renderPlotly(ltbalg())
+output$map <- leaflet::renderLeaflet(bsmap)
+output$selplo <- plotly::renderPlotly(selplo())
+```
+
+```{r downloadhandlers, context='server'}
 # wq data
 output$wqdwntab <- downloadHandler(
   filename = function(){'wqdat.csv'},
@@ -674,7 +705,6 @@ Column {data-width=500}
 ### SITE ATTAINMENT BY YEAR
 
 ```{r ecphc_validate}
-output$attmap <- leaflet::renderLeaflet({attmap()})
 fillCol(flex = c(NA, 1),
   column(12,
     column(6,
@@ -823,13 +853,6 @@ mainPanel(
 ### OLD TAMPA BAY
 
 ```{r boxplot_otb, fig.height = 8, fig.width = 10}
-output$boxplototb <- plotly::renderPlotly({
-  out <- boxplototb()
-  out$x$source <- 'otbclk'
-  out
-})
-output$otbalg <- plotly::renderPlotly(otbalg())
-
 fillRow(flex = c(1, 0.25),
   plotly::plotlyOutput('boxplototb'),
   plotly::plotlyOutput('otbalg')
@@ -839,13 +862,6 @@ fillRow(flex = c(1, 0.25),
 ### HILLSBOROUGH BAY
 
 ```{r boxplot_hb, fig.height = 8, fig.width = 10}
-output$boxplothb <- plotly::renderPlotly({
-  out <- boxplothb()
-  out$x$source <- 'hbclk'
-  out
-})
-output$hbalg <- plotly::renderPlotly(hbalg())
-
 fillRow(flex = c(1, 0.25),
   plotly::plotlyOutput('boxplothb'),
   plotly::plotlyOutput('hbalg')
@@ -855,13 +871,6 @@ fillRow(flex = c(1, 0.25),
 ### MIDDLE TAMPA BAY
 
 ```{r boxplot_mtb, fig.height = 8, fig.width = 10}
-output$boxplotmtb <- plotly::renderPlotly({
-  out <- boxplotmtb()
-  out$x$source <- 'mtbclk'
-  out
-})
-output$mtbalg <- plotly::renderPlotly(mtbalg())
-
 fillRow(flex = c(1, 0.25),
   plotly::plotlyOutput('boxplotmtb'),
   plotly::plotlyOutput('mtbalg')
@@ -871,13 +880,6 @@ fillRow(flex = c(1, 0.25),
 ### LOWER TAMPA BAY
 
 ```{r boxplot_ltb, fig.height = 8, fig.width = 10}
-output$boxplotltb <- plotly::renderPlotly({
-  out <- boxplotltb()
-  out$x$source <- 'ltbclk'
-  out
-})
-output$ltbalg <- plotly::renderPlotly(ltbalg())
-
 fillRow(flex = c(1, 0.25),
   plotly::plotlyOutput('boxplotltb'),
   plotly::plotlyOutput('ltbalg')
@@ -893,7 +895,6 @@ Column {.tabset .tabset-fade data-width=250}
 ### MAP SELECTION
 
 ```{r}
-output$map <- leaflet::renderLeaflet(bsmap)
 leaflet::leafletOutput('map')
 ```
 
@@ -937,7 +938,6 @@ Column {data-width=500}
 ### PLOT
 
 ```{r}
-output$selplo <- plotly::renderPlotly(selplo())
 plotly::plotlyOutput('selplo')
 ```
 
