@@ -449,6 +449,10 @@ output$attmat <- plotly::renderPlotly(matbox(attmat, input$yrsel))
 output$chlmat <- plotly::renderPlotly(matbox(chlmat, input$yrsel))
 output$lamat <- plotly::renderPlotly(matbox(lamat, input$yrsel))
 output$attmap <- leaflet::renderLeaflet({attmap()})
+output$thrplototb <- plotly::renderPlotly(thrplototb)
+output$thrplothb <- plotly::renderPlotly(thrplothb)
+output$thrplotmtb <- plotly::renderPlotly(thrplotmtb)
+output$thrplotltb <- plotly::renderPlotly(thrplotltb)
 output$boxplototb <- plotly::renderPlotly({
   out <- boxplototb()
   out$x$source <- 'otbclk'
@@ -781,26 +785,26 @@ Column {.tabset .tabset-fade data-width=650}
 
 ### OLD TAMPA BAY
 
-```{r plot_otb, fig.height = 8, fig.width = 10}
-thrplototb
+```{r plot_otb}
+plotly::plotlyOutput('thrplototb', height = '100%')
 ```
 
 ### HILLSBOROUGH BAY 
 
-```{r plot_hb, fig.height = 8, fig.width = 10}
-thrplothb
+```{r plot_hb}
+plotly::plotlyOutput('thrplothb', height = '100%')
 ```
 
 ### MIDDLE TAMPA BAY
 
-```{r plot_mtb, fig.height = 8, fig.width = 10}
-thrplotmtb
+```{r plot_mtb}
+plotly::plotlyOutput('thrplotmtb', height = '100%')
 ```
 
 ### LOWER TAMPA BAY
 
-```{r plot_ltb, fig.height = 8, fig.width = 10}
-thrplotltb
+```{r plot_ltb}
+plotly::plotlyOutput('thrplotltb', height = '100%')
 ```
 
 3 SEGMENT SEASONAL TRENDS {data-navmenu="PAGE SELECTION"}
